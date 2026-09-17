@@ -194,7 +194,7 @@ def _has_agent_browser() -> bool:
         from tools.browser_tool_install import _find_agent_browser, _requires_real_termux_browser_install
     except Exception:
         # Runtime probe unavailable: fall back to binary presence rather than crashing. Rungs: PATH;
-        # Hermes-managed Node dirs ($HERMES_HOME/node, prepended to PATH at runtime but usually absent
+        # Xinyuan-managed Node dirs ($HERMES_HOME/node, prepended to PATH at runtime but usually absent
         # from the *probe* process's PATH); local node_modules/.bin (PATHEXT-aware ``shutil.which`` so
         # Windows picks the ``.cmd`` shim). The hit must also run: a dangling symlink is reported by
         # ``which`` but fails at exec.

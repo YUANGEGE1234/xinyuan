@@ -175,7 +175,7 @@ def _create_local_session(task_id: str, allow_real_profile: bool = True) -> Dict
             _bt.logger.info("Created real-profile local session %s for task %s", info["session_name"], task_id)
             return info
 
-    # Browser Use mode + ``browser.engine: lightpanda`` drives a Hermes-spawned
+    # Browser Use mode + ``browser.engine: lightpanda`` drives a Xinyuan-spawned
     # ``lightpanda serve`` (the built-in tools are hidden in that mode).
     if _bt._is_browser_use_cli_mode() and _lp._using_lightpanda_engine():
         return _create_lightpanda_session(task_id)

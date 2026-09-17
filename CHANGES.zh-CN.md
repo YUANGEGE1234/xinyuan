@@ -355,7 +355,88 @@ re.compile(r"(['\"`])Hermes(?![A-Za-z0-9_$])")
 
 ---
 
-## 10. 已知限制
+## 10. 补漏（第三版）：f-string 与复合词仍然漏改
+
+第 9 节修掉了「界面改名了、AI 的自我认知没改」这个问题，但那个修法本身还有两个漏洞。
+**问题不是没改到，而是改名的工具悄悄跳过了整整一类代码。**
+
+### 漏在哪
+
+**（1）所有 f-string 里的文案被整类跳过。**
+
+第一版改名脚本只处理 `tokenize.STRING` 和 `tokenize.COMMENT` 两类标记。
+但 Python 3.12 起，f-string 被拆成 `FSTRING_START` / `FSTRING_MIDDLE` / `FSTRING_END` 三种标记，
+字面文本落在 `FSTRING_MIDDLE` 里 —— 不在上面两类中，于是**每一个 f-string 都被静默跳过**。
+
+漏掉的恰好是可见度最高的一批：
+
+| 位置 | 文案 |
+| --- | --- |
+| `agent/system_prompt.py` | `Active Hermes profile: ...` —— **直接进系统提示** |
+| `agent/prompt_builder.py` | 运行时环境说明（多段）—— **直接进系统提示** |
+| `agent/estop.py` | `⏸️ Hermes is paused` |
+| `agent/shell_hooks.py` | `⚠ Hermes is about to register a shell hook ...`（安全审批提示） |
+| `agent/turn_facade_lease.py` | `⏳ Still waiting for the other Hermes process ...` |
+| `gateway/run_busy.py` | `⏸️ Hermes is already paused` |
+| `tui_gateway/user_messages.py` | `session busy — Hermes is still replying.` |
+| `cli.py` / `hermes_cli/banner.py` | `Hermes Agent v...` 启动横幅 |
+
+**（2）`Hermes-managed` 这类复合词被误判成文件名。**
+
+第一版有一条「看起来像路径就跳过」的保护规则，本意是别把 `Hermes.exe`、`Hermes.app` 改掉。
+但它把 `Hermes-managed`、`Hermes-owned`、`Hermes-only` 这类**散文复合词**也一起放过了。
+
+顺带说明：这条规则当时**误打误撞**保护住了 `X-Hermes-Session-Id` 这类 HTTP 头 —— 如果当时没有它，
+网关的会话续传、定时唤醒、Webhook 签名校验会被一起改坏。第三版把它换成了显式的清单。
+
+### 改了什么
+
+第三版共 **312 处 / 180 个文件**。判断不再依赖「聪明的正则」，而是**显式形态表**：
+把代码树里出现过的每一种 `Hermes<分隔符>词` 形态逐一列出，人工判定「保留」还是「改名」。
+
+**刻意保留（改了会坏或会撒谎）：**
+
+| 保留项 | 原因 |
+| --- | --- |
+| `X-Hermes-Session-Id` / `-Key` / `-Signature-256` / `-Event` 等 | **HTTP 协议头**，两端都按字面值读写，改名即断会话续传与 Webhook 签名 |
+| `X-Title`、`User-Agent`、`HTTP-Referer`、`clientInfo`、`codex_cli_rs` | 发给模型厂商的**归属标识**，改写等于让本分支对第三方谎报身份 |
+| `Hermes 3` / `Hermes 4` / `Hermes-4` | Nous Research 的**大模型名**，不是本程序 |
+| `Hermes.exe` / `Hermes.app` / `Hermes-Setup.exe` | 卸载与迁移路径要探测的**真实文件名** |
+| `hermes-agent`、`hermes_cli`、`hermes_home`、`HERMES_*` | 上游包名 / 模块名 / 环境变量 |
+| `_OAUTH_SYSTEM_REPLACEMENTS` 的**左值** | 搜索替换表，左值是「被匹配的原文」，改了就匹配不上 |
+
+### 一处需要特别说明的连带修复
+
+`_OAUTH_SYSTEM_REPLACEMENTS` 是 Anthropic OAuth 路径上的**品牌脱敏表**：
+它把本程序自己的名字替换成 `Claude Code`，避免系统提示被服务端内容过滤拦下。
+这张表的元素**跨了多行**，而保护规则只看「标记所在的那一行」，于是第二行起的元素没被护住。
+
+结果是：脱敏表能匹配 `Xinyuan Agent`（对本分支是**对的**），但不再匹配 `Hermes Agent` ——
+而本版的人格文案里恰好有 `built on Hermes Agent by Nous Research`，这句就不再被脱敏了。
+第三版把**两个品牌名都补进表里**，新旧都能脱敏。
+
+### 工具本身的一个坑（值得记一笔）
+
+改名脚本一度**把自己改坏了**：某次误把父目录当作根目录执行，脚本改写了自己的正则字符串，
+`WORD` 里的 `Hermes` 变成 `Xinyuan`。此后它匹配的是 `Xinyuan`，替换成 `Xinyuan` ——
+**全是空操作，却照样报告「已修改 312 处」**。
+
+因此第三版脚本加了两条硬约束：**拒绝处理自身文件**；替换一律按**原始源码偏移**切片，
+不依赖 `TokenInfo.string`（f-string 的该字段是重新转义过的表示，不能拿来算偏移）。
+
+### 第三版验证
+
+| 项 | 结果 |
+| --- | --- |
+| 决策表单元测试（夹具，含 9 保留 / 9 改名） | **全部符合预期** |
+| 改动文件语法校验（180 个 `.py`） | **0 失败** |
+| 散文残留（运行时字符串 / 文档字符串 / 注释） | **0 / 0 / 0** |
+| 必须保留项复核 | `X-Hermes-Session-Id` 9 处、`X-Title` 12 处、`Hermes 3` 3 处、`hermes-agent` 177 处 —— **全部完好** |
+| 仓库测试（品牌相关 17 个文件） | 见第 11 节说明 |
+
+---
+
+## 11. 已知限制
 
 - 仅提供 **Windows x64** 便携包。macOS / Linux 需自行从源码构建。
 - 需要能访问 `https://yuangeluyou.com`；离线环境无法使用。

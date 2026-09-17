@@ -587,7 +587,7 @@ class ResponsesApiTransport(ProviderTransport):
         # An override may rewrite the wire model; provenance must be stamped with what actually goes out.
         wire_model = _strip_ctx_variant(request_overrides.get("model", model))
         kwargs = {
-            # ``-900k`` picker variants are Hermes-side aliases; the backend knows only the base slug.
+            # ``-900k`` picker variants are Xinyuan-side aliases; the backend knows only the base slug.
             "model": wire_model,
             "instructions": instructions,
             "input": self.convert_messages(

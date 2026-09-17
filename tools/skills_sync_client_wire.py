@@ -187,8 +187,8 @@ def _check_version(caps: Dict[str, Any]) -> None:
     """Reject an incompatible server major version."""
     ver = str(caps.get("hsp_version") or "")  # wire field name
     if ver.split(".", 1)[0] != WIRE_VERSION:
-        raise SyncError(f"this server speaks sync version {ver!r}, but this Hermes speaks "
-                        f"{WIRE_VERSION} — update Hermes to sync with it")
+        raise SyncError(f"this server speaks sync version {ver!r}, but this Xinyuan speaks "
+                        f"{WIRE_VERSION} — update Xinyuan to sync with it")
 
 
 def _body(r) -> Dict[str, Any]:

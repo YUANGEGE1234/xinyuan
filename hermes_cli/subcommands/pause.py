@@ -35,7 +35,7 @@ def cmd_resume(args: argparse.Namespace) -> int:
     if disengage():
         print("▶️  Xinyuan resumed — dispatch picks up on the next tick.")
     else:
-        print(f"Hermes is not paused (no sentinel at {sentinel_path()}).")
+        print(f"Xinyuan is not paused (no sentinel at {sentinel_path()}).")
     return 0
 
 

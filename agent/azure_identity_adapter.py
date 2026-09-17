@@ -69,7 +69,7 @@ def reset_credential_cache() -> None:
 
 @dataclass(frozen=True)
 class EntraIdentityConfig:
-    """Hermes-managed Entra knobs; everything else (tenant, SP secret, federated token file, authority...) flows
+    """Xinyuan-managed Entra knobs; everything else (tenant, SP secret, federated token file, authority...) flows
     through azure-identity's standard ``AZURE_*`` env vars. ``exclude_interactive_browser`` keeps probes
     non-interactive (the setup wizard never writes it). Frozen: hashable for ``lru_cache``, picklable for workers."""
 

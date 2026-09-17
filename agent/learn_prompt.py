@@ -51,7 +51,7 @@ Body section order (omit a section only if it genuinely has no content):
 7. "## Pitfalls" — known limits, rate limits, things that look broken but aren't.
 8. "## Verification" — a single command/check that proves the skill worked.
 
-Hermes-tool framing (this is what makes it a skill, not shell docs):
+Xinyuan-tool framing (this is what makes it a skill, not shell docs):
 - Frame running scripts as "invoke through the `terminal` tool".
 - Reference Xinyuan tools by name in backticks: `terminal`, `read_file`,
   `write_file`, `search_files`, `patch`, `web_extract`, `web_search`,

@@ -92,7 +92,7 @@ def _remove_env_source(provider: str, removed) -> RemovalResult:
             f"(not in ~/.hermes/.env).",
             "  Unset it there (shell profile, systemd EnvironmentFile, "
             "launchd plist, etc.) or it will keep being visible to Xinyuan.",
-            f"  The pool entry is now suppressed — Hermes will ignore "
+            f"  The pool entry is now suppressed — Xinyuan will ignore "
             f"{env_var} until you run `hermes auth add {provider}`.",
         ])
     else:

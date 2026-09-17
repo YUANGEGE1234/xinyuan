@@ -221,7 +221,7 @@ def _print_run_result(result: Dict[str, Any]) -> None:
             print(f"      {stream}: {_truncate(text, 400)}")
     parsed = result.get("parsed")
     if parsed:
-        print(f"      parsed (Hermes wire shape): {json.dumps(parsed)}")
+        print(f"      parsed (Xinyuan wire shape): {json.dumps(parsed)}")
     else:
         print("      parsed: <none — hook contributed nothing to the dispatcher>")
 

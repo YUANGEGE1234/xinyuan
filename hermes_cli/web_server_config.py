@@ -383,7 +383,7 @@ def _normalize_main_model_assignment(provider: str, model: str) -> tuple[str, st
     ``provider: anthropic`` + ``default: anthropic/claude-opus-4.6`` — an aggregator slug on
     the native provider, which 400s. Two repairs at this single chokepoint:
 
-    1. Vendor-name → Hermes-provider: when the provider is not a known provider/alias but the
+    1. Vendor-name → Xinyuan-provider: when the provider is not a known provider/alias but the
        model is a vendor-prefixed slug, keep the user's CURRENT aggregator if on one, else
        openrouter. User-declared ``providers:``/``custom_providers:`` entries resolve first,
        and durable named-custom slugs (``custom`` / ``custom:<name>``) are excluded —

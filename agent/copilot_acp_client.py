@@ -470,7 +470,7 @@ class CopilotACPClient:
                 except Exception as exc:
                     response = _jsonrpc_error(message_id, -32602, str(exc))
         else:
-            response = _jsonrpc_error(message_id, -32601, f"ACP client method '{method}' is not supported by Hermes yet.")
+            response = _jsonrpc_error(message_id, -32601, f"ACP client method '{method}' is not supported by Xinyuan yet.")
         process.stdin.write(json.dumps(response) + "\n")
         process.stdin.flush()
         return True

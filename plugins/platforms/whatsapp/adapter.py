@@ -212,7 +212,7 @@ def _file_content_hash(path: Path) -> str:
 
 
 def check_whatsapp_requirements() -> bool:
-    """Node.js (Hermes-managed first, so a bad system Node on PATH can't break Windows) is available."""
+    """Node.js (Xinyuan-managed first, so a bad system Node on PATH can't break Windows) is available."""
     _node = find_node_executable("node")
     try:
         return bool(_node) and subprocess.run([_node, "--version"], timeout=5, **_RUN_TEXT).returncode == 0
@@ -325,7 +325,7 @@ class WhatsAppAdapter(WhatsAppBehaviorMixin, BasePlatformAdapter):
         except OSError:
             pass
         print(f"[{self.name}] Installing WhatsApp bridge dependencies...")
-        # Hermes-managed portable Node's npm.cmd first (Windows), then PATH.
+        # Xinyuan-managed portable Node's npm.cmd first (Windows), then PATH.
         _npm_bin = find_node_executable("npm") or "npm"
         detail = ""
         try:  # Default 300s accommodates slow systems like an Unraid NAS.

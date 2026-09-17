@@ -70,7 +70,7 @@ _TERMINAL_STATES = {"completed", "failed", "cancelled"}
 # Krea Enhance — the optional ``upscale`` pass after generation (max 8K).
 _ENHANCE_PATH = "/generate/enhance/krea/enhance"
 _ENHANCE_SCALE_FACTOR = 2
-_USER_AGENT = "Hermes-Agent/1.0 (krea-image-gen)"
+_USER_AGENT = "Xinyuan-Agent/1.0 (krea-image-gen)"
 
 # Fatal poll outcome (``_poll_krea_job`` ``kind``) → (error_type, message builder).
 _POLL_FAILURES: Dict[str, Tuple[str, Callable[[str, Any], str]]] = {

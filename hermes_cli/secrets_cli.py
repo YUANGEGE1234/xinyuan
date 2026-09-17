@@ -275,7 +275,7 @@ def cmd_status(args: argparse.Namespace) -> int:
         console.print("\n  Run [cyan]hermes secrets bitwarden setup[/cyan] to enable.")
         return 0
     if not token:
-        console.print(f"\n  [yellow]Enabled but {token_env} is not set — Hermes will skip BSM "
+        console.print(f"\n  [yellow]Enabled but {token_env} is not set — Xinyuan will skip BSM "
                       "and warn on next startup.[/yellow]")
     if not project_id:
         console.print("\n  [yellow]Enabled but no project_id — nothing to fetch.[/yellow]")

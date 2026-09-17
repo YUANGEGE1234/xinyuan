@@ -828,7 +828,7 @@ def _setup_wizard(args) -> None:
     cfg = _read_config()
     write_path, read_path = _local_config_path(), _config_path()
     _refuse_unparseable(write_path)  # before the questions, not after them
-    print(f"\nHoncho memory setup\n{RULE}\n  Honcho gives Hermes persistent cross-session memory.\n  Config: {write_path}")
+    print(f"\nHoncho memory setup\n{RULE}\n  Honcho gives Xinyuan persistent cross-session memory.\n  Config: {write_path}")
     if read_path != write_path and read_path.exists():
         print(f"  (seeding from existing config at {read_path})")
     print()
@@ -1553,7 +1553,7 @@ Honcho peers
   User peer:   {_pref(hermes, cfg, 'peerName') or '(not set)'}
     Your identity in Honcho. Messages you send build this peer's card.
   AI peer:     {_pref(hermes, cfg, 'aiPeer') or _host_key()}
-    Hermes' identity in Honcho. Seed with 'hermes honcho identity <file>'.
+    Xinyuan' identity in Honcho. Seed with 'hermes honcho identity <file>'.
     Dialectic calls ask this peer questions to warm session context.
 
   Dialectic reasoning:  {_pref(hermes, cfg, 'dialecticReasoningLevel') or 'low'}  ({', '.join(REASONING_LEVELS)})
@@ -1605,7 +1605,7 @@ Honcho budgets
     the user and session, injected directly into the system prompt.
 
   Dialectic   {_pref(hermes, cfg, 'dialecticMaxChars') or 600} chars, reasoning: {_pref(hermes, cfg, 'dialecticReasoningLevel') or 'low'}
-    AI-to-AI inference. Hermes asks Honcho's AI peer a question
+    AI-to-AI inference. Xinyuan asks Honcho's AI peer a question
     (e.g. "what were we working on?") and Honcho runs its own model
     to synthesize an answer. Used for first-turn session continuity.
     Level controls how much reasoning Honcho spends on the answer.
@@ -1711,7 +1711,7 @@ def cmd_migrate(args) -> None:
     cfg = _read_config()
     has_key = bool(_resolve_api_key(cfg))
 
-    print("\nHoncho migration: OpenClaw native memory → Hermes\n" + "─" * 50)
+    print("\nHoncho migration: OpenClaw native memory → Xinyuan\n" + "─" * 50)
     print("""
   OpenClaw's native memory stores context in local markdown files
   (USER.md, MEMORY.md, SOUL.md, ...) and injects them via QMD search.

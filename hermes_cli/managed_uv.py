@@ -1,4 +1,4 @@
-"""Hermes-managed uv and Python runtime repair.
+"""Xinyuan-managed uv and Python runtime repair.
 
 The Python backing the install is shared by every Xinyuan profile because the checkout's ``venv``
 is shared. Runtime repair therefore uses an install-scoped store under
@@ -70,7 +70,7 @@ def managed_python_install_dir(project_root: Path | None = None) -> Path:
 def managed_python_env(
     project_root: Path | None = None, *, install_dir: Path | None = None,
     base_env: dict[str, str] | None = None) -> dict[str, str]:
-    """Return a sanitized environment for Hermes-private uv Python commands."""
+    """Return a sanitized environment for Xinyuan-private uv Python commands."""
     target = (
         Path(install_dir) if install_dir is not None else managed_python_install_dir(project_root))
     env = dict(os.environ if base_env is None else base_env)
@@ -806,7 +806,7 @@ def _windows_runtime_holders() -> tuple[bool, str]:
         return True, f"could not verify Windows venv holders: {exc}"
     if holders:
         pids = ", ".join(str(item[0]) for item in holders[:6])
-        return True, f"other Hermes processes still hold the venv (PID {pids})"
+        return True, f"other Xinyuan processes still hold the venv (PID {pids})"
     return False, ""
 
 

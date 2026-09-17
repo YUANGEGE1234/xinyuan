@@ -91,7 +91,7 @@ def _default_windows_editor() -> str:
 
 
 def _augment_path_with_known_tools() -> None:
-    r"""Prepend Hermes-managed tool directories to ``PATH`` (no-op on POSIX / missing dirs).
+    r"""Prepend Xinyuan-managed tool directories to ``PATH`` (no-op on POSIX / missing dirs).
 
     install.ps1 adds entries like ``%LOCALAPPDATA%\hermes\git\bin`` to the User PATH via
     ``SetEnvironmentVariable``, but already-running shells never see that broadcast, so a hermes

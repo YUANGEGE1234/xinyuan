@@ -98,7 +98,7 @@ def _repo_npm_range() -> str | None:
 
 
 def managed_npm_prefix(npm: str | os.PathLike[str] | None) -> Path | None:
-    """Return the Hermes-managed Node root *npm* lives in, else ``None``.
+    """Return the Xinyuan-managed Node root *npm* lives in, else ``None``.
 
     Symlinks are resolved first: ``~/.local/bin/npm`` → ``$HERMES_HOME/node/bin/npm`` →
     ``lib/node_modules/npm/bin/npm-cli.js`` are all the managed npm, or the repair silently declines
@@ -135,7 +135,7 @@ def upgrade_managed_npm(npm: str, npm_range: str, *, prefix: Path, quiet: bool =
     the "upgrade" would install a second npm elsewhere while the managed one stayed stale.
     """
     if not quiet:
-        print(f"→ Upgrading Hermes-managed npm to satisfy {npm_range}…", flush=True)
+        print(f"→ Upgrading Xinyuan-managed npm to satisfy {npm_range}…", flush=True)
     # The desktop app's Node processes execute from this tree; an in-place upgrade while in use
     # fails with PermissionError on npm.cmd. Defer — the upgrade re-triggers on the next resolution.
     # Defer instead of forcing the write — the upgrade re-triggers on the next resolution (e.g. the next
@@ -143,7 +143,7 @@ def upgrade_managed_npm(npm: str, npm_range: str, *, prefix: Path, quiet: bool =
     if managed_node_tree_in_use():
         if not quiet:
             print(
-                "  ⚠ deferred: the Hermes-managed Node.js tree is in use by a "
+                "  ⚠ deferred: the Xinyuan-managed Node.js tree is in use by a "
                 "running app; the npm upgrade will apply on a later update "
                 "once the app is closed.",
                 file=sys.stderr,
@@ -209,7 +209,7 @@ def _provision_managed_npm(npm_range: str | None, *, quiet: bool = False) -> str
     """
     if not quiet:
         print(
-            "→ Provisioning a Hermes-managed Node.js runtime "
+            "→ Provisioning a Xinyuan-managed Node.js runtime "
             "(the resolved npm belongs to your system and is left alone)…",
             flush=True,
         )

@@ -457,7 +457,7 @@ def _block_message(operation: str, root: Path) -> str:
     hermes_home = os.environ.get("HERMES_HOME", "").strip()
     scratch = (Path(hermes_home).expanduser() if hermes_home else Path.home() / ".hermes") / "scratch"
     return (
-        f"Blocked: `{operation}` would rewrite Hermes's live source checkout "
+        f"Blocked: `{operation}` would rewrite Xinyuan's live source checkout "
         f"({root}) and can mix module versions in this running process. "
         f"Use a separate worktree or a shared clone on real disk, e.g. "
         f"`git clone --shared {root} {scratch}/<task>` — avoid /tmp for "

@@ -240,7 +240,7 @@ def _restore_active_tool_dependencies(
         return
 
     print()
-    print(f"→ Restoring {len(missing)} Hermes Tools dependency set(s)...")
+    print(f"→ Restoring {len(missing)} Xinyuan Tools dependency set(s)...")
     restored: list[str] = []
     failed: list[tuple[str, str]] = []
     for name, install_args in missing:
@@ -847,7 +847,7 @@ def _rebuild_desktop_after_update(
 
     desktop_build_cmd = [sys.executable, "-m", "hermes_cli.main", "desktop", "--build-only"]
     # Capture the loud build output into update.log; retry once on failure (still-settling
-    # rebuild window), then surface the tail. Put Hermes-managed Node on PATH: the desktop
+    # rebuild window), then surface the tail. Put Xinyuan-managed Node on PATH: the desktop
     # updater chain loses shell PATH customizations, so a bare-PATH child hits `node: not found`.
     from hermes_constants import with_hermes_node_path
     build_env = with_hermes_node_path()

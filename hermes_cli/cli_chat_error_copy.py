@@ -59,7 +59,7 @@ def chat_error_response(
 def agent_init_failure_message(error: BaseException) -> str:
     """Copy for a failed AIAgent build on first message: the user's turn was dropped."""
     return (
-        f"Hermes couldn't start the model connection: {_short(str(error)) or type(error).__name__}. "
+        f"Xinyuan couldn't start the model connection: {_short(str(error)) or type(error).__name__}. "
         "Your message was not sent. Run `hermes doctor` to check the setup, "
         "or /model to pick a different provider."
     )

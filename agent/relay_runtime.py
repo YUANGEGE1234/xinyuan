@@ -69,7 +69,7 @@ _scope_op_executor = _SCOPE_OP_EXECUTOR.get
 
 
 def runtime_metadata(runtime_id: str, **extra: Any) -> dict[str, Any]:
-    """Return the scope metadata that stamps every Hermes-owned Relay scope."""
+    """Return the scope metadata that stamps every Xinyuan-owned Relay scope."""
     return {RUNTIME_SCHEMA_KEY: RUNTIME_SCHEMA_VERSION, RUNTIME_INSTANCE_KEY: runtime_id, **extra}
 
 
@@ -207,7 +207,7 @@ class _ProcessRelayPluginConfiguration:
         self._lock = threading.RLock()
         self._owners: set[int] = set()
         self._state = _RelayPluginConfigurationState.UNINITIALIZED
-        self._relay: Any = None  # set while a Hermes-owned configuration is active
+        self._relay: Any = None  # set while a Xinyuan-owned configuration is active
         self._activation: Any = None
 
     def acquire(self, owner: Any, relay: Any) -> _RelayPluginConfigurationState:
@@ -252,7 +252,7 @@ class _ProcessRelayPluginConfiguration:
         if existing_report is not None:
             logger.warning(
                 "A process-global Relay plugin configuration is already active outside Xinyuan native ownership; "
-                "leaving it unchanged and disabling Hermes-managed Relay middleware for this process"
+                "leaving it unchanged and disabling Xinyuan-managed Relay middleware for this process"
             )
             return _RelayPluginConfigurationState.FOREIGN
         return None
@@ -365,7 +365,7 @@ class RelayRuntime:
             self._execution_consumers.discard(consumer)
 
     def managed_execution_enabled(self) -> bool:
-        """Return whether a Hermes-managed consumer needs the Relay pipeline."""
+        """Return whether a Xinyuan-managed consumer needs the Relay pipeline."""
         with self._execution_consumers_lock:
             return bool(self._execution_consumers)
 
@@ -1236,7 +1236,7 @@ def _configured_plugin_inputs(relay: Any) -> tuple[dict[str, Any], list[Any]] | 
         return {k: v for k, v in config.items() if k != "plugins"}, dynamic_plugins
     except Exception as exc:
         raise _RelayPluginConfigurationLoadError(
-            f"Hermes Relay plugin configuration could not be loaded from {config_path}; continuing without Relay plugins"
+            f"Xinyuan Relay plugin configuration could not be loaded from {config_path}; continuing without Relay plugins"
         ) from exc
 
 

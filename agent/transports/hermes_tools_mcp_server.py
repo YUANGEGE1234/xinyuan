@@ -1,4 +1,4 @@
-"""Hermes-tools-as-MCP server for the codex_app_server runtime.
+"""Xinyuan-tools-as-MCP server for the codex_app_server runtime.
 
 Codex owns the loop and tool list there, so a curated subset of Xinyuan tools is
 exposed over stdio MCP; codex registers it via ``~/.codex/config.toml
@@ -110,7 +110,7 @@ def _build_server() -> Any:
         if spec is None:
             logger.debug("skipping %s — not registered in this Xinyuan process", name)
             continue
-        description = spec.get("description") or f"Hermes {name} tool"
+        description = spec.get("description") or f"Xinyuan {name} tool"
         params_schema = spec.get("parameters") or {"type": "object", "properties": {}}
         try:
             mcp.add_tool(_make_handler(name, params_schema, description), name=name, description=description)

@@ -21,7 +21,7 @@ from unittest.mock import patch
 
 repo, tag = sys.argv[1:3]
 sys.path.insert(0, repo)
-# Remove all inherited Hermes/config and credential env before real imports.
+# Remove all inherited Xinyuan/config and credential env before real imports.
 for key in list(os.environ):
     if key.startswith('HERMES_') or key.endswith(('_API_KEY', '_TOKEN')):
         os.environ.pop(key, None)

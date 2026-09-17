@@ -74,7 +74,7 @@ def _cli_doctor_snippet(binary: str, timeout: float = 8.0) -> Optional[str]:
     return None if isinstance(cp, BaseException) else (_combined_output(cp) or None)
 
 def _build_identity(binary: str, report: Report) -> Report:
-    """Hermes-side identity block comparing resolved binary vs health_report."""
+    """Xinyuan-side identity block comparing resolved binary vs health_report."""
     def token(text: str) -> str:  # dotted version-ish token out of a free-form string
         m = text and re.search(r"(\d+\.\d+(?:\.\d+)?(?:[-+][\w.]+)?)", text)
         return m.group(1) if m else text.strip().lower()

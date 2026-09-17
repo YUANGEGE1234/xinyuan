@@ -413,8 +413,8 @@ class A2AAdapter(BasePlatformAdapter):
             agents[slug] = {
                 "slug": slug, "path": "/" + path_segment, "tenant": tenant, "profile": profile or slug,
                 "local": bool(val.get("local")) or profile in ("", "default", self._active_profile),
-                "name": str(val.get("name") or f"Hermes {slug}"),
-                "description": str(val.get("description") or f"Hermes profile '{profile or slug}' exposed over A2A."),
+                "name": str(val.get("name") or f"Xinyuan {slug}"),
+                "description": str(val.get("description") or f"Xinyuan profile '{profile or slug}' exposed over A2A."),
                 "advertised_toolsets": list(toolsets or []),
                 "timeout": int(val.get("timeout") or _reply_timeout()),
             }

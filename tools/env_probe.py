@@ -135,7 +135,7 @@ def _build_probe_line() -> str:
     py3_pep668 = _detect_pep668("python3") if py3_ver else False
     # Bare which() is correct here (unlike Xinyuan's own uv call sites): this reports
     # the environment *the model will see* in the terminal tool, whose PATH includes
-    # the Hermes-managed $HERMES_HOME/bin via local.py.
+    # the Xinyuan-managed $HERMES_HOME/bin via local.py.
     has_uv = shutil.which("uv") is not None
 
     mismatch = bool(pip_bound_to and py3_ver and not py3_ver.startswith(pip_bound_to))

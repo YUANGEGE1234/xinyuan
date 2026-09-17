@@ -216,7 +216,7 @@ def _open_continuable_cron_thread(job: dict, adapter, chat_id: str, loop) -> Opt
     create_thread = getattr(adapter, "create_handoff_thread", None)
     if not callable(create_thread) or loop is None:
         return None
-    thread_name = f"Hermes — {job.get('name') or job.get('id', 'cron')}"
+    thread_name = f"Xinyuan — {job.get('name') or job.get('id', 'cron')}"
     try:
         from agent.async_utils import safe_schedule_threadsafe
         coro = create_thread(str(chat_id), thread_name)
@@ -789,7 +789,7 @@ def _deliver_to_bot_chat(job: dict, content: str, profile: str, *, deferred: Opt
                 "Job '%s': bot-chat delivery to profile '%s' failed (exit %s) at %s%s",
                 job_id, profile_label, result.returncode, home, f": {tail}" if tail else "")
             return (
-                f"Hermes could not deliver this result to Bot Chat (profile '{profile_label}'). "
+                f"Xinyuan could not deliver this result to Bot Chat (profile '{profile_label}'). "
                 "The result is saved; run `hermes cron runs` to see it, or `hermes doctor` if this keeps happening"
                 + (f". Details: {tail[-200:]}" if tail else ""))
         logger.info("Job '%s': delivered to Bot Chat of profile '%s'", job_id, profile_label)
@@ -805,7 +805,7 @@ def _deliver_to_bot_chat(job: dict, content: str, profile: str, *, deferred: Opt
             "Job '%s': bot-chat delivery to profile '%s' failed: %s", job_id, profile_label,
             str(e) or type(e).__name__, exc_info=True)
         return (
-            f"Hermes could not deliver this result to Bot Chat (profile '{profile_label}'). "
+            f"Xinyuan could not deliver this result to Bot Chat (profile '{profile_label}'). "
             "The result is saved; run `hermes cron runs` to see it, or `hermes doctor` if this keeps happening")
     finally:
         if query_file:

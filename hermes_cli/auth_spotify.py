@@ -341,7 +341,7 @@ def login_spotify_command(args) -> None:
     print(
         f"Starting Spotify PKCE login...\nClient ID: {client_id}\nRedirect URI: {redirect_uri}\n"
         "Make sure this redirect URI is allow-listed in your Spotify app settings.\n\n"
-        f"Open this URL to authorize Hermes:\n{authorize_url}\n\nFull setup guide: {SPOTIFY_DOCS_URL}\n"
+        f"Open this URL to authorize Xinyuan:\n{authorize_url}\n\nFull setup guide: {SPOTIFY_DOCS_URL}\n"
     )
 
     _print_loopback_ssh_hint(redirect_uri, docs_url=SPOTIFY_DOCS_URL)

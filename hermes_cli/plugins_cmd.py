@@ -571,7 +571,7 @@ def _check_manifest_version(manifest: dict, plugin_name: str) -> None:
         raise PluginOperationError(
             f"Plugin '{plugin_name}' requires manifest_version {mv}, "
             f"but this installer only supports up to {_SUPPORTED_MANIFEST_VERSION}. "
-            f"Run {recommended_update_command()} to update Hermes.",
+            f"Run {recommended_update_command()} to update Xinyuan.",
         ) from None
 
 
@@ -795,7 +795,7 @@ def cmd_install(
     if not _looks_like_plugin_dir(target):
         console.print(
             f"[yellow]Warning:[/yellow] {installed_name} doesn't contain plugin.yaml, "
-            f"plugin.json, or __init__.py. It may not be a valid Hermes plugin.")
+            f"plugin.json, or __init__.py. It may not be a valid Xinyuan plugin.")
     _prompt_plugin_env_vars(installed_manifest, console)
     _print_python_dependencies(installed_manifest, console)
     _display_after_install(target, identifier)
@@ -1054,7 +1054,7 @@ def cmd_enable(name: str, allow_tool_override: Optional[bool] = None) -> None:
         if plugin in LEGACY_RELAY_PLUGIN_KEYS:
             _fail(console, (
                 f"[red]Plugin '{plugin}' was removed.[/red] Relay lifecycle is owned "
-                f"by Hermes core; configure {RELAY_PLUGINS_CONFIG_ENV} instead."))
+                f"by Xinyuan core; configure {RELAY_PLUGINS_CONFIG_ENV} instead."))
 
     _refuse_legacy_relay(name)
     resolved = _resolve_plugin_key_and_source(name)
@@ -1771,7 +1771,7 @@ def dashboard_install_plugin(
     if catalog_name:
         entry = catalog.get_live_catalog_entry(catalog_name)
         if entry is None:
-            return {"ok": False, "error": f"'{catalog_name}' is not in the Hermes plugin catalog."}
+            return {"ok": False, "error": f"'{catalog_name}' is not in the Xinyuan plugin catalog."}
         identifier = entry.install_identifier
     else:
         warnings.append("Custom (unreviewed) source — not from the Xinyuan catalog.")

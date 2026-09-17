@@ -148,7 +148,7 @@ def auto_setup_telegram_bot_result(
     """Run the full automatic Telegram bot creation flow."""
     _ = manager_bot, profile_name  # accepted for callers; the service decides both
     resolved_api_url = _api_url(api_url)
-    print(f"\n  Contacting Hermes Telegram onboarding service: {resolved_api_url}")
+    print(f"\n  Contacting Xinyuan Telegram onboarding service: {resolved_api_url}")
     sys.stdout.flush()
     pairing = create_pairing(resolved_api_url)
     if not pairing:

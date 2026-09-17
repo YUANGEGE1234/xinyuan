@@ -748,7 +748,7 @@ def _sidebar_html(sessions: List[Dict[str, Any]]) -> str:
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-brand">
-                    {ICON_HERMES} Hermes History
+                    {ICON_HERMES} Xinyuan History
                 </div>
                 <div class="search-container">
                     {ICON_SEARCH}

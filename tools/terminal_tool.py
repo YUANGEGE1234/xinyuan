@@ -1211,7 +1211,7 @@ def terminal_tool(
     is hard rate-limited (1 notification / 15s / process) and auto-disabled
     after repeated strikes or a lifetime cap, promoting to notify_on_complete —
     use it only for rare one-shot signals on long-lived processes.
-    ``_host_local`` forces the local backend for Hermes-owned control-plane
+    ``_host_local`` forces the local backend for Xinyuan-owned control-plane
     children (kept in a separate env cache from the configured backend).
     """
     try:

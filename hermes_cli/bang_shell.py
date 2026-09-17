@@ -87,7 +87,7 @@ def check_bang_approval(command: str) -> dict:
 
 
 def _bang_env() -> dict:
-    """Environment for a bang command with Hermes-managed secrets filtered.
+    """Environment for a bang command with Xinyuan-managed secrets filtered.
 
     The CLI process holds every provider API key; a user-typed command may still run a third-party
     script, so reuse the sanitizer ``quick_commands`` and the local terminal backend use.

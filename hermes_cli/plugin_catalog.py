@@ -293,5 +293,5 @@ def entry_capability_summary(entry: PluginCatalogEntry) -> str:
     if entry.platforms:
         bits.append(f"Platforms: {', '.join(entry.platforms)}.")
     if entry.requires_hermes:
-        bits.append(f"Requires Hermes {entry.requires_hermes}.")
+        bits.append(f"Requires Xinyuan {entry.requires_hermes}.")
     return " ".join(bits)

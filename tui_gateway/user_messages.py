@@ -86,12 +86,12 @@ def busy_message(command: str) -> str:
     """4009 refusal for a history-mutating command while a reply is streaming. There is no
     ``/interrupt`` slash command on any client: Desktop has a Stop button, the terminal TUI uses
     Ctrl+C — name both without assuming which one the reader has."""
-    return (f"session busy — Hermes is still replying. Stop the current reply first (Stop button, "
+    return (f"session busy — Xinyuan is still replying. Stop the current reply first (Stop button, "
             f"or Ctrl+C in a terminal), then run /{command.lstrip('/')}.")
 
 
 def agent_init_failed_message(exc: Any) -> str:
-    return (f"Hermes could not start the assistant for this session. Details: {exc}. "
+    return (f"Xinyuan could not start the assistant for this session. Details: {exc}. "
             "Check the model and provider with /model, or run `hermes setup` in a terminal to reconfigure.")
 
 

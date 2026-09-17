@@ -67,7 +67,7 @@ def generate_bash(parser: argparse.ArgumentParser) -> str:
                 f"            return\n"
                 f"            ;;")
     cases_str = "\n".join(cases)
-    return f"""# Hermes Agent bash completion
+    return f"""# Xinyuan Agent bash completion
 # Add to ~/.bashrc:
 #   eval "$(hermes completion bash)"
 
@@ -153,7 +153,7 @@ def generate_zsh(parser: argparse.ArgumentParser) -> str:
                 f"                    ;;")
     sub_cases_str = "\n".join(sub_cases)
     return f"""#compdef hermes
-# Hermes Agent zsh completion
+# Xinyuan Agent zsh completion
 # Add to ~/.zshrc:
 #   eval "$(hermes completion zsh)"
 

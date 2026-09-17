@@ -197,13 +197,13 @@ def format_nous_portal_entitlement_message(
             return None
     if account_info is None:
         return (
-            f"Hermes could not verify your Nous Portal entitlement, so {capability} is unavailable. "
+            f"Xinyuan could not verify your Nous Portal entitlement, so {capability} is unavailable. "
             f"Run `hermes model` to refresh your login, or check billing at {billing_url}."
         )
     if not account_info.logged_in:
         if account_info.inference_credential_present:
             return (
-                f"Nous inference credentials are configured, but Hermes cannot verify your Nous Portal "
+                f"Nous inference credentials are configured, but Xinyuan cannot verify your Nous Portal "
                 f"paid access for {capability}. Log in with `hermes model` to enable Portal-managed "
                 f"features. Billing and credits are managed at {billing_url}."
             )
@@ -212,7 +212,7 @@ def format_nous_portal_entitlement_message(
             f"Billing and credits are managed at {billing_url}."
         )
     if account_info.paid_service_access is None:
-        detail = f"Hermes could not verify your Nous Portal paid access, so {capability} is unavailable."
+        detail = f"Xinyuan could not verify your Nous Portal paid access, so {capability} is unavailable."
         if account_info.error:
             detail += f" Account lookup failed: {account_info.error}."
         if include_refresh_hint:
@@ -222,7 +222,7 @@ def format_nous_portal_entitlement_message(
     reason = access.reason if access else None
     if reason == "account_missing":
         return (
-            f"Hermes could not find a Nous Portal account or organisation for this login, so {capability} "
+            f"Xinyuan could not find a Nous Portal account or organisation for this login, so {capability} "
             f"is unavailable. Run `hermes model` to authenticate again; if the problem persists, contact Nous support."
         )
     if reason == "no_usable_credits" or account_info.paid_service_access is False:

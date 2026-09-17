@@ -79,7 +79,7 @@ def _agent_browser_candidate_present(path: str | None) -> bool:
 
 
 def _resolve_npx_bin() -> Optional[str]:
-    """Resolve a runnable npx, extended (Hermes-managed/Homebrew) PATH first.
+    """Resolve a runnable npx, extended (Xinyuan-managed/Homebrew) PATH first.
 
     Bare PATH first would let a broken system npx shadow a healthy managed one,
     so every candidate is validated with ``node_tool_runnable`` before use.

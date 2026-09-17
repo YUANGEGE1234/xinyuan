@@ -37,7 +37,7 @@ def cmd_proxy_start(args: Any) -> int:
     host = getattr(args, "host", None) or DEFAULT_HOST
     port = getattr(args, "port", None) or DEFAULT_PORT
     _err(
-        f"Starting Hermes proxy for {adapter.display_name}\n"
+        f"Starting Xinyuan proxy for {adapter.display_name}\n"
         f"  Listening on:  http://{host}:{port}/v1\n"
         f"  Forwarding to: (resolved per-request from your subscription)\n"
         f"  Use any bearer token in the client — the proxy attaches your real credential.\n"

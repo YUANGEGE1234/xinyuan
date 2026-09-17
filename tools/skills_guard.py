@@ -324,7 +324,7 @@ THREAT_PATTERNS = [
     # Bare mentions of config files are not threats (authoring guides, setup docs) — flagging them blocked
     # popular community skills. Tiers: mechanical shell writes = critical; prose modification intent =
     # critical for AGENT config files (exactly how persistence attacks instruct the agent; project-skill
-    # quarantine only acts on "dangerous") but high for Hermes/other config (setup docs routinely say
+    # quarantine only acts on "dangerous") but high for Xinyuan/other config (setup docs routinely say
     # "edit config.yaml"); bare references = low.
     # Flagging any mention as critical produced permanent false-positive blocks for popular community skills
     # (#92021). * Mechanical persistence (shell redirection, sed -i, tee, cp/mv into the file) is critical —
@@ -732,7 +732,7 @@ def _check_structure(skill_dir: Path, ignore=None) -> List[Finding]:
     return findings
 
 
-# `.skillignore` is Hermes-native; `.clawhubignore` is honored for skills published through ClawHub.
+# `.skillignore` is Xinyuan-native; `.clawhubignore` is honored for skills published through ClawHub.
 _SKILL_IGNORE_FILENAMES = (".skillignore", ".clawhubignore")
 
 

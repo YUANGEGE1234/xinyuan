@@ -84,7 +84,7 @@ def skills_from_toolsets(toolsets: "list[str] | dict[str, list[str]] | None") ->
     become tags, max 10)."""
     if not isinstance(toolsets, dict):
         toolsets = {ts: [] for ts in set(toolsets or [])}
-    skills = [{"id": f"toolset.{name}", "name": name, "description": f"Hermes '{name}' capabilities",
+    skills = [{"id": f"toolset.{name}", "name": name, "description": f"Xinyuan '{name}' capabilities",
                "tags": [name] + [str(t) for t in (toolsets[name] or [])][:10]} for name in sorted(toolsets)]
     return skills or [{"id": "general", "name": "general", "description": "General-purpose conversational agent", "tags": ["general"]}]
 

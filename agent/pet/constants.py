@@ -65,7 +65,7 @@ class PetState(str, Enum):
     WAITING = "waiting"
 
 
-# Legacy Hermes/petdex row order (top -> bottom) for the older 8-row, 9-column atlas.
+# Legacy Xinyuan/petdex row order (top -> bottom) for the older 8-row, 9-column atlas.
 LEGACY_STATE_ROWS: list[str] = ["idle", "wave", "run", "failed", "review", "jump", "extra1", "extra2"]
 
 # Current Petdex row order (top -> bottom) for 1536x1872 atlases (8 cols x 9 rows).

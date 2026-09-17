@@ -1358,7 +1358,7 @@ def _clear_windows_venv_holders_or_exit(args, gateway_mode: bool, _windows_gatew
     # even with a live parent (which made the orphan-only rung bail and hang) — reap by cmdline.
     if holders and _in_handoff_without_live_shim(args) and (handoff_backends := _m()._handoff_reapable_backend_pids(holders)):
         holders = _reap_and_rescan(
-            f"  ⚠ {len(handoff_backends)} Hermes backend process(es) "
+            f"  ⚠ {len(handoff_backends)} Xinyuan backend process(es) "
             "still hold the venv after the Desktop hand-off; stopping their trees", handoff_backends,
         )
     if holders:

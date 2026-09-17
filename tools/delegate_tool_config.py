@@ -455,7 +455,7 @@ def _resolve_child_runtime(
     # the parent — each provider has its own API surface (e.g. MiniMax uses anthropic_messages, DeepSeek
     # uses chat_completions). Inheriting the parent's mode causes 404 errors when the child routes to the
     # wrong endpoint. Derive the mode from the target provider when it differs. Same-provider inheritance
-    # would pin a child Hermes/Qwen subagent onto the parent's Claude Messages wire (or the reverse).
+    # would pin a child Xinyuan/Qwen subagent onto the parent's Claude Messages wire (or the reverse).
     # agent_init honors an explicit api_mode above its nous branch, so re-derive here before construction.
     _parent_provider = getattr(parent_agent, "provider", None) or ""
     if override_api_mode is not None:

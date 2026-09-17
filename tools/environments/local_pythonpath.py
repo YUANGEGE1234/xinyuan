@@ -1,7 +1,7 @@
-"""Hermes-owned PYTHONPATH stripping for child processes. Launchers prepend the repo
+"""Xinyuan-owned PYTHONPATH stripping for child processes. Launchers prepend the repo
 root and the Xinyuan venv's site-packages so the backend can ``import tools``; leaked
 into a child Python of a DIFFERENT version they load the backend's C extensions and
-crash. Only entries proven Hermes-owned by *path provenance* are removed — never by a
+crash. Only entries proven Xinyuan-owned by *path provenance* are removed — never by a
 cross-version heuristic. Module state (``_hermes_repo_root_aliases``, ``_in_venv``,
 ``_hermes_site_packages``) lives in ``tools.environments.local`` (via :func:`_state`)
 so tests monkeypatching it there keep working."""
@@ -113,7 +113,7 @@ def _get_hermes_site_packages(env: dict) -> list[Path]:
 
 
 def _strip_hermes_owned_pythonpath_and_runtime_markers(env: dict) -> None:
-    """Strip Hermes-owned PYTHONPATH entries, then the runtime marker vars. Order is
+    """Strip Xinyuan-owned PYTHONPATH entries, then the runtime marker vars. Order is
     load-bearing: PYTHONPATH filtering runs BEFORE the markers go so a validated Windows
     base-interpreter launch (VIRTUAL_ENV -> <repo>/venv) can still prove ownership."""
     _strip_hermes_owned_pythonpath(env)
@@ -122,7 +122,7 @@ def _strip_hermes_owned_pythonpath_and_runtime_markers(env: dict) -> None:
 
 
 def _strip_hermes_owned_pythonpath(env: dict) -> None:
-    """Remove Hermes-owned PYTHONPATH entries: only exact matches of the repo root
+    """Remove Xinyuan-owned PYTHONPATH entries: only exact matches of the repo root
     (any launcher spelling) and runtime site-packages — never descendants, which are
     user paths. Empty components (= cwd) and everything else are preserved.
 
@@ -142,4 +142,4 @@ def _strip_hermes_owned_pythonpath(env: dict) -> None:
     else:
         env.pop("PYTHONPATH", None)
     if stripped:
-        logger.debug("Stripped Hermes-owned entries from PYTHONPATH: %s", stripped)
+        logger.debug("Stripped Xinyuan-owned entries from PYTHONPATH: %s", stripped)

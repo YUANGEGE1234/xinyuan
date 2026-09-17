@@ -405,7 +405,7 @@ def render_desktop_entry(exec_command: str, icon: str) -> str:
     return (
         "[Desktop Entry]\n"
         "Type=Application\n"
-        "Name=Hermes\n"
+        "Name=Xinyuan\n"
         "GenericName=Xinyuan Desktop\n"
         "Comment=Launch Xinyuan Desktop\n"
         f"Exec={exec_command}\n"
@@ -413,7 +413,7 @@ def render_desktop_entry(exec_command: str, icon: str) -> str:
         "Terminal=false\n"
         "Categories=Utility;\n"
         "StartupNotify=true\n"
-        "StartupWMClass=Hermes\n"
+        "StartupWMClass=Xinyuan\n"
     )
 
 

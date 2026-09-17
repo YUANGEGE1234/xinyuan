@@ -266,7 +266,7 @@ def admit_durable_turn_lease(
             "⏳ Another Xinyuan process is using this session; "
             "waiting for it to finish before starting your turn..."
             if elapsed < 1.0 else
-            f"⏳ Still waiting for the other Hermes process on this session ({int(elapsed)}s)..."
+            f"⏳ Still waiting for the other Xinyuan process on this session ({int(elapsed)}s)..."
         )
 
     if not db.acquire_session_turn_lease(

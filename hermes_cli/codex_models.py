@@ -71,7 +71,7 @@ def _add_context_variants(model_ids: List[str]) -> List[str]:
     """Insert ``<slug>-900k`` large-context picker variants after eligible base slugs.
 
     Base slugs keep the cheaper advertised 272K limit; the variant opts into the large window.
-    The suffix is Hermes-side only — stripped before the id hits the wire (agent/transports/codex.py,
+    The suffix is Xinyuan-side only — stripped before the id hits the wire (agent/transports/codex.py,
     agent/auxiliary_client.py).
     """
     from agent.model_metadata import CODEX_CONTEXT_VARIANT_SUFFIX, has_codex_context_variant

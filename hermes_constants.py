@@ -157,7 +157,7 @@ def get_process_hermes_home() -> Path:
     return Path(val) if val else _get_platform_default_hermes_home()
 
 
-# Hermes-managed runtime downloads at the root of a home (GGUF models, llama.cpp runtimes,
+# Xinyuan-managed runtime downloads at the root of a home (GGUF models, llama.cpp runtimes,
 # managed Node): re-downloadable on demand and routinely tens to hundreds of GB. Shared by
 # ``hermes backup`` (excludes them) and ``profile create --clone-all`` (skips them from the
 # default profile) so the two lists cannot drift apart.
@@ -196,7 +196,7 @@ _HERMES_HOME_MARKERS = ("config.yaml", ".env", "state.db")
 def _is_hermes_profiles_root(profiles_dir: Path) -> bool:
     """True when *profiles_dir* is provably ``<hermes-home>/profiles``.
 
-    Accepts the classic ``~/.hermes`` layout, a root carrying Hermes-home marker files, a
+    Accepts the classic ``~/.hermes`` layout, a root carrying Xinyuan-home marker files, a
     ``profiles/.deleted`` tombstone dir (only ``profile delete`` creates it), or the default root.
     """
     root = profiles_dir.parent
@@ -334,7 +334,7 @@ def get_hermes_dir(new_subpath: str, old_name: str, *, home: Path | None = None)
 
 
 def iter_hermes_node_dirs(home: Path | None = None) -> list[Path]:
-    """Hermes-managed Node dirs in lookup order; both Windows and POSIX shapes so migrated installs work.
+    """Xinyuan-managed Node dirs in lookup order; both Windows and POSIX shapes so migrated installs work.
 
     Keep in sync with hermesManagedNodePathEntries() in apps/desktop/electron/backend-env.ts.
     """
@@ -387,7 +387,7 @@ def _run_version_probe(argv: list[str], **kwargs):
 
 
 def _version_probe_ok(path: str) -> bool:
-    """True when ``<path> --version`` exits 0 under the Hermes-managed Node PATH."""
+    """True when ``<path> --version`` exits 0 under the Xinyuan-managed Node PATH."""
     result = _run_version_probe([path, "--version"], env=with_hermes_node_path())
     return result is not None and result.returncode == 0
 
@@ -416,7 +416,7 @@ def node_tool_runnable(path: str | None) -> bool:
 
 
 def hermes_managed_node_tree_present(home: Path | None = None) -> bool:
-    """Return True when any Hermes-managed node/npm/npx shim exists on disk."""
+    """Return True when any Xinyuan-managed node/npm/npx shim exists on disk."""
     names = [n for c in ("node", "npm", "npx") for n in _candidate_node_command_names(c)]
     return next(_iter_managed_node_candidates(names, home), None) is not None
 
@@ -489,7 +489,7 @@ def _print_managed_node_in_use_notice() -> None:
         return
     _managed_node_in_use_notice_printed = True
     print(
-        "→ Hermes-managed Node.js is in use by a running app; deferring its "
+        "→ Xinyuan-managed Node.js is in use by a running app; deferring its "
         "upgrade until the app is closed (re-run `hermes update` afterwards).", flush=True,
     )
 
@@ -635,7 +635,7 @@ def _run_node_bootstrap(func: str, *, timeout: int, **extra_env: str) -> bool:
 
 
 def bootstrap_hermes_managed_node() -> str | None:
-    """Install a Hermes-managed Node tree under ``$HERMES_HOME/node`` and return its npm path.
+    """Install a Xinyuan-managed Node tree under ``$HERMES_HOME/node`` and return its npm path.
 
     Xinyuan never modifies a user-owned toolchain (system, nvm, brew, Nix) that fails ``engines``.
     """
@@ -653,7 +653,7 @@ def bootstrap_hermes_managed_node() -> str | None:
 
 
 def heal_hermes_managed_node() -> bool:
-    """Redownload Hermes-managed Node when the tree exists but is broken; at most once per process.
+    """Redownload Xinyuan-managed Node when the tree exists but is broken; at most once per process.
 
     A Windows in-use deferral does NOT record the attempt so a later call can heal once free.
 
@@ -693,7 +693,7 @@ def _managed_node_tree_outdated(home: Path | None = None) -> bool:
 
 
 def find_hermes_node_executable(command: str) -> str | None:
-    """Hermes-managed Node/npm path, healing broken/outdated trees; heal failure still returns old Node."""
+    """Xinyuan-managed Node/npm path, healing broken/outdated trees; heal failure still returns old Node."""
     names = _candidate_node_command_names(command)
     resolved, broken_present = _first_runnable_managed(names)
     needs_heal = broken_present or (resolved is not None and _managed_node_tree_outdated())
@@ -733,7 +733,7 @@ def find_node_executable(command: str) -> str | None:
 
 
 def with_hermes_node_path(env: dict[str, str] | None = None) -> dict[str, str]:
-    """Return *env* with Hermes-managed Node directories prepended to PATH."""
+    """Return *env* with Xinyuan-managed Node directories prepended to PATH."""
     merged = dict(os.environ if env is None else env)
     parts = [p for p in merged.get("PATH", "").split(os.pathsep) if p]
     for entry in reversed([str(path) for path in iter_hermes_node_dirs() if path.is_dir()]):

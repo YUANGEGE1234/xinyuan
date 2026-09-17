@@ -139,7 +139,7 @@ def _eval_js_secret(task_id: str, expression: str) -> Dict[str, Any]:
                 "Vault fill requires the supervised browser session (direct "
                 "CDP WebSocket). The fallback eval path would place the "
                 "credential in subprocess argv, so it is never used for "
-                "secrets. Start the browser through the Hermes-managed "
+                "secrets. Start the browser through the Xinyuan-managed "
                 "session and retry."
             ),
         }

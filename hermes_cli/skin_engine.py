@@ -55,7 +55,7 @@ def _wings(*glyphs) -> List[List[str]]:
             for g in glyphs]
 
 
-# Branding shared by every Hermes-named built-in (mono/daylight override help_header).
+# Branding shared by every Xinyuan-named built-in (mono/daylight override help_header).
 _HERMES_BRANDING: Dict[str, str] = _branding(
     "Xinyuan", "☤", "Goodbye! ☤", prompt="❯", help_header="(^_^)? Available Commands")
 

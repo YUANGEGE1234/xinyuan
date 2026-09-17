@@ -67,7 +67,7 @@ class UnscopedSecretError(RuntimeError):
             secret_name, developer_detail = "", secret_name
         what = f"this profile's {secret_name}" if secret_name else "this profile's API key"
         super().__init__(
-            f"Hermes could not read {what} (an internal profile-scoping bug on the multiplexed "
+            f"Xinyuan could not read {what} (an internal profile-scoping bug on the multiplexed "
             "gateway, not your configuration). Run `hermes gateway restart`; if it keeps happening, "
             "report it with `hermes debug share`."
         )

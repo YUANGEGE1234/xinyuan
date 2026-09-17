@@ -41,7 +41,7 @@ def build_auth_methods() -> list[Any]:
     if provider:
         methods.append(AuthMethodAgent(
             id=provider, name=f"{provider} runtime credentials",
-            description=f"Authenticate Hermes using the currently configured {provider} runtime credentials.",
+            description=f"Authenticate Xinyuan using the currently configured {provider} runtime credentials.",
         ))
     methods.append(TerminalAuthMethod(
         id=TERMINAL_SETUP_AUTH_METHOD_ID, name="Configure Xinyuan provider", type="terminal", args=["--setup"],

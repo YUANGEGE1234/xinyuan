@@ -262,7 +262,7 @@ def check_fn_cache_scope() -> Optional[str]:
     availability is request-bound (changes on every attach/detach), so a fully bound
     browser-control request bypasses this cache AND model_tools' outer definition cache (same
     sentinel) — one Browser session's live tools must not leak into another. Single-profile
-    processes keep the process-wide cache; a multiplex gateway installs a Hermes-home override
+    processes keep the process-wide cache; a multiplex gateway installs a Xinyuan-home override
     per profile turn, so the canonical profile key is the boundary."""
     try:
         from gateway.session_context import get_session_env

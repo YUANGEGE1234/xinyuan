@@ -55,7 +55,7 @@ def hermes_xai_user_agent() -> str:
         from hermes_cli import __version__
     except Exception:
         __version__ = "unknown"
-    return f"Hermes-Agent/{__version__}"
+    return f"Xinyuan-Agent/{__version__}"
 
 
 def hermes_xai_default_headers() -> Dict[str, str]:

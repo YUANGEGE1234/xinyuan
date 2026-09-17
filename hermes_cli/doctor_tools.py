@@ -266,12 +266,12 @@ def _check_terminal_backend(should_fix: bool, f: Finding) -> None:
 def _check_agent_browser(should_fix: bool) -> bool:
     """agent-browser resolution; returns True when browser tools will find a usable install.
 
-    Mirrors ``tools.browser_tool_install._find_agent_browser``'s own cascade (lazy npx or a global/Hermes-managed
+    Mirrors ``tools.browser_tool_install._find_agent_browser``'s own cascade (lazy npx or a global/Xinyuan-managed
     install) so doctor can't diverge from the tools; validate=False keeps it a cheap, side-effect-free check.
     """
     try:
         # agent-browser is no longer a root package.json dependency (#43564) — it resolves lazily via npx
-        # (or a global/Hermes-managed install) at first use.
+        # (or a global/Xinyuan-managed install) at first use.
         from tools.browser_tool_install import _find_agent_browser, _is_npx_agent_browser_sentinel
         resolved = _find_agent_browser(validate=False)
     except Exception:

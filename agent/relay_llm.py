@@ -100,7 +100,7 @@ class _ManagedAttempt:
         def guarded() -> Any:
             # See #77244.
             # See #77244.
-            # Hermes-side callbacks run while the native pipeline drives this stream; nested relay calls
+            # Xinyuan-side callbacks run while the native pipeline drives this stream; nested relay calls
             # they make must bypass managed execution (#77244).
             with relay_runtime.managed_callback_guard():
                 return callback(*args)

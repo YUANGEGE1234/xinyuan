@@ -33,7 +33,7 @@ def _ensure_browser_use_cli(*, verbose_hints: bool = False) -> None:
     """Install the Browser Use CLI if it isn't already runnable.
     Primary driver engine for EVERY browser backend except Camofox (Firefox-based, no CDP surface).
     MANAGED-FIRST: a browser-use on the user's PATH does NOT satisfy this check — only the
-    Hermes-managed ``$HERMES_HOME/bin`` copy does."""
+    Xinyuan-managed ``$HERMES_HOME/bin`` copy does."""
     _print_info("    Ensuring browser-use CLI (managed install)...")
     try:
         from tools.browser_use_cli import install_cli
@@ -91,7 +91,7 @@ def _install_chromium(install_cmd: list[str]) -> None:
 def _post_setup_agent_browser(post_setup_key: str) -> None:
     """``agent_browser`` (local Chromium) and ``browserbase`` (cloud rows) hooks.
     agent-browser is not a root package.json dependency — it resolves lazily via npx (or a
-    global/Hermes-managed install), so there is no ``npm install`` step here."""
+    global/Xinyuan-managed install), so there is no ``npm install`` step here."""
     # Every non-Camofox backend drives through the Browser Use CLI — install it here too.
     _ensure_browser_use_cli()
     try:
@@ -106,7 +106,7 @@ def _post_setup_agent_browser(post_setup_key: str) -> None:
         # setup/status surfaces can't diverge from what browser tools actually find at runtime;
         # validate=False keeps this a cheap existence check with no subprocess spawn.
         # agent-browser is no longer a root package.json dependency (#43564) — it resolves lazily via npx
-        # (or a global/Hermes-managed install) instead of a local `npm install`, so there's no node_modules/
+        # (or a global/Xinyuan-managed install) instead of a local `npm install`, so there's no node_modules/
         # population step here anymore.
         from tools.browser_tool import AGENT_BROWSER_NPX_SPEC
         from tools.browser_tool_install import (
@@ -116,8 +116,8 @@ def _post_setup_agent_browser(post_setup_key: str) -> None:
         _print_warning(f"    Could not check Chromium status: {exc}")
         return
 
-    # Reuse the runtime resolution cascade (PATH -> Homebrew/Hermes-managed node -> npx) rather than
-    # a bare shutil.which — Hermes-managed-Node-only setups resolve agent-browser/npx only that way.
+    # Reuse the runtime resolution cascade (PATH -> Homebrew/Xinyuan-managed node -> npx) rather than
+    # a bare shutil.which — Xinyuan-managed-Node-only setups resolve agent-browser/npx only that way.
     try:
         browser_cmd = _find_agent_browser(validate=False)
     except FileNotFoundError:

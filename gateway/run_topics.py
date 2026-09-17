@@ -652,4 +652,4 @@ class GatewayTopicThreadsMixin:
                     last_assistant = str(projected.get("content"))
                     break
         response = f"Session restored: {title}"
-        return response + (f"\n\nLast Hermes message:\n{last_assistant}" if last_assistant else "")
+        return response + (f"\n\nLast Xinyuan message:\n{last_assistant}" if last_assistant else "")

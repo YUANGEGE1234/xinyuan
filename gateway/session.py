@@ -604,7 +604,7 @@ def build_channel_continuity_note(entry: "SessionEntry", source: SessionSource) 
         return None
     where = "thread" if source.thread_id else "channel"
     return (
-        f"[System note: This {where} had an earlier Hermes session (session_id: {prev}) that was "
+        f"[System note: This {where} had an earlier Xinyuan session (session_id: {prev}) that was "
         f"auto-reset. If the user refers to earlier work here, or the request depends on this "
         f"{where}'s history, use the session_search tool to recall that prior session before "
         f"acting — do not assume an unrelated recent session is the right context.]"

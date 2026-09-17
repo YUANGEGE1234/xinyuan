@@ -32,12 +32,12 @@ def _sqlite_upgrade_hint(install_method: str | None = None) -> str:
     method = install_method or detect_install_method(PROJECT_ROOT)
     cmd = recommended_update_command_for_method(method)
     action = cmd if is_nix_install_method(method) else {  # nix: prose guidance, not a shell command
-        "docker": f"run `{cmd}`, then recreate all Hermes containers", "apt": f"run `{cmd}`"}.get(method, "run `hermes update`")
+        "docker": f"run `{cmd}`, then recreate all Xinyuan containers", "apt": f"run `{cmd}`"}.get(method, "run `hermes update`")
     return f"({action}; fixed versions: 3.51.3+ / 3.50.7 / 3.44.6 — see https://sqlite.org/wal.html#walresetbug)"
 
 
 def _hermes_database_paths(hermes_home: Path) -> list[tuple[str, Path]]:
-    """(display name, path) pairs for Hermes-managed SQLite databases: backup.py's per-profile store list + per-board kanban.db."""
+    """(display name, path) pairs for Xinyuan-managed SQLite databases: backup.py's per-profile store list + per-board kanban.db."""
     from hermes_cli.backup import _QUICK_STATE_FILES
     entries = [(name, hermes_home / name) for name in _QUICK_STATE_FILES if name.endswith(".db")]
     for board_db in sorted((hermes_home / "kanban" / "boards").glob("*/kanban.db")):
@@ -101,7 +101,7 @@ def _report_database_journal_modes(hermes_home: Path | None = None, version_info
     try:
         databases = _hermes_database_paths(hermes_home if hermes_home is not None else HERMES_HOME)
     except Exception as exc:
-        check_warn(f"Could not list Hermes databases: {exc}")
+        check_warn(f"Could not list Xinyuan databases: {exc}")
         return
     exposed = []
     for name, path in databases:

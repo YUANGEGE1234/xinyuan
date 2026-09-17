@@ -22,7 +22,7 @@ def build_user_agent() -> str:
     """``QQBotAdapter/<qqbot_version> (Python/<py_version>; <os>; Xinyuan/<hermes_version>)``."""
     v = sys.version_info
     return (f"QQBotAdapter/{QQBOT_VERSION} (Python/{v.major}.{v.minor}.{v.micro}; "
-            f"{platform.system().lower()}; Hermes/{_get_hermes_version()})")
+            f"{platform.system().lower()}; Xinyuan/{_get_hermes_version()})")
 
 
 def get_api_headers() -> Dict[str, str]:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SWE Runner with Xinyuan Trajectory Format
 
-Runs tool-calling agent tasks in Hermes-Agent's execution environments (local,
+Runs tool-calling agent tasks in Xinyuan-Agent's execution environments (local,
 docker, modal) and writes trajectories in Xinyuan format (from/value pairs with
 <tool_call>/<tool_response> XML), compatible with batch_runner.py and
 trajectory_compressor.py. Supports single tasks and JSONL batch mode.

@@ -64,7 +64,7 @@ def _probe_custom_endpoint(effective_key: str, effective_url: str) -> tuple[dict
     elif probe.get("models") is not None:
         print(f"Verified endpoint via {probe.get('probed_url')} ({len(probe.get('models') or [])} model(s) visible)")
     else:
-        print(f"Warning: could not verify this endpoint via {probe.get('probed_url')}. Hermes will still save it.")
+        print(f"Warning: could not verify this endpoint via {probe.get('probed_url')}. Xinyuan will still save it.")
         suggested = probe.get("suggested_base_url")
         if suggested and suggested.endswith("/v1"):
             print(f"  If this server expects /v1 in the path, try base URL: {suggested}")

@@ -76,7 +76,7 @@ def _input_target_mismatch(backend, requested_app: str) -> Optional[str]:
     return None if not current or not wanted or wanted in current or current in wanted else last_app
 
 # ── Backend selection — env-swappable for tests ─────────────────────────────
-# Per-Hermes-session cached backends (own cua-driver session, native target, refs, grant namespace).
+# Per-Xinyuan-session cached backends (own cua-driver session, native target, refs, grant namespace).
 _backend_lock = threading.Lock()
 _backend: Optional[ComputerUseBackend] = None  # backward-compatible empty-session injection hook (older tests)
 _backends: Dict[str, ComputerUseBackend] = {}

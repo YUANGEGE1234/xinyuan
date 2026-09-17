@@ -597,7 +597,7 @@ def _reject_if_not_disconnectable(provider: Dict[str, Any], status: Dict[str, An
 
 
 def _clear_anthropic_auth() -> bool:
-    """Clear only the Hermes-managed PKCE file and auth-store entry (never ~/.claude/*)."""
+    """Clear only the Xinyuan-managed PKCE file and auth-store entry (never ~/.claude/*)."""
     cleared = False
     try:
         from agent.anthropic_credentials import _get_hermes_oauth_file

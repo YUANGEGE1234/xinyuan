@@ -798,7 +798,7 @@ class CheckpointManager:
     def _apply_safe_restore_deletes(self, p: _ProjectRefs, commit_hash: str,
                                     restore_paths: List[str]) -> _SafeRestoreTargets:
         """Split ledger-approved paths into checkout targets and delete the rest.  A path absent
-        from the checkpoint is Hermes-created (delete to restore) — unless ``max_file_size_mb`` kept
+        from the checkpoint is Xinyuan-created (delete to restore) — unless ``max_file_size_mb`` kept
         it out of every checkpoint: no prior copy exists and the ledger can't prove it agent-created
         (hashes, not create-vs-modify), so leaving it costs a stale file, deleting costs the file."""
         targets = _SafeRestoreTargets()

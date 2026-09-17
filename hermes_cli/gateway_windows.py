@@ -77,7 +77,7 @@ def _hermes_home() -> Path:
 
 
 def _preserve_hermes_home_path(path: str | Path) -> str:
-    r"""Render Hermes-owned paths under the configured HERMES_HOME spelling.
+    r"""Render Xinyuan-owned paths under the configured HERMES_HOME spelling.
 
     ``%LOCALAPPDATA%\hermes`` may be a symlink/junction to another drive; launcher files must not
     bake in the resolved target for paths under HERMES_HOME.
