@@ -92,7 +92,7 @@ def _venv_scripts_dir(root: Path) -> Path | None:
 
 
 #: Launcher names install.ps1's Set-PathVariable exposes from the managed binary dir (the default
-#: Hermes root's ``bin``, next to uv.exe). Keep in lockstep with scripts/install.ps1.
+#: Xinyuan root's ``bin``, next to uv.exe). Keep in lockstep with scripts/install.ps1.
 _WINDOWS_BIN_LAUNCHERS = ("hermes", "hermes-acp")
 
 
@@ -105,7 +105,7 @@ def _launchers_missing(target: Path) -> bool:
 
 
 def _default_hermes_root() -> Path | None:
-    """The DEFAULT Hermes root (not ``get_hermes_home()``, which under ``hermes -p <name>`` is
+    """The DEFAULT Xinyuan root (not ``get_hermes_home()``, which under ``hermes -p <name>`` is
     ``profiles\\<name>`` and would fail the managed-clone gate for profile users); ``None`` when
     unresolvable."""
     from hermes_constants import get_default_hermes_root
@@ -166,7 +166,7 @@ def ensure_windows_bin_launchers(
     elsewhere never gain launchers) and the legacy ``<root>\bin`` (only while the user PATH still
     points at it). Never raises.
 
-    The canonical launcher home is the managed binary dir — the default Hermes root's ``bin``
+    The canonical launcher home is the managed binary dir — the default Xinyuan root's ``bin``
     (``%LOCALAPPDATA%\\hermes\\bin``, next to the managed uv) — which lives OUTSIDE the git checkout so no
     git operation can ever touch it. It is a per-machine dir shared by every profile: ``get_hermes_home()``
     would point inside ``profiles\\<name>`` under ``hermes -p``, so the anchor here is

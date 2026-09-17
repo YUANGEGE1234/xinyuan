@@ -101,29 +101,29 @@ _PERSISTENCE_CAUSE_EXPLANATIONS: Dict[str, str] = {
         "session id, then send your message again."
     ),
     "turn_lease": (
-        "the turn was stopped because another Hermes process "
+        "the turn was stopped because another Xinyuan process "
         "took over this session. Your reply was not saved — wait "
         "for the other process to finish, then send your message "
         "again."
     ),
     "locked": (
         "the turn was stopped because session storage was busy "
-        "(another Hermes process was writing to the state "
+        "(another Xinyuan process was writing to the state "
         "database). Your message should already be saved — "
         "please send it again in a moment."
     ),
     # The forensic runbook for both (WAL generations, manifest.json, sidecars) lives in the
     # logger.error at hermes_state.py::_raise_if_db_replaced — never in the chat reply.
     "replaced": (
-        "the session database file was replaced while Hermes was running, so this "
-        "message was not saved (a copy is kept in {home}/sessions/). Stop Hermes "
+        "the session database file was replaced while Xinyuan was running, so this "
+        "message was not saved (a copy is kept in {home}/sessions/). Stop Xinyuan "
         "(`hermes gateway stop`), run `hermes doctor` — not `hermes doctor --fix`, which "
         "would repair the wrong file in place — then start it again and send your message "
         "once more. Advanced recovery steps are in the log."
     ),
     "deleted_wal": (
-        "the session database was changed or replaced while Hermes was running, so this "
-        "message was not saved (a copy is kept in {home}/sessions/). Stop Hermes "
+        "the session database was changed or replaced while Xinyuan was running, so this "
+        "message was not saved (a copy is kept in {home}/sessions/). Stop Xinyuan "
         "(`hermes gateway stop`), run `hermes doctor`, then start it again and send your "
         "message once more. Advanced recovery steps are in the log."
     ),
@@ -151,19 +151,19 @@ _PERSISTENCE_CAUSE_EXPLANATIONS: Dict[str, str] = {
         "is corrupt and could not be detached, so this message was not "
         "saved. The message store itself is not damaged: do not run "
         "recovery tools or restore a backup. Run `hermes {profile_arg}doctor --fix` "
-        "(or restart Hermes, which repairs the index on open), then "
+        "(or restart Xinyuan, which repairs the index on open), then "
         "send your message again."
     ),
     "disk": (
-        "Hermes couldn't save this conversation to disk, so it stopped rather than lose "
+        "Xinyuan couldn't save this conversation to disk, so it stopped rather than lose "
         "your messages. The disk is probably full: free some space (or fix the permissions "
         "on {home}/state.db), then send your message again."
     ),
 }
 _PERSISTENCE_DEFAULT_EXPLANATION = (
-    "Hermes couldn't save this conversation, so it stopped rather than lose your messages. "
-    "Possible causes: the drive is out of room, or another Hermes process is holding the "
-    "database. Close other Hermes windows, run `hermes doctor` to check storage, then send "
+    "Xinyuan couldn't save this conversation, so it stopped rather than lose your messages. "
+    "Possible causes: the drive is out of room, or another Xinyuan process is holding the "
+    "database. Close other Xinyuan windows, run `hermes doctor` to check storage, then send "
     "your message again."
 )
 

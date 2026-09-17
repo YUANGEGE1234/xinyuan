@@ -260,7 +260,7 @@ def _systemd_run_user_scope_available() -> bool:
 
 
 def _is_supervised_gateway_process() -> bool:
-    """Whether this process is the live, supervised Hermes gateway itself.
+    """Whether this process is the live, supervised Xinyuan gateway itself.
     Supervisor markers and ``_HERMES_GATEWAY`` are inherited by every descendant (and
     importing ``gateway.run`` sets the latter), so also require ownership of the live
     gateway PID file — scopes are for the gateway, not terminal children or CLIs."""
@@ -1999,7 +1999,7 @@ class ProcessRegistry(ProcessCheckpointMixin):
         kill the process — output keeps buffering and the tab can be reopened from the
         status stack. Errors when no UI close sink is wired."""
         if self.on_close is None:
-            return {"status": "error", "error": "close_terminal is only available in the Hermes desktop app."}
+            return {"status": "error", "error": "close_terminal is only available in the Xinyuan desktop app."}
         # The session may already be finished (or pruned) — the tab can still
         # linger and be closed, so a missing session is not an error here.
         try:

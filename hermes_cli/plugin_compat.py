@@ -1,6 +1,6 @@
 """Plugin compatibility with the Sep 2026 decomposition: detect, warn, and (after the date) disable.
 
-The decomposition (PR #102117) moved most of Hermes's internals into ``<stem>_<topic>`` sibling modules.
+The decomposition (PR #102117) moved most of Xinyuan's internals into ``<stem>_<topic>`` sibling modules.
 Old import paths keep resolving through ``PLUGIN-COMPAT`` blocks until :data:`COMPAT_REMOVAL_DATE`, when
 the commit that added them is reverted. This module is the single source of truth for everything that
 tells plugin authors and users about that:

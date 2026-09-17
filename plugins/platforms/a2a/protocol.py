@@ -67,7 +67,7 @@ def build_agent_card(*, name: str, url: str, description: str, skills: Optional[
         "description": description,
         "url": url,  # convenience for pre-1.0 clients; canonical is supportedInterfaces
         "version": "1.0.0",
-        "provider": {"organization": os.getenv("A2A_PROVIDER_ORG", "Hermes Agent"), "url": os.getenv("A2A_PROVIDER_URL", "") or url},
+        "provider": {"organization": os.getenv("A2A_PROVIDER_ORG", "Xinyuan Agent"), "url": os.getenv("A2A_PROVIDER_URL", "") or url},
         "supportedInterfaces": [iface],
         "capabilities": {"streaming": streaming, "pushNotifications": push_notifications,
                          "stateTransitionHistory": False, "extendedAgentCard": False},

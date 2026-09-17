@@ -1,12 +1,12 @@
 """Derive ACP session-provenance metadata from the existing compression chain.
 
-Additive Hermes extension under ACP ``_meta.hermes`` (unknown to other clients,
+Additive Xinyuan extension under ACP ``_meta.hermes`` (unknown to other clients,
 so ignored). No new persisted state: everything is derived from the ``sessions``
 table (``parent_session_id`` / ``end_reason``), which already models
 compression-continuation chains.
 
 The ACP/editor ``session_id`` stays the stable public handle; when compression
-rotates the internal Hermes head, ``build_session_provenance`` exposes the
+rotates the internal Xinyuan head, ``build_session_provenance`` exposes the
 previous/current internal ids and lineage root without parsing status text.
 """
 

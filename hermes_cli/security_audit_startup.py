@@ -30,7 +30,7 @@ def _is_root() -> bool:
 def _running_as_root() -> Optional[str]:
     return None if not _is_root() else (
         "Running as ROOT. The agent's terminal/file tools execute with full root privileges — a single "
-        "prompt-injection or exposed endpoint is a full host compromise. Run Hermes as an unprivileged user "
+        "prompt-injection or exposed endpoint is a full host compromise. Run Xinyuan as an unprivileged user "
         "(or in a sandboxed terminal backend / container with a non-root user).")
 
 

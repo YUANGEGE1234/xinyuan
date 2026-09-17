@@ -272,7 +272,7 @@ def _print_nous_401_diagnostics(agent: Any, api_error: Exception) -> None:
         if route_is_welcome_host(getattr(agent, "base_url", "")):
             # The free tier has no credits, no agent key and no auth.json to inspect: its session
             # ended and could not be replaced. The two doors are a sign-in or another provider.
-            _plines(agent, "   Your session ended and Hermes couldn't start a new one.",
+            _plines(agent, "   Your session ended and Xinyuan couldn't start a new one.",
                     "   Sign in with a Nous account (it's free), or switch providers with /model.")
             return
     except Exception:
@@ -839,11 +839,11 @@ def nonretryable_client_error_result(
     if classified.reason == FailoverReason.ssl_cert_verification:
         _vlines(
             agent,
-            "   💡 Hermes couldn't verify the provider's security certificate. This fails the same",
+            "   💡 Xinyuan couldn't verify the provider's security certificate. This fails the same",
             "      way on every retry — fix the environment, then try again:",
             "      • Corporate TLS-inspecting proxy? Point Python at its CA bundle:",
             "        export SSL_CERT_FILE=/path/to/corp-ca.pem  (also REQUESTS_CA_BUNDLE)",
-            "      • Missing/stale system CA store? Refresh it (in Hermes's venv: `uv pip install",
+            "      • Missing/stale system CA store? Refresh it (in Xinyuan's venv: `uv pip install",
             "        --upgrade certifi`; macOS: run 'Install Certificates.command').",
             "      • Self-signed local endpoint (llama.cpp, LM Studio, vLLM)? Use http://",
             "        for localhost, or add the server's cert to your trust store.",

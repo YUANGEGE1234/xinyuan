@@ -34,7 +34,7 @@ from hermes_cli.kanban_specify import _profile_author as _specify_author
 logger = logging.getLogger(__name__)
 
 
-_SYSTEM_PROMPT = """You are the Kanban decomposer for the Hermes Agent board.
+_SYSTEM_PROMPT = """You are the Kanban decomposer for the Xinyuan Agent board.
 
 A user dropped a rough idea into the Triage column. Your job is to break it
 into a small graph of concrete child tasks and route each one to the best-

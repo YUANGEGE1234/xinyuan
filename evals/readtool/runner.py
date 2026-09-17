@@ -1,4 +1,4 @@
-"""Run the read-tool eval through the REAL Hermes AIAgent.
+"""Run the read-tool eval through the REAL Xinyuan AIAgent.
 
 For each task: fresh temp HERMES_HOME, fresh fixture workspace, real
 AIAgent with the file+terminal+search toolsets, real provider API. Collects

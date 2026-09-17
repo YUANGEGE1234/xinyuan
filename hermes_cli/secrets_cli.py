@@ -226,7 +226,7 @@ def cmd_setup(args: argparse.Namespace) -> int:
     save_config(cfg)
     console.print()
     console.print("[green]✓ Bitwarden Secrets Manager is enabled.[/green]  "
-                  "Secrets will be pulled at the start of every Hermes process.")
+                  "Secrets will be pulled at the start of every Xinyuan process.")
     console.print("  Status:  [cyan]hermes secrets bitwarden status[/cyan]\n"
                   "  Refresh: [cyan]hermes secrets bitwarden sync[/cyan]\n"
                   "  Disable: [cyan]hermes secrets bitwarden disable[/cyan]")
@@ -390,7 +390,7 @@ def cmd_disable(args: argparse.Namespace) -> int:
     return disable_secret_source(
         "bitwarden",
         "[green]Disabled.[/green]  Bitwarden secrets will NOT be pulled on the next "
-        "Hermes invocation.\n"
+        "Xinyuan invocation.\n"
         "  Your access token is left in .env — remove it manually if you also want "
         "to revoke the credential.")
 

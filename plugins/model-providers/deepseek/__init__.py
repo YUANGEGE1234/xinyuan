@@ -31,7 +31,7 @@ class DeepSeekProfile(ProviderProfile):
         m = (model or "").strip().lower()
         # v4+ only; v3 excluded. Version-less canonicals (``deepseek-flash``) carry the
         # same thinking-mode contract but no ``v<N>`` prefix, so consult the id set too —
-        # missing them makes Hermes omit ``thinking``, so the server defaults to on and
+        # missing them makes Xinyuan omit ``thinking``, so the server defaults to on and
         # the user's thinking toggle / effort setting is silently ignored.
         versioned_v4_plus = m.startswith("deepseek-v") and not m.startswith("deepseek-v3")
         if not versioned_v4_plus and m not in _THINKING_CAPABLE_IDS:

@@ -294,7 +294,7 @@ def run_whatsapp_cloud_setup() -> int:
     """Interactive wizard for the WhatsApp Cloud API adapter. Returns 0 on success, 1 on abort."""
     _lines(
         "", "☤ WhatsApp Business Cloud API Setup", "=" * 50, "",
-        "This wizard configures Hermes to talk to WhatsApp via Meta's",
+        "This wizard configures Xinyuan to talk to WhatsApp via Meta's",
         "official Cloud API. It's the production-grade path:", "",
         "  • No QR codes, no Node.js bridge subprocess",
         "  • Stable connection — no account-ban risk",
@@ -324,7 +324,7 @@ def run_whatsapp_cloud_setup() -> int:
 
     _header("SETUP COMPLETE — Next steps")
     _lines(
-        "", "  Hermes needs a public HTTPS URL to receive WhatsApp messages.",
+        "", "  Xinyuan needs a public HTTPS URL to receive WhatsApp messages.",
         "  The recommended path is Cloudflare Tunnel (free, no port",
         "  forwarding, no DNS setup).", "",
         "    1. Install cloudflared (one-time, if you don't have it):",
@@ -336,7 +336,7 @@ def run_whatsapp_cloud_setup() -> int:
         "    2. Start the tunnel in a separate terminal:",
         "         cloudflared tunnel --url http://localhost:8090",
         "       Note the printed https://<random>.trycloudflare.com URL.", "",
-        "    3. Start the Hermes gateway in another terminal:",
+        "    3. Start the Xinyuan gateway in another terminal:",
         "         hermes gateway", "",
         "    4. Verify your local config is reachable. From a third",
         "       terminal, with the tunnel URL substituted:", "",

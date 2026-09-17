@@ -80,10 +80,10 @@ async def run(repo: str, out: str):
     # --- Task-card rail (the bug): start + append(chunks) + stop
     r1 = await adapter.send_native_task_card_progress(
         "C1", [{"id": "call-1", "title": "terminal - ls", "status": "in_progress"}],
-        metadata=metadata, fallback_text="Hermes is working\n- terminal - ls - running")
+        metadata=metadata, fallback_text="Xinyuan is working\n- terminal - ls - running")
     r2 = await adapter.send_native_task_card_progress(
         "C1", [{"id": "call-1", "title": "terminal - ls", "status": "complete"}],
-        metadata=metadata, fallback_text="Hermes is working\n- terminal - ls - complete")
+        metadata=metadata, fallback_text="Xinyuan is working\n- terminal - ls - complete")
     await adapter.stop_native_task_card_progress("C1", metadata=metadata)
     results["task_card"] = {"first": {"success": r1.success, "error": r1.error},
                             "second": {"success": r2.success, "error": r2.error}}

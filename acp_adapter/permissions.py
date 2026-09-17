@@ -1,4 +1,4 @@
-"""ACP permission bridging for Hermes dangerous-command approvals."""
+"""ACP permission bridging for Xinyuan dangerous-command approvals."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from acp.schema import AllowedOutcome, PermissionOption
 
 logger = logging.getLogger(__name__)
 
-# ACP permission option id -> Hermes approval result. Ids are stable across the
+# ACP permission option id -> Xinyuan approval result. Ids are stable across the
 # ``allow_permanent=True`` and ``False`` paths even though the option list differs.
 _OPTION_ID_TO_HERMES = {
     "allow_once": "once", "allow_session": "session", "allow_always": "always", "deny": "deny", "deny_always": "deny"
@@ -33,15 +33,15 @@ def _permission_option_supports_kind(kind: str) -> bool:
 def _build_permission_options(
     *, allow_permanent: bool, allow_session: bool = True, smart_denied: bool = False,
 ) -> list[PermissionOption]:
-    """Return ACP options that match Hermes approval semantics."""
+    """Return ACP options that match Xinyuan approval semantics."""
     # A gate that re-asks every time (allow_session=False, e.g. protected
     # agent-instruction writes) collapses to the same two options as a Smart
-    # DENY override — offering a scope Hermes discards would re-prompt every write.
+    # DENY override — offering a scope Xinyuan discards would re-prompt every write.
     # See #81887.
     once_only = smart_denied or not allow_session
     options = [PermissionOption(option_id="allow_once", kind="allow_once", name="Allow once")]
     if not once_only:
-        # ACP has no session-scoped kind: closest persistent hint, Hermes semantics in the id.
+        # ACP has no session-scoped kind: closest persistent hint, Xinyuan semantics in the id.
         options.append(PermissionOption(option_id="allow_session", kind="allow_always", name="Allow for session"))
         if allow_permanent:
             options.append(PermissionOption(option_id="allow_always", kind="allow_always", name="Allow always"))
@@ -65,7 +65,7 @@ def _build_permission_tool_call(command: str, description: str):
 
 
 def _map_outcome_to_hermes(outcome: object, *, allowed_option_ids: set[str]) -> str:
-    """Map an ACP permission outcome into Hermes approval strings."""
+    """Map an ACP permission outcome into Xinyuan approval strings."""
     if not isinstance(outcome, AllowedOutcome):
         return "deny"
     if outcome.option_id not in allowed_option_ids:
@@ -100,7 +100,7 @@ def await_permission(
 
 def make_approval_callback(request_permission_fn: Callable, loop: asyncio.AbstractEventLoop,
                            session_id: str, timeout: float = 60.0) -> Callable[..., str]:
-    """Return a Hermes approval callback (``command, description, **kw`` as used by
+    """Return a Xinyuan approval callback (``command, description, **kw`` as used by
     ``tools.approval.prompt_dangerous_approval()``) that bridges to the ACP
     connection's ``request_permission`` coroutine on ``loop``; auto-denies after ``timeout`` s."""
 

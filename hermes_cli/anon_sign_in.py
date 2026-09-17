@@ -44,9 +44,9 @@ UPGRADE_CANCELLED = "\nSign-in cancelled."
 UPGRADE_UNAVAILABLE_CHAT = "The free tier is not available right now. Try /login again in a moment."
 LOGIN_COMMAND = "/login"
 LOGIN_STARTING = "Starting sign-in..."
-LOGIN_DM_ONLY = "Sign in from a direct message with Hermes."
-LOGIN_BUSY_ELSEWHERE = "Another sign-in is already running on this Hermes. Try again in a few minutes."
-LOGIN_NOT_ALLOWED = "Only an operator of this Hermes can sign it in."
+LOGIN_DM_ONLY = "Sign in from a direct message with Xinyuan."
+LOGIN_BUSY_ELSEWHERE = "Another sign-in is already running on this Xinyuan. Try again in a few minutes."
+LOGIN_NOT_ALLOWED = "Only an operator of this Xinyuan can sign it in."
 # The card form (a surface with its own sign-in button) and the chat form (names /login).
 FREE_TIER_RATE_LIMIT_CARD = (
     "You've used up the allowance for chatting without signing in. It refreshes in {reset}. "

@@ -120,7 +120,7 @@ def _report_database_journal_modes(hermes_home: Path | None = None, version_info
             check_warn(f"{name} is in WAL mode ({size}) despite database.journal_mode=delete",
                        "(the setting never applied: an existing WAL database is never live-downgraded"
                        + ("; also exposed to the WAL-reset bug" if vulnerable else "")
-                       + ". Stop every Hermes process for this profile, then run a one-time offline "
+                       + ". Stop every Xinyuan process for this profile, then run a one-time offline "
                        "'PRAGMA journal_mode=DELETE' on the file)")
         elif error is not None:
             if vulnerable:
@@ -134,7 +134,7 @@ def _report_database_journal_modes(hermes_home: Path | None = None, version_info
             if vulnerable:
                 exposed.append(name)
             check_warn(f"{name} is in WAL mode on a cross-VM filesystem (virtiofs/9p, {size})",
-                       "(WAL can silently corrupt across the VM boundary; stop every Hermes process and run a one-time "
+                       "(WAL can silently corrupt across the VM boundary; stop every Xinyuan process and run a one-time "
                        "offline 'PRAGMA journal_mode=DELETE' on the file, then set `database.journal_mode: delete` — "
                        "or move the database onto a native/named volume)")
         elif mode == "wal" and vulnerable:
@@ -301,7 +301,7 @@ def check_macos_tcc_grants() -> None:
     check_ok("macOS TCC signing identity is stable", _TCC_STABLE_DETAIL["certificate" in dr.lower()])
     check_info("If macOS still re-prompts for permissions (toggle shows ON): the stored grant is stale — run "
                "`tccutil reset ScreenCapture com.nousresearch.hermes` (repeat per affected service), toggle it ON in "
-               "System Settings, then fully quit & relaunch Hermes once.")
+               "System Settings, then fully quit & relaunch Xinyuan once.")
 
 
 def _desktop_app_bundle() -> Path | None:
@@ -361,12 +361,12 @@ def check_macos_full_disk_access() -> None:
     try:
         os.listdir(Path.home() / "Library" / "Application Support" / "com.apple.TCC")
     except PermissionError:
-        check_info("One switch silences all macOS folder prompts: grant your terminal app Full Disk Access and Hermes "
+        check_info("One switch silences all macOS folder prompts: grant your terminal app Full Disk Access and Xinyuan "
                    "will never trip per-folder dialogs (Desktop/Downloads/Documents/...) again. Open: System Settings → "
                    "Privacy & Security → Full Disk Access — or run:\n"
                    "      open \"x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles\"\n"
                    "    then enable your terminal (and Hermes.app if you use Desktop), and restart them once. "
-                   "With Hermes' stable signing identities the grant survives every update.")
+                   "With Xinyuan' stable signing identities the grant survives every update.")
     except OSError:
         pass  # missing dir / other error: indeterminate, stay silent
     else:
@@ -408,7 +408,7 @@ def _check_python_environment(should_fix: bool, f: Finding) -> None:
         import sqlite3
         from hermes_state_wal import is_sqlite_wal_reset_vulnerable, sqlite_source_id
         src = sqlite_source_id()
-        # Warn-only: Hermes already refuses WAL on fresh DBs and runtime repair is best-effort.
+        # Warn-only: Xinyuan already refuses WAL on fresh DBs and runtime repair is best-effort.
         check_bool(not is_sqlite_wal_reset_vulnerable(), f"SQLite {sqlite3.sqlite_version}",
                    (f"SQLite {sqlite3.sqlite_version} (WAL-reset bug)", _sqlite_upgrade_hint()))
         if src:

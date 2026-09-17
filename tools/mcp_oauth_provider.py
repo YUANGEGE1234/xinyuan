@@ -1,4 +1,4 @@
-"""Shared ``OAuthClientProvider`` customizations for Hermes MCP OAuth.
+"""Shared ``OAuthClientProvider`` customizations for Xinyuan MCP OAuth.
 
 Two code paths build an SDK provider — ``tools.mcp_oauth.build_oauth_auth`` (legacy public
 API) and ``tools.mcp_oauth_manager.MCPOAuthManager`` — and both need the same real-world
@@ -218,7 +218,7 @@ class HermesProviderMixin:
         await self._hermes_release_refresh_fence()
         storage = self.context.storage
         tokens_path = getattr(storage, "_tokens_path", None)
-        if tokens_path is None:  # pragma: no cover - non-Hermes storage
+        if tokens_path is None:  # pragma: no cover - non-Xinyuan storage
             return
         self._hermes_fence = await acquire_refresh_fence(tokens_path())
 
@@ -310,7 +310,7 @@ class HermesProviderMixin:
         if not (200 <= response.status_code < 300):
             self._hermes_logger.warning("Token refresh failed: %s", response.status_code)
             # A writer outside the fence (interactive `hermes mcp login`, or a
-            # pre-fence Hermes sharing this HERMES_HOME) may have rotated the
+            # pre-fence Xinyuan sharing this HERMES_HOME) may have rotated the
             # grant and persisted the replacement. Providers issuing single-use
             # refresh tokens reject our stale copy with a 400. Re-read disk
             # before destroying the session.
@@ -349,7 +349,7 @@ class HermesProviderMixin:
         Returns True only when disk holds a pair that is BOTH different from
         the one we just failed with AND still live. That is the signature of
         a writer outside the fence (an interactive ``hermes mcp login`` or a
-        pre-fence Hermes) having rotated the grant between our read and our
+        pre-fence Xinyuan) having rotated the grant between our read and our
         POST -- a recoverable race, not a dead credential.
 
         Returns False for the genuinely-expired case (nobody wrote a newer
@@ -384,7 +384,7 @@ def _metadata_issuer(context: Any) -> str | None:
 
 def bind_issuer_from_context(context: Any) -> None:
     """Record the discovered issuer so the next ``storage.set_tokens`` (exchange or refresh) carries
-    it. No-op when metadata is not discovered yet or storage is not Hermes'."""
+    it. No-op when metadata is not discovered yet or storage is not Xinyuan'."""
     from tools.mcp_oauth import HermesTokenStorage
     storage = getattr(context, "storage", None)
     issuer = _metadata_issuer(context)

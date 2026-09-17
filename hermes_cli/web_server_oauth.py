@@ -87,7 +87,7 @@ def _claude_code_only_status() -> Dict[str, Any]:
 
 def _copilot_acp_status() -> Dict[str, Any]:
     """Status for copilot-acp. ``logged_in`` only on positive evidence (env token or known on-disk
-    store); the CLI may hold its session in an OS keychain Hermes can't read, so the unverified
+    store); the CLI may hold its session in an OS keychain Xinyuan can't read, so the unverified
     state reads "managed by the Copilot CLI" — never signed out."""
     try:
         from hermes_cli.auth import get_external_process_provider_status

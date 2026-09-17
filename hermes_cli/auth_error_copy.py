@@ -26,7 +26,7 @@ DEVICE_FLOW_ERROR_COPY = {
     "invalid_grant": (
         "The sign-in code was not accepted by the server. Run `{retry}` to get a new code."),
     "invalid_client": (
-        "The server did not recognize this copy of Hermes. Run `hermes update`, then `{retry}` again."),
+        "The server did not recognize this copy of Xinyuan. Run `hermes update`, then `{retry}` again."),
 }
 
 
@@ -86,7 +86,7 @@ def sign_in_failure_lines(
     rules: Sequence[_Rule] = (
         (is_cancelled, "Sign-in was cancelled. Run `{retry}` when you want to try again."),
         (is_network_error,
-         "Could not sign in: Hermes could not reach {host}. Check your internet connection or proxy, "
+         "Could not sign in: Xinyuan could not reach {host}. Check your internet connection or proxy, "
          "then run `{retry}` again."),
     )
     lead = _classify(

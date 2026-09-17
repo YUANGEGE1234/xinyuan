@@ -1,4 +1,4 @@
-"""Unified removal contract for every credential source Hermes reads from.
+"""Unified removal contract for every credential source Xinyuan reads from.
 
 Readers live in ``agent.credential_pool``; what is unified here is **removal**:
 ``hermes auth remove <provider> <N>`` must make the entry stay gone across
@@ -91,7 +91,7 @@ def _remove_env_source(provider: str, removed) -> RemovalResult:
             f"Note: {env_var} is still set in your shell environment "
             f"(not in ~/.hermes/.env).",
             "  Unset it there (shell profile, systemd EnvironmentFile, "
-            "launchd plist, etc.) or it will keep being visible to Hermes.",
+            "launchd plist, etc.) or it will keep being visible to Xinyuan.",
             f"  The pool entry is now suppressed — Hermes will ignore "
             f"{env_var} until you run `hermes auth add {provider}`.",
         ])
@@ -112,7 +112,7 @@ def _remove_hermes_pkce(provider: str, removed) -> RemovalResult:
     if oauth_file.exists():
         try:
             oauth_file.unlink()
-            result.cleaned.append("Cleared Hermes Anthropic OAuth credentials")
+            result.cleaned.append("Cleared Xinyuan Anthropic OAuth credentials")
         except OSError as exc:
             result.hints.append(f"Could not delete {oauth_file}: {exc}")
     return result

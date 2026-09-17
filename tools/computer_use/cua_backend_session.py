@@ -70,7 +70,7 @@ class _AsyncBridge:
 # is never replayed; the caller decides after taking fresh state.
 _UNKNOWN_OUTCOME_MESSAGES = {
     "transport_outcome_unknown": (
-        "cua-driver transport failed during {name}; the action outcome is unknown, so Hermes "
+        "cua-driver transport failed during {name}; the action outcome is unknown, so Xinyuan "
         "did not replay it. Take fresh state before deciding whether to act again."),
     "timeout_outcome_unknown": (
         "cua-driver MCP call {name} timed out; the action outcome is unknown and may still have "
@@ -231,7 +231,7 @@ class _CuaDriverSession:
                 (daemon.proxy_invocation(), daemon.child_env()) if daemon is not None
                 else (_driver._resolve_mcp_invocation(driver_cmd), _cb.cua_driver_child_env()))
             _t_manifest = _time.monotonic()
-            # Telemetry policy first (default: disabled), then strip Hermes secrets.
+            # Telemetry policy first (default: disabled), then strip Xinyuan secrets.
             params = StdioServerParameters(command=command, args=args, env=_sanitize_subprocess_env(child_env))
             async with stdio_client(params) as (read, write):
                 self._startup_phase = "mcp-initialize"

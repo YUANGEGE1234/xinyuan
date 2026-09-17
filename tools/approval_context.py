@@ -23,7 +23,7 @@ def _ctx(name: str, default: "str | None" = "") -> contextvars.ContextVar:
 _approval_session_key: contextvars.ContextVar[str] = _ctx("approval_session_key")
 _approval_turn_id: contextvars.ContextVar[str] = _ctx("approval_turn_id")
 _approval_tool_call_id: contextvars.ContextVar[str] = _ctx("approval_tool_call_id")
-# Hermes session id (observability identity, distinct from the gateway routing session_key), forwarded to approval
+# Xinyuan session id (observability identity, distinct from the gateway routing session_key), forwarded to approval
 # hooks so observer plugins attach marks to the REAL session scope — otherwise they fall back to a synthetic "default"
 # session whose scope never closes, so close-time exporters never ship them.
 _approval_session_id: contextvars.ContextVar[str] = _ctx("approval_session_id")

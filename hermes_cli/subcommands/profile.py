@@ -8,7 +8,7 @@ from typing import Callable
 def build_profile_parser(subparsers, *, cmd_profile: Callable) -> None:
     """Attach the ``profile`` subcommand to ``subparsers``."""
     profile_parser = subparsers.add_parser(
-        "profile", help="Manage profiles — multiple isolated Hermes instances")
+        "profile", help="Manage profiles — multiple isolated Xinyuan instances")
     profile_subparsers = profile_parser.add_subparsers(dest="profile_action")
 
     profile_subparsers.add_parser("list", help="List all profiles")
@@ -107,7 +107,7 @@ def build_profile_parser(subparsers, *, cmd_profile: Callable) -> None:
     profile_export.add_argument(
         "-o", "--output", default=None,
         help="Output file (default: a managed profile-exports/<name>-<timestamp>.tar.gz "
-             "under the default Hermes home)")
+             "under the default Xinyuan home)")
 
     profile_import = profile_subparsers.add_parser("import", help="Import a profile from archive")
     profile_import.add_argument("archive", help="Path to .tar.gz archive")
@@ -118,7 +118,7 @@ def build_profile_parser(subparsers, *, cmd_profile: Callable) -> None:
     # ---------- Distribution subcommands (issue #20456) ----------
     profile_install = profile_subparsers.add_parser(
         "install", help="Install a profile distribution from a git URL or local directory",
-        description="Install a Hermes profile distribution. SOURCE can be a git URL "
+        description="Install a Xinyuan profile distribution. SOURCE can be a git URL "
             "(github.com/user/repo, https://..., git@...) or a local "
             "directory containing distribution.yaml at its root.")
     profile_install.add_argument("source", help="Distribution source (git URL or local directory)")

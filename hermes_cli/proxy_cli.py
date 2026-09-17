@@ -170,7 +170,7 @@ def _setup_mint_tokens(console: Console, args: argparse.Namespace):
         if sys.stdin.isatty():
             console.print(
                 "[yellow]⚠[/yellow]  --rotate-tokens will invalidate proxy "
-                "tokens in every running Hermes sandbox.  They will start 401-ing against upstreams until restarted."
+                "tokens in every running Xinyuan sandbox.  They will start 401-ing against upstreams until restarted."
             )
             if _prompt("Type 'rotate' to confirm: ") != "rotate":
                 console.print("[yellow]Cancelled.[/yellow]")

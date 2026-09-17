@@ -175,7 +175,7 @@ def _check_and_apply_config_migration(
         _run_migrate_config_fresh)
     print()
     print("→ Checking configuration for new options...")
-    # Evict EVERY cached Hermes module before touching migration code: the updater is the
+    # Evict EVERY cached Xinyuan module before touching migration code: the updater is the
     # pre-pull process, and a migration step's call-time import (``_migrate_to_45`` →
     # ``hermes_cli.tools_config._configurable_keys``) resolves against whatever old module
     # object is still cached — reloading a hand-picked list re-fixes this per symptom

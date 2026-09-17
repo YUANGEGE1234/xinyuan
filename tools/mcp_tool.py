@@ -54,7 +54,7 @@ async def _preflight_stdio_command(server_name: str, command: str, args: list) -
         raise ValueError(f"MCP server '{server_name}': {malware_error}")
 
     # npx resolves the package and then FORKS, staying resident as the real server's parent for
-    # nothing (~48 MB per server, measured). Hermes already supervises the child (shared death
+    # nothing (~48 MB per server, measured). Xinyuan already supervises the child (shared death
     # supervisor), so a cached package is spawned directly; a cache miss leaves npx untouched.
     if os.path.basename(command).lower().startswith("npx"):
         cached = _npx_cached_bin(args)

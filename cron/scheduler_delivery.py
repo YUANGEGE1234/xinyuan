@@ -749,7 +749,7 @@ def _deliver_to_bot_chat(job: dict, content: str, profile: str, *, deferred: Opt
     else:
         hermes_bin = shutil.which("hermes")
         if not hermes_bin:
-            return ("Hermes could not deliver this result to Bot Chat: the `hermes` command was not found. "
+            return ("Xinyuan could not deliver this result to Bot Chat: the `hermes` command was not found. "
                     "The result is saved; run `hermes cron runs` to see it, or `hermes doctor` if this keeps happening")
         argv = [hermes_bin]
 

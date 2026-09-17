@@ -1,6 +1,6 @@
 """Centralized Nous Portal request tags.
 
-Every Hermes request to the Nous Portal (main loop, auxiliary client, fallback
+Every Xinyuan request to the Nous Portal (main loop, auxiliary client, fallback
 paths) must carry the same product-attribution tags, sent in OpenAI-compatible
 ``extra_body['tags']``: ``["product=hermes-agent", "client=hermes-client-v<__version__>"]``.
 The version is read live from ``hermes_cli.__version__`` — do NOT pre-compute it

@@ -1,5 +1,5 @@
 """Hermes-owned PYTHONPATH stripping for child processes. Launchers prepend the repo
-root and the Hermes venv's site-packages so the backend can ``import tools``; leaked
+root and the Xinyuan venv's site-packages so the backend can ``import tools``; leaked
 into a child Python of a DIFFERENT version they load the backend's C extensions and
 crash. Only entries proven Hermes-owned by *path provenance* are removed — never by a
 cross-version heuristic. Module state (``_hermes_repo_root_aliases``, ``_in_venv``,
@@ -34,7 +34,7 @@ def _same_path(left: Path, right: Path) -> bool:
 def _build_hermes_repo_root_aliases(
     resolved_root: Path, lexical_root: Path, configured_home: Path,
 ) -> tuple[Path, ...]:
-    """Exact repo-root spellings emitted by Hermes launchers. Mirrors
+    """Exact repo-root spellings emitted by Xinyuan launchers. Mirrors
     ``gateway_windows._preserve_hermes_home_path`` (physical path under the resolved
     HERMES_HOME -> configured spelling) so a junction-backed install matches without
     treating arbitrary HERMES_HOME descendants as Hermes-owned. A repo-level junction
@@ -85,7 +85,7 @@ def _validated_runtime_venv(env: dict) -> Path | None:
 
 
 def _get_hermes_site_packages(env: dict) -> list[Path]:
-    """Exact site-packages dirs owned by the Hermes runtime (cached):
+    """Exact site-packages dirs owned by the Xinyuan runtime (cached):
     ``site.getsitepackages()`` with a ``sys.prefix`` fallback, plus a validated
     Windows base-interpreter launch's ``VIRTUAL_ENV/Lib/site-packages``."""
     local = _state()

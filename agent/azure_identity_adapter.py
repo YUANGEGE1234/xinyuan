@@ -94,7 +94,7 @@ class EntraIdentityConfig:
 @functools.lru_cache(maxsize=1)
 def _default_chain_credential(config: EntraIdentityConfig) -> Any:
     """Cached ``DefaultAzureCredential`` for the unscoped process. ``maxsize=1`` is intentional: a process uses
-    one ``model.entra.*`` block at a time. Only Hermes knobs are passed as kwargs; the rest comes from ``AZURE_*``
+    one ``model.entra.*`` block at a time. Only Xinyuan knobs are passed as kwargs; the rest comes from ``AZURE_*``
     env vars."""
     ai = _require_azure_identity()
     # SDK default already excludes the browser; only pass the kwarg when opting in.

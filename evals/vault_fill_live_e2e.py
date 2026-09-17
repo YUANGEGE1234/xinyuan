@@ -1,4 +1,4 @@
-"""Live E2E: vault fill through the REAL browser_exec path (Browser Use CLI + Hermes' packaged Chromium).
+"""Live E2E: vault fill through the REAL browser_exec path (Browser Use CLI + Xinyuan' packaged Chromium).
 
 Proves problem (1) of the #106480 re-review is fixed: on the default browser backend the login page lives in
 a tab browser_exec opened, the supervisor is attached by browser_exec itself, browser_vault_fill focuses the

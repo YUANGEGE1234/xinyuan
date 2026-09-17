@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Live key_cmd catalog A/B: local authenticated HTTP, real helper, CLI PTY.
 
-Run with the Hermes venv Python and --repo CHECKOUT --output RECEIPT_DIR.
-No user environment/config is inherited by Hermes children. Unix PTY required.
+Run with the Xinyuan venv Python and --repo CHECKOUT --output RECEIPT_DIR.
+No user environment/config is inherited by Xinyuan children. Unix PTY required.
 """
 import argparse
 import http.server

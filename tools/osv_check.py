@@ -24,7 +24,7 @@ _TIMEOUT = 10  # seconds
 # for the SAME package on every spawn; uncached, a flapping server becomes a sustained OSV/DNS
 # query stream. Clean AND blocked verdicts are reusable; network failures are NOT cached
 # (fail-open covers them and caching one could mask a real advisory later).
-# The cache is also persisted under the Hermes home so separate processes and gateway
+# The cache is also persisted under the Xinyuan home so separate processes and gateway
 # restarts reuse warm verdicts; expiry is absolute wall-clock time so it survives restarts.
 # Trade-off: a MAL advisory published right after a clean verdict is noticed at TTL expiry
 # (<= 1h by default) rather than at next process start — lower OSV_CHECK_CACHE_TTL to tighten.
@@ -44,8 +44,8 @@ def _disk_cache_path() -> Optional[Path]:
     """Return the path for the persistent OSV verdict cache.
 
     Uses ``hermes_constants.get_hermes_home()`` so the cache follows the
-    active profile and is isolated across Hermes homes. The cache directory
-    is created on demand. Returns ``None`` when Hermes home cannot be
+    active profile and is isolated across Xinyuan homes. The cache directory
+    is created on demand. Returns ``None`` when Xinyuan home cannot be
     resolved, in which case only the in-process cache is used.
     """
     try:

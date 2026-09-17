@@ -40,7 +40,7 @@ _CELL_POLL_INTERVAL = 0.5
 # persistent namespace, writes response files. Pure files + stdlib only (transport-agnostic);
 # cells and tool-RPC share the kernel dir under distinct prefixes.
 REMOTE_KERNEL_RUNNER_SOURCE = '''\
-"""Auto-generated Hermes REMOTE session-kernel runner (file cell protocol)."""
+"""Auto-generated Xinyuan REMOTE session-kernel runner (file cell protocol)."""
 import contextlib
 import io
 import json

@@ -231,7 +231,7 @@ agent = AIAgent(
     connection_callback=connection_cb,
 )
 
-PREAMBLE = ("You are running inside the Hermes desktop app on the user's machine. "
+PREAMBLE = ("You are running inside the Xinyuan desktop app on the user's machine. "
             "Your working directory (the workspace) is: %s\n\nTask: " % workspace)
 
 t0 = time.time()

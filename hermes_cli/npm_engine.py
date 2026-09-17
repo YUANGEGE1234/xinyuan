@@ -3,7 +3,7 @@
 We react to the failure rather than predict it: npm states the required range in the error, so the
 recovery reads the constraint out of the output it just produced (no semver matcher, no probe).
 
-Scope is deliberately narrow: Hermes only upgrades an npm inside its **own** managed Node tree
+Scope is deliberately narrow: Xinyuan only upgrades an npm inside its **own** managed Node tree
 (``$HERMES_HOME/node``), installing in place with ``--prefix`` so ``bin/npm`` keeps resolving to
 the upgraded ``lib/node_modules/npm``.
 """
@@ -193,7 +193,7 @@ def _print_manual_fix(npm: str, npm_range: str, actual: str | None) -> None:
     print(
         f"\n✗ {have}does not satisfy the range this project requires: {npm_range}\n"
         f"  Resolved npm: {npm}\n"
-        "  Hermes could not provision its own Node.js runtime and never\n"
+        "  Xinyuan could not provision its own Node.js runtime and never\n"
         "  modifies a system/nvm/brew/Nix npm. Upgrade yours yourself with:\n"
         f'      npm install -g npm@"{npm_range}"',
         file=sys.stderr,
@@ -241,7 +241,7 @@ def maybe_repair_npm_engine(npm: str | None, output: str, *, quiet: bool = False
     prefix = managed_npm_prefix(npm)
 
     if prefix is not None:
-        # Hermes owns this npm — upgrade in place. Only an npm-range failure is fixable this way.
+        # Xinyuan owns this npm — upgrade in place. Only an npm-range failure is fixable this way.
         if npm_range and upgrade_managed_npm(npm, npm_range, prefix=prefix, quiet=quiet):
             return npm
         return None

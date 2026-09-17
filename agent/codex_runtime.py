@@ -86,7 +86,7 @@ def _queue_token_counts(agent, fail_msg: str, *fail_extra: Any, counts: Callable
 
 
 def _record_codex_app_server_usage(agent, turn, messages=None) -> dict[str, Any]:
-    """Translate Codex app-server token usage into Hermes accounting. Prompt bucket = uncached + cached
+    """Translate Codex app-server token usage into Xinyuan accounting. Prompt bucket = uncached + cached
     input (the protocol exposes no cache-write tokens); a turn with no usage still counts as one API call.
     ``messages`` (the transcript mirror) lets real usage anchor the next preflight: this runtime bypasses
     the main loop's capture, and the mirror is never compacted natively, so without an anchor the rough
@@ -166,7 +166,7 @@ def _record_codex_app_server_compaction(agent, turn, *, approx_tokens: int | Non
     if compressor is not None:
         compressor.compression_count = getattr(compressor, "compression_count", 0) + 1
         compressor.last_compression_rough_tokens = approx_tokens or 0
-        # Codex owns this summary: a prior Hermes deterministic-fallback flag must not leak into it.
+        # Codex owns this summary: a prior Xinyuan deterministic-fallback flag must not leak into it.
         record_boundary = getattr(type(compressor), "record_completed_compaction", None)
         if callable(record_boundary):
             record_boundary(compressor, used_fallback=False)
@@ -188,15 +188,15 @@ def _record_codex_app_server_compaction(agent, turn, *, approx_tokens: int | Non
     return True
 
 
-# --- Codex app-server → Hermes UI bridge -------------------------------------
-# The app-server bypasses the Hermes tool loop, so the bridge translates JSON-RPC notifications
+# --- Codex app-server → Xinyuan UI bridge -------------------------------------
+# The app-server bypasses the Xinyuan tool loop, so the bridge translates JSON-RPC notifications
 # into the callbacks the standard runtime fires (tool_progress_callback, _fire_stream_delta, ...).
 
-# Item types that project to a Hermes tool_call (keep in sync with agent/transports/codex_event_projector.py
+# Item types that project to a Xinyuan tool_call (keep in sync with agent/transports/codex_event_projector.py
 # so UI names match recorded names). webSearch is codex's built-in tool: no projector entry, still gets a bubble.
 _CODEX_TOOL_ITEM_TYPES = frozenset({"commandExecution", "fileChange", "mcpToolCall", "dynamicToolCall", "webSearch"})
-# Internal MCP server wrapping Hermes' native tools: its inner dispatch has no tool_progress_callback, so the
-# codex-level mcpToolCall IS the display event and the mcp.hermes-tools.* prefix is stripped (users see Hermes tools).
+# Internal MCP server wrapping Xinyuan' native tools: its inner dispatch has no tool_progress_callback, so the
+# codex-level mcpToolCall IS the display event and the mcp.hermes-tools.* prefix is stripped (users see Xinyuan tools).
 _STATIC_TOOL_NAMES = {"commandExecution": "exec_command", "fileChange": "apply_patch", "webSearch": "web_search"}
 _STABLE_ID_PREFIXES = {"commandExecution": "exec", "fileChange": "apply_patch"}
 _MCP_LIKE_ITEM_TYPES = {"mcpToolCall", "dynamicToolCall"}
@@ -209,7 +209,7 @@ def _item_changes(item: dict) -> list[dict]:
 
 
 def _codex_item_to_tool_name(item: dict) -> str:
-    """Synthetic Hermes tool name for a codex item (mirrors CodexEventProjector)."""
+    """Synthetic Xinyuan tool name for a codex item (mirrors CodexEventProjector)."""
     item_type = item.get("type") or ""
     if item_type == "mcpToolCall":
         server, tool = item.get("server") or "mcp", item.get("tool") or "unknown"
@@ -387,7 +387,7 @@ def _ensure_codex_session(agent) -> None:
         return
     from agent.runtime_cwd import resolve_agent_cwd
     from agent.transports.codex_app_server_session import CodexAppServerSession, _ServerRequestRouting
-    # Approval callback: Hermes' standard prompt flow when a CLI thread installed one.
+    # Approval callback: Xinyuan' standard prompt flow when a CLI thread installed one.
     approval_callback = None
     with suppress(Exception):
         from tools.terminal_tool import _get_approval_callback
@@ -401,7 +401,7 @@ def _ensure_codex_session(agent) -> None:
     except Exception:
         logger.debug("codex app-server: approval-bypass lookup failed; keeping fail-closed default", exc_info=True)
     # Bridge codex JSON-RPC notifications (item/started, item/completed, item/agentMessage/delta, ...) into
-    # Hermes' gateway UI callbacks (tool_progress_callback, _fire_stream_delta,
+    # Xinyuan' gateway UI callbacks (tool_progress_callback, _fire_stream_delta,
     # _emit_interim_assistant_message). Without this, Discord/Telegram users see no live tool-progress or
     # interim commentary while codex_app_server is running — only the final answer (#33200). Supersedes the
     # narrower item/started-only bridge from #38835.

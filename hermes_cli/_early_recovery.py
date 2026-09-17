@@ -277,7 +277,7 @@ def _find_uv_binary() -> str | None:
     """Locate a ``uv`` binary without importing third-party modules.
 
     uv-managed base interpreters carry an ``EXTERNALLY-MANAGED`` marker, so the stdlib ``pip``
-    fallback refuses to touch them; the only sanctioned installer is then uv itself, which Hermes
+    fallback refuses to touch them; the only sanctioned installer is then uv itself, which Xinyuan
     vendors (``~/.hermes/bin/uv.exe``) or the user has on PATH.
     """
     exe = "uv.exe" if sys.platform == "win32" else "uv"

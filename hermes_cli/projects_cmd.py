@@ -23,7 +23,7 @@ def build_parser(parent_subparsers: argparse._SubParsersAction) -> argparse.Argu
     )
     sub = parser.add_subparsers(dest="project_action")
     p_create = sub.add_parser("create", help="Create a new project")
-    p_create.add_argument("name", help="Human name, e.g. 'Hermes Agent'")
+    p_create.add_argument("name", help="Human name, e.g. 'Xinyuan Agent'")
     p_create.add_argument("folders", nargs="*", help="Folder paths to include (first = primary)")
     p_create.add_argument("--slug", default=None, help="Explicit slug override")
     p_create.add_argument("--primary", default=None, metavar="PATH", help="Primary repo path")

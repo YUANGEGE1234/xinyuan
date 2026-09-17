@@ -9,7 +9,7 @@ def build_setup_parser(subparsers, *, cmd_setup: Callable) -> None:
     """Attach the ``setup`` subcommand to ``subparsers``."""
     setup_parser = subparsers.add_parser(
         "setup", help="Interactive setup wizard",
-        description="Configure Hermes Agent with an interactive wizard. "
+        description="Configure Xinyuan Agent with an interactive wizard. "
         "Run a specific section: "
         "hermes setup model|tts|terminal|gateway|tools|telemetry|agent")
     setup_parser.add_argument(

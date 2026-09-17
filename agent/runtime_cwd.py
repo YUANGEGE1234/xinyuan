@@ -89,6 +89,6 @@ def resolve_agent_cwd() -> Path:
 
 def resolve_context_cwd() -> Path | None:
     """Configured cwd for context-file discovery, or None (build_context_files_prompt then falls back to the
-    launch dir). An existing configured path is honored verbatim — including the Hermes source tree, a
-    legitimate workspace when developing Hermes; fallback-directory policy lives in the caller."""
+    launch dir). An existing configured path is honored verbatim — including the Xinyuan source tree, a
+    legitimate workspace when developing Xinyuan; fallback-directory policy lives in the caller."""
     return _resolve_configured_cwd(override_is_final=True)

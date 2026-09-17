@@ -36,7 +36,7 @@ def build_init_prompt(cwd: str, existing_file: str | None = None, extra: str = "
         "[/init] The user wants you to "
         + ("UPDATE the existing" if update else "generate an")
         + f" AGENTS.md project-instructions file for the project at: {cwd}\n",
-        "AGENTS.md is the instruction file coding agents (Hermes included) "
+        "AGENTS.md is the instruction file coding agents (Xinyuan included) "
         "load as project context every session. It should teach an agent how "
         "to work in THIS repo: what the project is, how to set up, the exact "
         "build/test/lint commands, the conventions the code actually follows, "

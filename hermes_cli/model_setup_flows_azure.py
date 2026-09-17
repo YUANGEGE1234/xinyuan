@@ -54,7 +54,7 @@ def _azure_entra_preflight(current_entra: dict):
     print()
     if not has_azure_identity_installed():
         _say("◐ The 'azure-identity' package is not installed yet.",
-             "  Hermes will install it now (the preflight below triggers the lazy-install). "
+             "  Xinyuan will install it now (the preflight below triggers the lazy-install). "
              "To skip lazy installs, run:  pip install azure-identity")
 
     # Only the optional scope override is persisted; identity selection (tenant,
@@ -157,7 +157,7 @@ def _model_flow_azure_foundry(config, current_model=""):
     cur = _azure_current(config)
     _say("", "Azure Foundry Configuration", "=" * 50, "",
          "Azure Foundry can host models with either OpenAI-style or",
-         "Anthropic-style API endpoints.  Hermes will probe your",
+         "Anthropic-style API endpoints.  Xinyuan will probe your",
          "endpoint to auto-detect the transport and the deployed",
          "models when possible.", "")
     if cur.base_url:

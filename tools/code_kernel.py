@@ -72,7 +72,7 @@ def run_cell(request, execution_count):
 '''
 
 KERNEL_RUNNER_SOURCE = '''\
-"""Auto-generated Hermes session-kernel runner. One exec cell per request."""
+"""Auto-generated Xinyuan session-kernel runner. One exec cell per request."""
 import contextlib
 import io
 import json

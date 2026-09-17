@@ -1,4 +1,4 @@
-"""Local HTTP contract probe; no vendor request or personal Hermes state.
+"""Local HTTP contract probe; no vendor request or personal Xinyuan state.
 
 Run from the repository with its Python interpreter. JSON output identifies the
 loaded module, observed SDK error, request order, and preserved message payload.

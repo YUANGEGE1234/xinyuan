@@ -1,4 +1,4 @@
-"""Markdown/QMD export helpers for Hermes sessions.
+"""Markdown/QMD export helpers for Xinyuan sessions.
 
 Filesystem-only: formats already-exported SessionDB dicts and writes them to user-selected export
 directories. Must not mutate state.db or call delete/prune/archive APIs.

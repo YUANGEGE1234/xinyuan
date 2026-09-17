@@ -57,7 +57,7 @@ def resolve_identity() -> Dict[str, Any]:
             "nous_admin": claims.get(NOUS_ADMIN_CLAIM) is True, "claims": claims}
 
 
-# Configuration -- env-first so Hermes Cloud can enable sync via environment alone. Every knob:
+# Configuration -- env-first so Xinyuan Cloud can enable sync via environment alone. Every knob:
 # HERMES_SYNC_<KEY> env -> config.yaml ``sync.<key>`` -> default (base_url = the sync plane, NOT
 # the inference URL; enabled; default_opt_in; org_auto_propose).
 DEFAULT_SYNC_BASE_URL = "https://gateway-gateway.nousresearch.com"
@@ -115,7 +115,7 @@ def sync_org_auto_propose() -> bool:
 
 def sync_default_opt_in() -> bool:
     """False (default): opt-IN -- a skill syncs only after ``hermes sync enable`` or a plane manifest
-    opting it in. True: opt-OUT -- every eligible skill syncs unless disabled (Hermes Cloud default)."""
+    opting it in. True: opt-OUT -- every eligible skill syncs unless disabled (Xinyuan Cloud default)."""
     return _sync_config_bool("HERMES_SYNC_DEFAULT_OPT_IN", "default_opt_in", default=False)
 
 
@@ -221,7 +221,7 @@ def _default_device_label() -> str:
 
 def stable_device_id() -> str:
     """Per-device label at ~/.hermes/skills/.sync_device_id. An existing file always wins; else seeded
-    from HERMES_SYNC_DEVICE_NAME (first use only, for Hermes Cloud) or a friendly default, then persisted."""
+    from HERMES_SYNC_DEVICE_NAME (first use only, for Xinyuan Cloud) or a friendly default, then persisted."""
     with suppress(OSError):
         val = _device_id_path().read_text(encoding="utf-8").strip()
         if val:

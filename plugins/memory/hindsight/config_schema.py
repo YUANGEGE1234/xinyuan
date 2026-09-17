@@ -10,7 +10,7 @@ CONFIG_SCHEMA = ProviderConfigSchema(
     fields=(
         ProviderField(
             key="mode", label="Mode", kind=KIND_SELECT, default="cloud",
-            description="How Hermes connects to Hindsight.",
+            description="How Xinyuan connects to Hindsight.",
             options=(
                 ProviderFieldOption("cloud", "Cloud", "Hindsight Cloud API (lightweight, just needs an API key)"),
                 ProviderFieldOption("local_external", "Local External", "Connect to an existing Hindsight instance"),

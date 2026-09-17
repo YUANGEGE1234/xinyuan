@@ -293,7 +293,7 @@ class CLISessionMixin:
         except Exception:
             ctx_label = None
 
-        lines = ["Hermes CLI Status", "", *status_lines(fields, "session_id", "path", "title", "model")]
+        lines = ["Xinyuan CLI Status", "", *status_lines(fields, "session_id", "path", "title", "model")]
         try:
             from agent.i18n import t
             from hermes_cli.auth import resolve_provider

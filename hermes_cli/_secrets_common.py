@@ -147,7 +147,7 @@ def rotate_token(
     os.environ[token_env] = token
     clear_caches()
     console.print(f"[green]✓[/green] stored in {env_path()} as {token_env}.  "
-                  "Takes effect on the next Hermes invocation.")
+                  "Takes effect on the next Xinyuan invocation.")
     if disabled_note:
         console.print(disabled_note)
     return 0

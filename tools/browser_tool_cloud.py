@@ -43,7 +43,7 @@ def _ensure_browser_plugins_loaded() -> None:
 
 
 def _get_cloud_provider() -> Optional[CloudBrowserProvider]:
-    """Return the provider cached for the active Hermes profile."""
+    """Return the provider cached for the active Xinyuan profile."""
     _bt = _origin()
     scope = hermes_home_key()
     with _bt._cloud_provider_cache_lock:

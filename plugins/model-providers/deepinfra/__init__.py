@@ -15,7 +15,7 @@ class _DeepInfraProfile(ProviderProfile):
     def build_api_kwargs_extras(
         self, *, reasoning_config: dict | None = None, **context: Any
     ) -> tuple[dict[str, Any], dict[str, Any]]:
-        """Map Hermes reasoning controls to DeepInfra's top-level ``reasoning_effort``.
+        """Map Xinyuan reasoning controls to DeepInfra's top-level ``reasoning_effort``.
 
         DeepInfra applies a per-model default when the field is absent (DeepSeek-V4.x off,
         GLM/Qwen-Thinking on), so ``none`` is the only working off switch and an unset effort

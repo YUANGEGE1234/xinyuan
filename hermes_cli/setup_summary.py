@@ -220,7 +220,7 @@ def _print_setup_summary(config: dict, hermes_home):
         resolve_provider()
     except Exception:
         print()
-        _setup.print_warning("No inference provider is configured — Hermes cannot chat yet.")
+        _setup.print_warning("No inference provider is configured — Xinyuan cannot chat yet.")
         _setup._info("  Finish this one step with either of:",
               "    hermes model            (pick any provider/model)",
               "    hermes setup --portal   (Nous Portal OAuth, no API key)")

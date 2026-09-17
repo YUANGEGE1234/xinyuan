@@ -9,7 +9,7 @@ def build_slack_parser(subparsers, *, cmd_slack: Callable) -> None:
     """Attach the ``slack`` subcommand to ``subparsers``."""
     slack_parser = subparsers.add_parser(
         "slack", help="Slack integration helpers (manifest generation, etc.)",
-        description="Slack integration helpers for Hermes.")
+        description="Slack integration helpers for Xinyuan.")
     slack_sub = slack_parser.add_subparsers(dest="slack_command")
     slack_manifest = slack_sub.add_parser(
         "manifest",
@@ -24,7 +24,7 @@ def build_slack_parser(subparsers, *, cmd_slack: Callable) -> None:
         "--write", nargs="?", const=True, default=None, metavar="PATH",
         help="Write manifest to a file instead of stdout. With no PATH "
         "writes to $HERMES_HOME/slack-manifest.json.")
-    slack_manifest.add_argument("--name", default=None, help='Bot display name (default: "Hermes")')
+    slack_manifest.add_argument("--name", default=None, help='Bot display name (default: "Xinyuan")')
     slack_manifest.add_argument(
         "--description", default=None, help="Bot description shown in Slack's app directory.")
     slack_long_description = slack_manifest.add_mutually_exclusive_group()

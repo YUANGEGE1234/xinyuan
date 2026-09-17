@@ -159,7 +159,7 @@ def _minimax_poll_token(
 
 
 def _minimax_save_auth_state(auth_state: Dict[str, Any]) -> None:
-    """Persist MiniMax OAuth state to Hermes auth store (~/.hermes/auth.json)."""
+    """Persist MiniMax OAuth state to Xinyuan auth store (~/.hermes/auth.json)."""
     from hermes_cli.auth import _save_active_provider_state
     _save_active_provider_state("minimax-oauth", auth_state)
 

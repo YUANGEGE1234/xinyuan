@@ -60,9 +60,9 @@ def _install_signal_forwarders(proc: subprocess.Popen[bytes]) -> dict[int, objec
 
 
 def _is_hermes_gateway_run_argv(command: Sequence[str]) -> bool:
-    """True for Hermes ``gateway run`` argv this wrapper is allowed to upgrade.
+    """True for Xinyuan ``gateway run`` argv this wrapper is allowed to upgrade.
 
-    The wrapper is generic. Only historical/current Hermes gateway shapes get ``--external-
+    The wrapper is generic. Only historical/current Xinyuan gateway shapes get ``--external-
     supervisor``; an arbitrary launchd child must not be marked as gateway-supervised (#87005).
     """
     try:

@@ -1,4 +1,4 @@
-"""langfuse — Hermes plugin tracing conversations, LLM calls and tool usage to Langfuse.
+"""langfuse — Xinyuan plugin tracing conversations, LLM calls and tool usage to Langfuse.
 
 Activated via ``plugins.enabled``; hooks are inert without the ``langfuse`` SDK
 and credentials. Env: HERMES_LANGFUSE_PUBLIC_KEY / SECRET_KEY (required),
@@ -52,7 +52,7 @@ _TRACE_STATE: Dict[str, TraceState] = {}
 # Bounds the leak, not concurrency.
 _MAX_TRACE_STATE = 256
 _LANGFUSE_CLIENT = None
-# Under a multiplexed profile override, one settled client (or _INIT_FAILED) per Hermes home: the
+# Under a multiplexed profile override, one settled client (or _INIT_FAILED) per Xinyuan home: the
 # keys live in each profile's .env, so a single slot would trace profile B into profile A's project
 # (or pin B to A's failed init). The slot above stays for the unscoped single-profile path.
 _LANGFUSE_CLIENT_BY_HOME: Dict[str, Any] = {}
@@ -474,7 +474,7 @@ def _serialize_assistant_message(message: Any) -> dict[str, Any]:
 
 def _canonical_usage_and_cost(canonical: Any, *, provider: str, model: str,
                               base_url: str) -> tuple[dict[str, int], dict[str, float]]:
-    """Translate canonical Hermes usage into Langfuse usage and cost maps."""
+    """Translate canonical Xinyuan usage into Langfuse usage and cost maps."""
     usage_details: Dict[str, int] = {
         key: tokens for key, attr, _ in _USAGE_FIELDS
         if (tokens := getattr(canonical, attr)) or key in ("input", "output")
@@ -499,7 +499,7 @@ def _canonical_usage_and_cost(canonical: Any, *, provider: str, model: str,
         return usage_details, cost_details
 
     # Langfuse only derives totals from input/output keys, so cache/custom keys
-    # need an explicit total (Hermes estimate also includes request pricing).
+    # need an explicit total (Xinyuan estimate also includes request pricing).
     # A zero total is not exported: Langfuse would treat it as authoritative.
     if cost.status != "included" and float(cost.amount_usd) > 0:
         cost_details["total"] = float(cost.amount_usd)
@@ -560,14 +560,14 @@ def _start_root_trace(task_key: str, *, task_id: str, session_id: str, platform:
     trace_ctx: Dict[str, Any] = {"trace_id": trace_id, **({"session_id": session_id} if session_id else {})}
 
     def open_root():
-        ctx = client.start_as_current_observation(trace_context=trace_ctx, name="Hermes turn", as_type="chain",
+        ctx = client.start_as_current_observation(trace_context=trace_ctx, name="Xinyuan turn", as_type="chain",
                                                   input=trace_input, metadata=metadata, end_on_exit=False)
         return ctx, ctx.__enter__()
 
     root_ctx = root_span = None
     if propagate_attributes is not None:
         try:
-            with propagate_attributes(session_id=session_id or task_key, trace_name="Hermes turn",
+            with propagate_attributes(session_id=session_id or task_key, trace_name="Xinyuan turn",
                                       tags=["hermes", "langfuse"]):
                 root_ctx, root_span = open_root()
         except Exception:
@@ -1012,7 +1012,7 @@ def on_subagent_stop(*, parent_turn_id: str = "", child_session_id: Any = None, 
 
 
 def register(ctx) -> None:
-    # Both hook-name variants so the plugin works across Hermes versions:
+    # Both hook-name variants so the plugin works across Xinyuan versions:
     # *_api_request fire per API call (preferred); *_llm_call once per turn.
     hooks = (
         ("pre_api_request", on_pre_llm_request), ("post_api_request", on_post_llm_call),

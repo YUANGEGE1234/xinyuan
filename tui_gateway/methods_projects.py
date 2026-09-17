@@ -210,7 +210,7 @@ def _scan_discovered_repos_remote(conn, policy: dict) -> bool:
     ``replace=True``; a partial/errored scan must MERGE, or a failed refresh blanks the sidebar.
 
     The desktop's native repo scan only runs on the local filesystem. On a remote gateway connection the
-    host must scan its own disk so repos with zero Hermes sessions still appear in the sidebar (#81723).
+    host must scan its own disk so repos with zero Xinyuan sessions still appear in the sidebar (#81723).
     Mirrors the desktop's behavior: walk each root (bounded depth), find `.git` directories, record (root,
     label) pairs into the discovery cache.
     See #81723.

@@ -61,7 +61,7 @@ MEET_JOIN_SCHEMA = _schema(
               "description": ("transcribe (default): listen-only, scrape captions. "
                               "realtime: also enable agent speech via meet_say "
                               "(requires OpenAI Realtime key + platform audio bridge).")},
-     "guest_name": _str("Display name to use when joining as guest. Defaults to 'Hermes Agent'."),
+     "guest_name": _str("Display name to use when joining as guest. Defaults to 'Xinyuan Agent'."),
      "duration": _str("Optional max duration before auto-leave (e.g. '30m', "
                       "'2h', '90s'). Omit to stay until meet_leave is called."),
      "headed": {"type": "boolean",
@@ -137,7 +137,7 @@ def handle_meet_join(args: Dict[str, Any], **_kw) -> str:
     if mode not in {"transcribe", "realtime"}:
         return _err(f"mode must be 'transcribe' or 'realtime' (got {mode!r})")
     common: Dict[str, Any] = dict(
-        url=url, guest_name=str(args.get("guest_name") or "Hermes Agent"),
+        url=url, guest_name=str(args.get("guest_name") or "Xinyuan Agent"),
         duration=str(args.get("duration")) if args.get("duration") else None,
         headed=bool(args.get("headed", False)), mode=mode)
 

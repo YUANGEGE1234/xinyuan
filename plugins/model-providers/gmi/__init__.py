@@ -9,7 +9,7 @@ gmi = ProviderProfile(
     description="GMI Cloud — multi-model direct API (slash-form model IDs)",
     signup_url="https://www.gmicloud.ai/", env_vars=("GMI_API_KEY", "GMI_BASE_URL"),
     base_url="https://api.gmi-serving.com/v1", auth_type="api_key",
-    # Attribution so GMI can identify Hermes Agent traffic.
+    # Attribution so GMI can identify Xinyuan Agent traffic.
     default_headers={"User-Agent": f"HermesAgent/{_HERMES_VERSION}"},
     default_aux_model="google/gemini-3.1-flash-lite-preview",
     fallback_models=(

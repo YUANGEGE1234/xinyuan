@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Advisory lint: profile-scope hazard patterns on the lines a change adds.
 
-One Hermes process may serve many profiles (multiplex gateway, Desktop/dashboard ``serve``), and
+One Xinyuan process may serve many profiles (multiplex gateway, Desktop/dashboard ``serve``), and
 ``os.environ`` / module globals hold only the LAUNCH profile's values. Every pattern in
 ``scripts/ci/profile_scope_patterns.json`` is a call-site shape that turned out to be
 profile-sensitive at least once — a child env built from ``os.environ``, a raw ``os.getenv`` of a

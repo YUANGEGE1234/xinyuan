@@ -11,7 +11,7 @@ def build_config_parser(subparsers, *, cmd_config: Callable) -> None:
     """Attach the ``config`` subcommand to ``subparsers``."""
     config_parser = subparsers.add_parser(
         "config", help="View and edit configuration",
-        description="Manage Hermes Agent configuration")
+        description="Manage Xinyuan Agent configuration")
     config_subparsers = config_parser.add_subparsers(dest="config_command")
 
     config_subparsers.add_parser("show", help="Show current configuration")

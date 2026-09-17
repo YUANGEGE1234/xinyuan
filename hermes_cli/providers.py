@@ -1,4 +1,4 @@
-"""Single source of truth for provider identity in Hermes Agent."""
+"""Single source of truth for provider identity in Xinyuan Agent."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from utils import base_url_host_matches, base_url_hostname
 logger = logging.getLogger(__name__)
 
 
-# -- Hermes overlay: metadata models.dev doesn't provide ----------------------
+# -- Xinyuan overlay: metadata models.dev doesn't provide ----------------------
 
 @dataclass(frozen=True)
 class HermesOverlay:
@@ -192,7 +192,7 @@ def _overlay_pdef(canonical, ov: HermesOverlay, name, env_vars, base_url, doc, s
 
 
 def get_provider(name: str, *, allow_network: bool = True) -> Optional[ProviderDef]:
-    """Look up a built-in provider by id or alias: models.dev catalog merged with the Hermes overlay;
+    """Look up a built-in provider by id or alias: models.dev catalog merged with the Xinyuan overlay;
     Hermes-only overlay (nous, openai-codex, …); plugin provider profiles with a concrete endpoint."""
     canonical = normalize_provider(name)
     mdev_info = _models_dev_info(canonical, allow_network)
@@ -442,7 +442,7 @@ def resolve_custom_provider(name: str, custom_providers: Optional[List[Dict[str,
 
 
 def _lossy_alias_registry_pdef(raw: str, canonical: str) -> Optional[ProviderDef]:
-    """Exact Hermes registry ids win over LOSSY alias collapsing (kimi-coding-cn must stay distinct
+    """Exact Xinyuan registry ids win over LOSSY alias collapsing (kimi-coding-cn must stay distinct
     from kimi-coding instead of collapsing through the shared models.dev alias "kimi-for-coding").
     A collapse is lossy only when MULTIPLE registry providers normalize to the same canonical name;
     single-entry rewrites ("copilot" -> "github-copilot") are correct routing and keep resolving

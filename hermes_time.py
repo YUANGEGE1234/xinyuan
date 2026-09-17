@@ -1,4 +1,4 @@
-"""Timezone-aware clock for Hermes.
+"""Timezone-aware clock for Xinyuan.
 
 ``now()`` returns a tz-aware datetime in the user's configured IANA timezone. Resolution order:
 ``HERMES_TIMEZONE`` env var, then ``timezone`` in ``~/.hermes/config.yaml``, else server-local

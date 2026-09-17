@@ -10,7 +10,7 @@ import re
 from typing import Any, Dict, Mapping
 
 
-# Sources Hermes owns and may persist with secrets.  Any other non-empty,
+# Sources Xinyuan owns and may persist with secrets.  Any other non-empty,
 # non-manual source is borrowed/reference-only so new external providers fail
 # closed at the disk boundary.
 _PERSISTABLE_PROVIDER_SOURCES = frozenset({

@@ -151,7 +151,7 @@ class CommandSource(SecretSource):
         ErrorKind.NOT_CONFIGURED: "Set secrets.command.command in config.yaml to a fast, "
                                   "non-interactive helper that prints KEY=VALUE lines.",
         ErrorKind.INTERNAL: "Run the helper manually in a shell to see its real error — "
-                            "Hermes discards helper stderr so diagnostics can't leak "
+                            "Xinyuan discards helper stderr so diagnostics can't leak "
                             "secret material.",
     }
 

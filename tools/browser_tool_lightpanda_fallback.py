@@ -62,7 +62,7 @@ def lightpanda_engine_status() -> Tuple[bool, str]:
             return False, "Browser Use cloud (BROWSER_USE_API_KEY) is selected"
     except Exception as e:
         _bt.logger.debug("legacy Browser Use cloud check failed: %s", e)
-    return True, "Browser Use mode: Hermes spawns `lightpanda serve` per session"
+    return True, "Browser Use mode: Xinyuan spawns `lightpanda serve` per session"
 
 
 def _lightpanda_fallback_reason(engine: str, command: str, result: Dict[str, Any]) -> Optional[str]:

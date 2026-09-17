@@ -1,4 +1,4 @@
-"""Hermes CLI - Unified command-line interface for Hermes Agent."""
+"""Xinyuan CLI - Unified command-line interface for Xinyuan Agent."""
 
 import os
 import sys

@@ -545,7 +545,7 @@ _INFO_FIELDS = (
     ("description", "Description:  "),
     ("author", "Author:       "),
     ("license", "License:      "),
-    ("hermes_requires", "Requires:     Hermes "),
+    ("hermes_requires", "Requires:     Xinyuan "),
     ("source", "Source:       "),
     ("installed_at", "Installed:    "),
 )

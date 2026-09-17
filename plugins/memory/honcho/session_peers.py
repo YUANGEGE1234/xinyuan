@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger("plugins.memory.honcho.session")
 
 _PEER_ID_HASH_ESCALATION_LENGTHS = (8, 12, 16, 24, 32, 64)
-# Author ids the bot-mode dispatcher assigns to other Hermes profiles (tools/bot_relay.py).
+# Author ids the bot-mode dispatcher assigns to other Xinyuan profiles (tools/bot_relay.py).
 BOT_AUTHOR_PREFIX = "bot:"
 
 

@@ -92,10 +92,10 @@ def _wait_or_kill(process: Any) -> None:
 
 class _EmbeddedCuaDaemon:
     """Private daemon for a non-standard permission mode. cua-driver's permission mode is immutable after daemon
-    startup, so reusing the machine-wide daemon would let one Hermes session's YOLO choice affect another. A
+    startup, so reusing the machine-wide daemon would let one Xinyuan session's YOLO choice affect another. A
     private daemon gives the session its own socket, runtime and launch-time authorization; on macOS it is
     launched through CuaDriver.app so TCC stays attached to ``com.trycua.driver``. ``unrestricted`` = explicit
-    Hermes YOLO (``--dangerously-bypass-approvals``); ``bounded`` = a user-reviewed capability manifest approved
+    Xinyuan YOLO (``--dangerously-bypass-approvals``); ``bounded`` = a user-reviewed capability manifest approved
     at launch is the authorization boundary, not a runtime prompt. The manifest is a ceiling, not a mode: it "can
     narrow a profile but never widen it", so a configured v3 manifest is forwarded even for ``unrestricted``
     (bounding an approval-bypassed run). Mandatory for ``bounded``, optional everywhere else."""

@@ -31,7 +31,7 @@ def _declared_model_ids(value: Any) -> list[str]:
     if isinstance(value, str):
         candidates: Any = [value]
     elif isinstance(value, dict):
-        # Pre-fix Hermes wrote sentinel keys inside the user-facing ``models`` mapping.
+        # Pre-fix Xinyuan wrote sentinel keys inside the user-facing ``models`` mapping.
         candidates = (k for k in value if k not in ("__explicit_model_allowlist__", "__discovered_model_catalog__"))
     elif isinstance(value, (list, tuple)):
         candidates = (_declared_item_id(item) if isinstance(item, dict) else item for item in value)
@@ -56,7 +56,7 @@ def _declared_item_id(item: dict) -> Any:
 
 
 def _entry_models_discovered(entry: Any) -> bool:
-    """True when the entry's ``models`` mapping was auto-discovered by Hermes.
+    """True when the entry's ``models`` mapping was auto-discovered by Xinyuan.
 
     Current shape: entry-level ``models_discovered: true``. Older versions wrote an in-mapping
     ``__discovered_model_catalog__: true`` sentinel — accepted on read (the next save migrates it)."""
@@ -74,7 +74,7 @@ def _models_config_is_allowlist(value: Any, discovered: bool = False) -> bool:
     ``_save_custom_provider`` / the wizard, not a catalog narrow (treating it as one made GUI
     pickers show only the saved default for keyless Ollama while the CLI live-probed). List and
     string shapes remain allowlists for no-key endpoints; pin a dict catalog with
-    ``discover_models: false``. A catalog Hermes itself persisted (``discovered``) is never a pin."""
+    ``discover_models: false``. A catalog Xinyuan itself persisted (``discovered``) is never a pin."""
     if discovered:
         return False
     if isinstance(value, str):
@@ -98,7 +98,7 @@ def _bare_custom_provider_def(current_base_url: str) -> Optional[ProviderDef]:
 
 _HERMES_MODEL_WARNING = (
     "Nous Research Hermes 3 & 4 models are NOT agentic and are not designed "
-    "for use with Hermes Agent. They lack the tool-calling capabilities "
+    "for use with Xinyuan Agent. They lack the tool-calling capabilities "
     "required for agent workflows. Consider using an agentic model instead "
     "(Claude, GPT, Gemini, DeepSeek, etc.).")
 
@@ -1152,7 +1152,7 @@ def _convert_vendor_colon_slug(st: _Switch) -> None:
     a variant tag (:free, :extended, :fast) that must be preserved.
 
     On an aggregator every ``left:right`` is a slug. Elsewhere the colon is converted only when
-    ``left`` names a provider Hermes knows, so ``/model alibaba:qwen3.6-plus`` routes like
+    ``left`` names a provider Xinyuan knows, so ``/model alibaba:qwen3.6-plus`` routes like
     ``alibaba/qwen3.6-plus`` (#9748) while Ollama-style tags (``qwen3.5:4b``) stay intact."""
     raw_input = st.raw_input
     colon_pos = raw_input.find(":")

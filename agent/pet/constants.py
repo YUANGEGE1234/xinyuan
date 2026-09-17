@@ -2,7 +2,7 @@
 
 Common petdex/Codex pet geometry. ``pet.json`` usually only carries
 ``id``/``displayName``/``description``/``spritesheetPath``; row taxonomy is
-inferred from the atlas shape so Hermes renders both legacy 8-row sheets and
+inferred from the atlas shape so Xinyuan renders both legacy 8-row sheets and
 current 9-row Codex sheets.
 """
 
@@ -54,7 +54,7 @@ def resolve_cols(scale: float, unicode_cols: int = 0) -> int:
 
 
 class PetState(str, Enum):
-    """Animation state a pet can be shown in (Hermes names; Codex rows say ``jumping``/``running`` for ``jump``/``run``)."""
+    """Animation state a pet can be shown in (Xinyuan names; Codex rows say ``jumping``/``running`` for ``jump``/``run``)."""
 
     IDLE = "idle"
     WAVE = "wave"
@@ -73,7 +73,7 @@ CODEX_STATE_ROWS: list[str] = ["idle", "running-right", "running-left", "waving"
 
 # Default for callers without a sheet: generated pets and the Codex contract use 9 rows.
 STATE_ROWS: list[str] = CODEX_STATE_ROWS
-# Canonical Hermes names -> accepted row-name aliases in descending preference.
+# Canonical Xinyuan names -> accepted row-name aliases in descending preference.
 _CODEX_NAMES = {"wave": "waving", "jump": "jumping", "run": "running"}
 STATE_ALIASES: dict[str, tuple[str, ...]] = {
     s: (s, _CODEX_NAMES[s]) if s in _CODEX_NAMES else (s,) for s in ("idle", "wave", "jump", "run", "failed", "review", "waiting")

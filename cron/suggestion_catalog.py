@@ -1,6 +1,6 @@
 """Curated catalog of starter cron-job suggestions.
 
-These are the built-in automations Hermes can offer a new user out of the box — the ``catalog``
+These are the built-in automations Xinyuan can offer a new user out of the box — the ``catalog``
 source of the unified suggestion surface. Each entry is a ready-to-run ``cron.jobs.create_job`` spec
 wrapped as a suggestion; the user accepts via ``/suggestions``. Nothing here auto-schedules.
 

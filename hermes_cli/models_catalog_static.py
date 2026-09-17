@@ -478,7 +478,7 @@ _PROVIDER_ALIASES = dict((
 ))
 
 
-# Offline/fresh-install fallback for the model Hermes silently lands on when the user never picked
+# Offline/fresh-install fallback for the model Xinyuan silently lands on when the user never picked
 # one (GUI onboarding confirm card, empty ``model.default``, provider-set-but-model-missing). The
 # AUTHORITATIVE source is the remote catalog manifest, which labels exactly one entry per provider
 # ``"default": true`` (get_default_model_from_cache) so the default rotates without a release; this
@@ -547,7 +547,7 @@ _MODELS_DEV_PREFERRED: frozenset[str] = frozenset({
 _KEYLESS_STABLE_CACHE_PROVIDERS = frozenset({"opencode-free"})
 
 
-# OpenRouter-style ids -> Copilot ids. Dash-notation Claude ids are accepted too: Hermes' default
+# OpenRouter-style ids -> Copilot ids. Dash-notation Claude ids are accepted too: Xinyuan' default
 # Claude IDs use hyphens (Anthropic native) but Copilot's API only accepts dot-notation, so a
 # copilot + hyphenated default would otherwise hit HTTP 400 "model_not_supported".
 _COPILOT_MODEL_ALIASES = dict((

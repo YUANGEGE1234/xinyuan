@@ -1,6 +1,6 @@
 """Host-owned cancellation for agents created deep inside synchronous work.
 
-A host that runs a blocking command on a worker thread (Hermes Console) never sees
+A host that runs a blocking command on a worker thread (Xinyuan Console) never sees
 the ``AIAgent`` a CLI subcommand forks inside it, so it cannot call ``interrupt()``
 when the user cancels. The host binds an :class:`InterruptScope` around the work;
 every ``run_conversation()`` under that scope registers its agent, and

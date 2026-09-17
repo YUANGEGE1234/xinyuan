@@ -1,4 +1,4 @@
-"""hermes import-agent — import Claude Code / Codex CLI setups into Hermes.
+"""hermes import-agent — import Claude Code / Codex CLI setups into Xinyuan.
 
 Secrets are NEVER imported: credential files are never read, and MCP env vars with secret-looking
 names (KEY, TOKEN, SECRET, PASSWORD, ...) are stripped and reported so the user re-adds them via
@@ -23,7 +23,7 @@ from utils import atomic_write_text, atomic_yaml_write
 
 logger = logging.getLogger(__name__)
 
-# Entry delimiter of the Hermes memory store (memories/MEMORY.md) and the openclaw script.
+# Entry delimiter of the Xinyuan memory store (memories/MEMORY.md) and the openclaw script.
 ENTRY_DELIMITER = "\n§\n"
 # Character budget for merged memory files (openclaw script default).
 MEMORY_CHAR_LIMIT = 20_000
@@ -205,7 +205,7 @@ def sanitize_mcp_env(env: Any) -> Tuple[Dict[str, str], List[str]]:
 
 
 def _translate_mcp_server(name: str, srv: Dict[str, Any]) -> Tuple[Dict[str, Any], List[str]]:
-    """Map one Claude/Codex MCP server entry to Hermes shape; returns (server, stripped secret paths)."""
+    """Map one Claude/Codex MCP server entry to Xinyuan shape; returns (server, stripped secret paths)."""
     hermes_srv: Dict[str, Any] = {}
     stripped: List[str] = []
     if srv.get("command"):
@@ -317,7 +317,7 @@ class AgentImporter:
         commands_dir = self.source_root / "commands"
         if commands_dir.is_dir() and any(commands_dir.glob("*.md")):
             self.record("slash-commands", commands_dir, None, "skipped",
-                        "Claude slash commands have no direct Hermes equivalent — "
+                        "Claude slash commands have no direct Xinyuan equivalent — "
                         "consider converting them into skills")
 
     def _run_codex(self) -> None:
@@ -473,7 +473,7 @@ class AgentImporter:
                 continue
             if name in existing and not self.overwrite:
                 self.record(kind, name, f"mcp_servers.{name}", "conflict",
-                            "MCP server already exists in Hermes config")
+                            "MCP server already exists in Xinyuan config")
                 continue
             hermes_srv, stripped = _translate_mcp_server(name, srv)
             self.stripped_secrets.extend(stripped)
@@ -552,7 +552,7 @@ def import_agent_command(args) -> None:
 
     print()
     print(color("┌─────────────────────────────────────────────────────────┐", Colors.MAGENTA))
-    print(color("│          ☤ Hermes — Import From Another Agent          │", Colors.MAGENTA))
+    print(color("│          ☤ Xinyuan — Import From Another Agent          │", Colors.MAGENTA))
     print(color("└─────────────────────────────────────────────────────────┘", Colors.MAGENTA))
     if not source_dir.is_dir():
         print()

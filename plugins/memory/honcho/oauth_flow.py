@@ -27,7 +27,7 @@ from plugins.memory.honcho.client import HonchoClientConfig, resolve_active_host
 
 logger = logging.getLogger(__name__)
 
-# Loopback redirect registered for the Hermes OAuth client. IP-literal so the browser can't resolve the
+# Loopback redirect registered for the Xinyuan OAuth client. IP-literal so the browser can't resolve the
 # advertised host to ::1 and miss the IPv4 bind.
 LOOPBACK_HOST = "127.0.0.1"
 LOOPBACK_PORT = 8765
@@ -151,7 +151,7 @@ _CALLBACK_PAGE = (
     "display:flex;align-items:center;justify-content:center;height:100vh;margin:0'><div>{body}</div>"
 )
 _CALLBACK_HTML = _CALLBACK_PAGE.format(
-    title="Honcho connected", body="Connected to Honcho. You can close this tab and return to Hermes."
+    title="Honcho connected", body="Connected to Honcho. You can close this tab and return to Xinyuan."
 ).encode()
 _CALLBACK_ERROR_HTML = _CALLBACK_PAGE.format(  # ``{error}`` is filled per request
     title="Honcho sign-in failed", body="Sign-in was not completed ({error}). You can close this tab and re-run setup."

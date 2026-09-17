@@ -17,7 +17,7 @@ except ModuleNotFoundError:
     # UTF-8 stdio setup is skipped on Windows; POSIX is unaffected.
     pass
 else:
-    # Stop a ``utils/``/``proxy/``/``ui/`` package in the launch cwd from shadowing Hermes modules.
+    # Stop a ``utils/``/``proxy/``/``ui/`` package in the launch cwd from shadowing Xinyuan modules.
     hermes_bootstrap.harden_import_path()
 
 import argparse
@@ -85,11 +85,11 @@ def _load_env() -> None:
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(prog="hermes-acp", description="Run Hermes Agent as an ACP stdio server.")
-    parser.add_argument("--version", action="store_true", help="Print Hermes version and exit")
+    parser = argparse.ArgumentParser(prog="hermes-acp", description="Run Xinyuan Agent as an ACP stdio server.")
+    parser.add_argument("--version", action="store_true", help="Print Xinyuan version and exit")
     parser.add_argument("--check", action="store_true", help="Verify ACP dependencies and adapter imports, then exit")
     parser.add_argument("--setup", action="store_true",
-                        help="Run interactive Hermes provider/model setup for ACP terminal auth")
+                        help="Run interactive Xinyuan provider/model setup for ACP terminal auth")
     parser.add_argument("--setup-browser", action="store_true",
                         help="Install agent-browser + Playwright Chromium into ~/.hermes/node/ "
                              "for browser tool support. Idempotent.")
@@ -109,7 +109,7 @@ def _run_check() -> None:
     import acp  # noqa: F401
     from acp_adapter.server import HermesACPAgent  # noqa: F401
 
-    print("Hermes ACP check OK")
+    print("Xinyuan ACP check OK")
 
 
 def _run_setup() -> None:

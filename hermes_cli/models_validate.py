@@ -210,7 +210,7 @@ def _validate_ollama_native(req: _Request) -> Optional[dict[str, Any]]:
     if models is None:
         return _soft_accept(
             f"Note: could not reach this Ollama endpoint's `/api/tags` model listing to validate `{req.requested}`. "
-            "Hermes will save the model name, but local Ollama model discovery could not verify it."
+            "Xinyuan will save the model name, but local Ollama model discovery could not verify it."
         )
     match = _match_in_catalog(req.lookup, models, suggest_label="Similar local Ollama models")
     if match.exact:
@@ -291,7 +291,7 @@ def _validate_static_catalog(req: _Request) -> Optional[dict[str, Any]]:
         from agent.model_metadata import CODEX_CONTEXT_VARIANT_SUFFIX, is_codex_context_variant
 
         # Ineligible ``-900k`` aliases must be rejected BEFORE the hidden-slug soft-accept:
-        # the suffix is a Hermes picker convention, so an unknown `*-900k` can never be a real
+        # the suffix is a Xinyuan picker convention, so an unknown `*-900k` can never be a real
         # hidden provider slug — soft-accepting one silently runs at 272K on a different model.
         if req.lookup.strip().lower().endswith(CODEX_CONTEXT_VARIANT_SUFFIX) and req.lookup not in set(catalog):
             if is_codex_context_variant(req.lookup):
@@ -339,7 +339,7 @@ def _validate_minimax(req: _Request) -> Optional[dict[str, Any]]:
     return match.verdict(req) or _soft_accept(
         f"Note: `{req.requested}` was not found in the MiniMax catalog."
         f"{match.suggestion_text}"
-        "\n  MiniMax does not expose a /models endpoint, so Hermes cannot verify the model name."
+        "\n  MiniMax does not expose a /models endpoint, so Xinyuan cannot verify the model name."
         "\n  The model may still work if it exists on the server."
     )
 

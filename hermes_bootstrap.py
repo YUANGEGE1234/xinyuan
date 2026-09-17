@@ -1,4 +1,4 @@
-"""Windows UTF-8 bootstrap for Hermes entry points (no-op on POSIX).
+"""Windows UTF-8 bootstrap for Xinyuan entry points (no-op on POSIX).
 
 Windows binds stdio to the console code page (cp1252), so ``print("café")`` raises
 ``UnicodeEncodeError``, and Python children inherit the same default unless
@@ -75,13 +75,13 @@ def suppress_platform_ver_console() -> None:
 
 
 def harden_import_path(src_root: str | None = None) -> None:
-    """Stop a package in the current directory from shadowing Hermes modules.
+    """Stop a package in the current directory from shadowing Xinyuan modules.
 
-    Hermes ships top-level modules with common names (``utils``, ``proxy``, ``ui``); a
+    Xinyuan ships top-level modules with common names (``utils``, ``proxy``, ``ui``); a
     project with its own ``utils/`` launched from its directory would win the import.
     The cwd reaches ``sys.path`` as ``""``/``"."`` (script/``-m`` launches) AND as an
     absolute path (venv activation, PYTHONPATH), so both are handled: relative forms are
-    dropped and the Hermes root is *relocated* to the front, not merely inserted when
+    dropped and the Xinyuan root is *relocated* to the front, not merely inserted when
     absent. ``src_root`` defaults to this module's directory (the repo root for every
     shipped entry point), so no spawner env var is required.
     """

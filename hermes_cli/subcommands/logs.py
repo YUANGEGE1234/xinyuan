@@ -9,7 +9,7 @@ from typing import Callable
 def build_logs_parser(subparsers, *, cmd_logs: Callable) -> None:
     """Attach the ``logs`` subcommand to ``subparsers``."""
     logs_parser = subparsers.add_parser(
-        "logs", help="View and filter Hermes log files",
+        "logs", help="View and filter Xinyuan log files",
         description="View, tail, and filter agent.log / errors.log / gateway.log / gui.log / desktop.log",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""\

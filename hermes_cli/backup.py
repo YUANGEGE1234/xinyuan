@@ -135,7 +135,7 @@ _EXTERNAL_PREFIX = "_external/"
 
 
 class BackupInProgressError(RuntimeError):
-    """Raised when another process already owns the Hermes backup slot."""
+    """Raised when another process already owns the Xinyuan backup slot."""
 
 
 class _SQLiteSnapshotError(RuntimeError):
@@ -175,7 +175,7 @@ def _backup_operation_lock(hermes_home: Path, timeout_seconds: float = 0.25):
                 acquired = True
             except OSError:
                 if time.monotonic() >= deadline:
-                    raise BackupInProgressError("another Hermes backup is already running")
+                    raise BackupInProgressError("another Xinyuan backup is already running")
                 time.sleep(0.05)
         yield
     finally:
@@ -556,7 +556,7 @@ def _unlink_move_restore_db(src: Path, dst: Path) -> bool:
         return True
     except LiveConnectionError as exc2:
         logger.error("Refusing unlink+move restore of %s: %s Close the in-process "
-                     "database handles (or restart Hermes) and retry.", dst, exc2)
+                     "database handles (or restart Xinyuan) and retry.", dst, exc2)
         return False
     except Exception as exc2:
         logger.error("Fallback restore also failed for %s -> %s: %s", src, dst, exc2)
@@ -664,7 +664,7 @@ def _collect_external_entries() -> tuple[list[tuple[Path, str]], list[str]]:
 
 
 def run_backup(args) -> None:
-    """Create a zip backup of the Hermes home directory."""
+    """Create a zip backup of the Xinyuan home directory."""
     hermes_root = get_default_hermes_root()
 
     if not hermes_root.is_dir():
@@ -749,13 +749,13 @@ def _run_backup_locked(args, hermes_root: Path) -> None:
 # --- Import ---
 
 def _validate_backup_zip(zf: zipfile.ZipFile) -> tuple[bool, str]:
-    """Check that a zip looks like a Hermes backup."""
+    """Check that a zip looks like a Xinyuan backup."""
     names = zf.namelist()
     if not names:
         return False, "zip archive is empty"
     # Telltale files a hermes home has — at the root or one level deep (zipped directory).
     if not any(Path(n).name in {"config.yaml", ".env", "state.db"} for n in names):
-        return False, "zip does not appear to be a Hermes backup (no config.yaml, .env, or state databases found)"
+        return False, "zip does not appear to be a Xinyuan backup (no config.yaml, .env, or state databases found)"
     return True, ""
 
 
@@ -817,7 +817,7 @@ def _extract_member_atomically(
 def _count_session_rows(path: Path) -> Optional[Tuple[int, int]]:
     """``(sessions, messages)`` in session database *path*; read-only, best effort.
 
-    ``None`` means "unknown" (missing, not a Hermes session store, unreadable) — never "zero":
+    ``None`` means "unknown" (missing, not a Xinyuan session store, unreadable) — never "zero":
     acting on an unreadable database would mask the very loss this count exists to surface.
     Same contract as :func:`_count_cron_jobs`.
     """
@@ -880,7 +880,7 @@ def _confirm_import_overwrite(hermes_root: Path) -> bool:
     """Prompt before importing over an existing installation; True when import may proceed."""
     if not any((hermes_root / m).exists() for m in ("config.yaml", ".env")):
         return True
-    print("\nWarning: Target directory already has Hermes configuration.\n"
+    print("\nWarning: Target directory already has Xinyuan configuration.\n"
           "Importing will overwrite existing files with backup contents.\n")
     try:
         answer = input("Continue? [y/N] ").strip().lower()
@@ -967,7 +967,7 @@ def _import_members(
 
 
 def run_import(args) -> None:
-    """Restore a Hermes backup from a zip file."""
+    """Restore a Xinyuan backup from a zip file."""
     zip_path = Path(args.zipfile).expanduser().resolve()
     if not zip_path.is_file():
         print(f"Error: File not found: {zip_path}")
@@ -1025,7 +1025,7 @@ def run_import(args) -> None:
             for pname in restored_profiles:
                 print(f"  hermes -p {pname} gateway install")
         _revive_gateway_after_import(hermes_root)
-        print("Done. Your Hermes configuration has been restored.")
+        print("Done. Your Xinyuan configuration has been restored.")
 
 
 def _restore_profile_wrappers(hermes_root: Path) -> List[str]:

@@ -1,1 +1,1 @@
-# Hermes plugins package
+# Xinyuan plugins package

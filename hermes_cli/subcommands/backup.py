@@ -8,8 +8,8 @@ from typing import Callable
 def build_backup_parser(subparsers, *, cmd_backup: Callable) -> None:
     """Attach the ``backup`` subcommand to ``subparsers``."""
     backup_parser = subparsers.add_parser(
-        "backup", help="Back up Hermes home directory to a zip file",
-        description="Create a zip archive of your entire Hermes configuration, "
+        "backup", help="Back up Xinyuan home directory to a zip file",
+        description="Create a zip archive of your entire Xinyuan configuration, "
         "skills, sessions, and data (excludes the hermes-agent codebase). "
         "Use --quick for a fast snapshot of just critical state files.")
     backup_parser.add_argument(

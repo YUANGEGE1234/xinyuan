@@ -54,7 +54,7 @@ def register_cli(subparser: argparse.ArgumentParser) -> None:
     p["install"].add_argument("--yes", "-y", action="store_true",
                               help="Answer yes to all prompts (use with care; will run sudo apt-get or brew without asking).")
     p["join"].add_argument("url", help="https://meet.google.com/...")
-    p["join"].add_argument("--guest-name", default="Hermes Agent")
+    p["join"].add_argument("--guest-name", default="Xinyuan Agent")
     p["join"].add_argument("--duration", default=None, help="e.g. 30m, 2h, 90s")
     p["join"].add_argument("--headed", action="store_true", help="show browser")
     p["join"].add_argument("--mode", choices=("transcribe", "realtime"), default="transcribe",

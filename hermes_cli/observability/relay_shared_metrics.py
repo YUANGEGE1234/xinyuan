@@ -1,4 +1,4 @@
-"""Direct NeMo Relay integration for Hermes shared client metrics."""
+"""Direct NeMo Relay integration for Xinyuan shared client metrics."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def _session_pair(event: dict[str, Any], key: str) -> tuple[str, str] | None:
 
 
 def _retry_ordinal(event: dict[str, Any]) -> int:
-    """Hermes's provider-local retry ordinal; 0 when absent or malformed."""
+    """Xinyuan's provider-local retry ordinal; 0 when absent or malformed."""
     value = event.get("retry_count")
     return value if isinstance(value, int) and not isinstance(value, bool) and value > 0 else 0
 
@@ -142,12 +142,12 @@ class _MetricsSession:
 
 
 class _Runtime:
-    """Own shared-metrics state layered on the Hermes core Relay host."""
+    """Own shared-metrics state layered on the Xinyuan core Relay host."""
 
     def __init__(self, host: relay_runtime.RelayRuntime | None = None) -> None:
         resolved_host = host or relay_runtime.get_runtime()
         if resolved_host is None:
-            raise RuntimeError("Hermes core Relay runtime is unavailable")
+            raise RuntimeError("Xinyuan core Relay runtime is unavailable")
         self.host: relay_runtime.RelayRuntime = resolved_host
         self.relay = self.host.relay
         self._active = True
@@ -207,7 +207,7 @@ class _Runtime:
         )
 
     def start_task(self, event: dict[str, Any]) -> _TaskRun | None:
-        """Open one Relay function scope for a Hermes task run."""
+        """Open one Relay function scope for a Xinyuan task run."""
         task_key = _session_pair(event, "task_id")
         if task_key is None:
             return None
@@ -289,14 +289,14 @@ class _Runtime:
                 existing.fields = fields
                 if task is not None:
                     # Every repeated start for one logical request is another physical
-                    # attempt. Provider fallback resets Hermes's provider-local retry
+                    # attempt. Provider fallback resets Xinyuan's provider-local retry
                     # ordinal, so ordinal deltas are not a reliable task-level counter.
                     task.retry_count += 1
                 return
             if task is not None:
                 task.model_call_ids.add(request_id)
                 if _retry_ordinal(event) > 0:
-                    # A real Hermes retry can advance api_request_id while carrying the
+                    # A real Xinyuan retry can advance api_request_id while carrying the
                     # retry ordinal. Count that physical attempt.
                     task.retry_count += 1
             handle = self._run_scoped(
@@ -442,7 +442,7 @@ class _Runtime:
                 session, _text(event, "task_id"), event
             )
         if finished:
-            self._flush_and_export("Hermes shared-metrics task flush failed")
+            self._flush_and_export("Xinyuan shared-metrics task flush failed")
 
     def close_session(self, event: dict[str, Any]) -> None:
         session = self._session(event)
@@ -456,7 +456,7 @@ class _Runtime:
             self.relay.subscribers.flush()
         except Exception as exc:
             logger.warning(
-                "Hermes shared-metrics session %s closed with errors: subscriber flush failed: %s",
+                "Xinyuan shared-metrics session %s closed with errors: subscriber flush failed: %s",
                 session.session_id,
                 exc,
             )
@@ -473,7 +473,7 @@ class _Runtime:
             self._safe(self.close_session, {"session_id": session_id})
         if not self._registered:
             return
-        self._flush_and_export("Hermes shared-metrics shutdown flush failed")
+        self._flush_and_export("Xinyuan shared-metrics shutdown flush failed")
         self._deregister()
         self._release()
 
@@ -677,7 +677,7 @@ class _Runtime:
             fallback_duration_ms=_elapsed_ms(tool_call.started_ns),
         )
         self._guarded(
-            "Hermes shared-metrics tool call close failed",
+            "Xinyuan shared-metrics tool call close failed",
             lambda: self._run_in_task(
                 task, self.relay.tools.call_end, tool_call.handle,
                 self.relay.ToolExecutionResult(fields),
@@ -698,7 +698,7 @@ class _Runtime:
         if model_call is None:
             return
         self._guarded(
-            "Hermes shared-metrics model call close failed",
+            "Xinyuan shared-metrics model call close failed",
             self._run_scoped, session, session.tasks.get(model_call.task_id),
             self.relay.llm.call_end, model_call.handle, model_call.fields,
             metadata=self._event_metadata(),
@@ -739,7 +739,7 @@ class _Runtime:
         )
         try:
             self._guarded(
-                "Hermes shared-metrics task close failed",
+                "Xinyuan shared-metrics task close failed",
                 self._run_in_task, task, relay_runtime.pop_relay_scope, self.relay, task.handle,
                 output=fields, metadata=self._event_metadata(),
             )
@@ -813,7 +813,7 @@ class _Runtime:
 
     @classmethod
     def _safe(cls, callback: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
-        return cls._guarded("Hermes shared metrics operation failed", callback, *args, **kwargs)
+        return cls._guarded("Xinyuan shared metrics operation failed", callback, *args, **kwargs)
 
 
 def _raw_config() -> dict[str, Any]:
@@ -845,12 +845,12 @@ def _reconcile_store_consent(store: SharedMetricsStore, send_enabled: bool) -> N
 
 
 def enabled() -> bool:
-    """Return the shared-metrics policy for the active Hermes profile."""
+    """Return the shared-metrics policy for the active Xinyuan profile."""
     profile_key = relay_runtime.current_profile_key()
     try:
         config: Any = _raw_config()
     except Exception:
-        logger.debug("Unable to read Hermes shared-metrics policy", exc_info=True)
+        logger.debug("Unable to read Xinyuan shared-metrics policy", exc_info=True)
         config = None
     for key in ("telemetry", "shared_metrics"):
         config = config.get(key) if isinstance(config, dict) else None
@@ -899,7 +899,7 @@ def _reconcile_send_consent_once() -> None:
 
 
 def observe_lifecycle(hook_name: str, **kwargs: Any) -> None:
-    """Project one Hermes lifecycle event into the core Relay integration."""
+    """Project one Xinyuan lifecycle event into the core Relay integration."""
     _reconcile_send_consent_once()
     if not handles_hook(hook_name) or not relay_runtime.relay_instrumentation_enabled():
         return
@@ -909,11 +909,11 @@ def observe_lifecycle(hook_name: str, **kwargs: Any) -> None:
     try:
         _HOOK_HANDLERS[hook_name](runtime, kwargs)
     except Exception:
-        logger.warning("Hermes shared metrics hook failed: %s", hook_name, exc_info=True)
+        logger.warning("Xinyuan shared metrics hook failed: %s", hook_name, exc_info=True)
 
 
 def _with_runtime_toolset(event: dict[str, Any]) -> dict[str, Any]:
-    """Attach the toolset already declared by Hermes's runtime registry."""
+    """Attach the toolset already declared by Xinyuan's runtime registry."""
     tool_name = _text(event, "tool_name")
     if event.get("toolset") or not tool_name:
         return event
@@ -960,7 +960,7 @@ def _prepare_core_session(host: relay_runtime.RelayRuntime, context: dict[str, A
 def start_task_run(
     *, session_id: str, task_id: str, platform: str, parent_session_id: str = ""
 ) -> None:
-    """Start task metrics at the outer Hermes execution boundary."""
+    """Start task metrics at the outer Xinyuan execution boundary."""
     _run_task_hook(
         "start_task", retry_failed=True, session_id=session_id, task_id=task_id,
         platform=platform, parent_session_id=parent_session_id,
@@ -1027,7 +1027,7 @@ def _get_runtime(
         try:
             _RUNTIMES[profile_key] = runtime = _Runtime(host=host)
         except Exception:
-            logger.warning("Hermes shared metrics initialization failed", exc_info=True)
+            logger.warning("Xinyuan shared metrics initialization failed", exc_info=True)
             _RUNTIMES[profile_key] = _RUNTIME_FAILED
             return None
         return runtime

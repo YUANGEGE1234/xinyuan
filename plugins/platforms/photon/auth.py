@@ -38,12 +38,12 @@ class PhotonDashboardAuthError(RuntimeError):
 
 
 # Hosted Photon allowlists device clients (unregistered → 400 invalid_client); use Photon's
-# published CLI client until Hermes gets its own client_id.
+# published CLI client until Xinyuan gets its own client_id.
 DEFAULT_CLIENT_ID = "photon-cli"
 DEFAULT_SCOPE = "openid profile email"
 DEFAULT_DASHBOARD_HOST = "https://app.photon.codes"
 DEFAULT_SPECTRUM_HOST = "https://spectrum.photon.codes"
-DEFAULT_PROJECT_NAME = "Hermes Agent"
+DEFAULT_PROJECT_NAME = "Xinyuan Agent"
 DEFAULT_POLL_INTERVAL = 5  # RFC 8628 polling defaults; Photon's `interval` / `expires_in` win
 DEFAULT_POLL_TIMEOUT = 1800
 E164_RE = re.compile(r"^\+[1-9]\d{6,14}$")

@@ -267,7 +267,7 @@ def _check_manifest_v2(report: "DoctorReport", manifest: Any) -> None:
     if missing:
         report.warning(
             "declared python_dependencies not installed: " + ", ".join(missing)
-            + " — Hermes never auto-installs plugin dependencies; install manually: pip install "
+            + " — Xinyuan never auto-installs plugin dependencies; install manually: pip install "
             + " ".join(f"'{m}'" for m in missing))
 
     schema = getattr(manifest, "config_schema", {}) or {}
@@ -280,7 +280,7 @@ def _check_manifest_v2(report: "DoctorReport", manifest: Any) -> None:
 
 
 def doctor_plugin(target: str | os.PathLike[str] | None = None) -> DoctorReport:
-    """Validate one plugin through Hermes' real scanner and registration path."""
+    """Validate one plugin through Xinyuan' real scanner and registration path."""
     try:
         path = resolve_plugin_path(target)
     except FileNotFoundError as exc:

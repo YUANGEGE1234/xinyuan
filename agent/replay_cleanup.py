@@ -26,7 +26,7 @@ _INTERRUPTED_NOTICES = (
     "[Orphan recovery: interrupted read-only tool did not complete.]",
 )
 _DANGLING_NOTICES = (
-    "[Orphan recovery: this tool may have executed before Hermes stopped; its effect is UNKNOWN. Inspect current state before retrying.]",
+    "[Orphan recovery: this tool may have executed before Xinyuan stopped; its effect is UNKNOWN. Inspect current state before retrying.]",
     "[Orphan recovery: this read-only tool did not complete and had no effect.]",
 )
 

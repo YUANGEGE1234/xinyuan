@@ -1,4 +1,4 @@
-"""Unified provider-credential lifecycle across every store Hermes reads.
+"""Unified provider-credential lifecycle across every store Xinyuan reads.
 
 Deleting a key from ``.env`` alone leaves the stale ``credential_pool`` entry (and the
 ``provider_models_cache.json`` row) behind, so the provider keeps appearing in the model picker

@@ -1,4 +1,4 @@
-"""Profile-scoped NeMo Relay runtimes owned by the Hermes agent core."""
+"""Profile-scoped NeMo Relay runtimes owned by the Xinyuan agent core."""
 
 from __future__ import annotations
 
@@ -140,7 +140,7 @@ class _RelayPluginConfigurationLoadError(RuntimeError):
 
 @dataclass
 class RelaySession:
-    """One isolated Relay scope stack owned by a Hermes session."""
+    """One isolated Relay scope stack owned by a Xinyuan session."""
 
     session_id: str
     parent_session_id: str = ""
@@ -189,7 +189,7 @@ class RelayOperationLease:
         """Run cleanup while this lease still owns the runtime lifetime."""
         with self._lock:
             if self._runtime is None:
-                raise RuntimeError("Hermes Relay operation lease is released")
+                raise RuntimeError("Xinyuan Relay operation lease is released")
             return self._runtime._run_in_session_untracked(session, callback, *args, **kwargs)
 
     def release(self) -> None:
@@ -218,7 +218,7 @@ class _ProcessRelayPluginConfiguration:
                 self._state = self._preflight(relay) or self._activate(relay)
                 if self._state is _RelayPluginConfigurationState.ACTIVE:
                     logger.info(
-                        "Relay plugins are active process-wide and apply to all profiles hosted by this Hermes process."
+                        "Relay plugins are active process-wide and apply to all profiles hosted by this Xinyuan process."
                     )
             self._owners.add(id(owner))
             return self._state
@@ -229,7 +229,7 @@ class _ProcessRelayPluginConfiguration:
                 return _RelayPluginConfigurationState.DISABLED
         except Exception as exc:
             self._activation = None
-            logger.warning("Hermes Relay plugin initialization failed: %s", exc, exc_info=True)
+            logger.warning("Xinyuan Relay plugin initialization failed: %s", exc, exc_info=True)
             return _RelayPluginConfigurationState.FAILED
         self._relay = relay
         return _RelayPluginConfigurationState.ACTIVE
@@ -238,20 +238,20 @@ class _ProcessRelayPluginConfiguration:
         """Return a terminal state when the process cannot take ownership; None to proceed."""
         if self._relay is not None and not self._clear_active():
             logger.warning(
-                "Hermes Relay plugin cleanup is still pending; refusing to replace the process-global configuration"
+                "Xinyuan Relay plugin cleanup is still pending; refusing to replace the process-global configuration"
             )
             return _RelayPluginConfigurationState.FAILED
         try:
             existing_report = relay.plugin.report()
         except Exception:
             logger.warning(
-                "Hermes could not determine whether a process-global Relay plugin configuration is already "
+                "Xinyuan could not determine whether a process-global Relay plugin configuration is already "
                 "active; refusing to replace it", exc_info=True,
             )
             return _RelayPluginConfigurationState.FAILED
         if existing_report is not None:
             logger.warning(
-                "A process-global Relay plugin configuration is already active outside Hermes native ownership; "
+                "A process-global Relay plugin configuration is already active outside Xinyuan native ownership; "
                 "leaving it unchanged and disabling Hermes-managed Relay middleware for this process"
             )
             return _RelayPluginConfigurationState.FOREIGN
@@ -271,7 +271,7 @@ class _ProcessRelayPluginConfiguration:
                     raise RuntimeError("NeMo Relay dynamic plugin initialization returned no activation handle")
                 self._activation = activation
             except Exception as exc:
-                raise RuntimeError("Hermes Relay dynamic plugin activation failed") from exc
+                raise RuntimeError("Xinyuan Relay dynamic plugin activation failed") from exc
         if self._activation is None:
             # Reached only after explicit opt-in. Relay 0.8 no longer layers repository-local
             # configuration onto this explicitly selected payload.
@@ -316,7 +316,7 @@ class _ProcessRelayPluginConfiguration:
             try:
                 step()
             except Exception:
-                logger.warning("Hermes Relay plugin %s failed", what, exc_info=True)
+                logger.warning("Xinyuan Relay plugin %s failed", what, exc_info=True)
                 return False
         self._relay = self._activation = None
         return True
@@ -440,7 +440,7 @@ class RelayRuntime:
                 )
             except Exception:
                 logger.warning(
-                    "Hermes Relay segment close failed (session=%s segment=%d); abandoning the old segment span",
+                    "Xinyuan Relay segment close failed (session=%s segment=%d); abandoning the old segment span",
                     session.session_id, session.segment - 1, exc_info=True,
                 )
             scope_metadata = runtime_metadata(
@@ -450,7 +450,7 @@ class RelayRuntime:
                 self._open_session_scope(session, scope_metadata, resolve_parent=False)
             except Exception:
                 logger.warning(
-                    "Hermes Relay segment open failed (session=%s segment=%d); keeping the prior scope handle",
+                    "Xinyuan Relay segment open failed (session=%s segment=%d); keeping the prior scope handle",
                     session.session_id, session.segment, exc_info=True,
                 )
 
@@ -493,7 +493,7 @@ class RelayRuntime:
             return self._sessions.get(session_id)
 
     def get_session(self, session_id: str) -> RelaySession | None:
-        """Return an active Hermes Relay session without creating one."""
+        """Return an active Xinyuan Relay session without creating one."""
         with self._sessions_lock:
             session = None if self._closing else self._sessions.get(str(session_id or ""))
         if session is None:
@@ -505,9 +505,9 @@ class RelayRuntime:
         """Copy the current context and overlay the session's saved Relay vars (a copy: re-entrant from callbacks)."""
         with session.lock:
             if session.closing and not allow_closing:
-                raise RuntimeError("Hermes Relay session is closing")
+                raise RuntimeError("Xinyuan Relay session is closing")
             if session.context is None or session.handle is None:
-                raise RuntimeError("Hermes Relay session context is unavailable")
+                raise RuntimeError("Xinyuan Relay session context is unavailable")
             relay_context = session.context.copy()
         context = contextvars.copy_context()
         for variable, value in relay_context.items():
@@ -577,7 +577,7 @@ class RelayRuntime:
         """Admit one Relay call while keeping process plugins alive."""
         with self._sessions_lock:
             if self._closing:
-                raise RuntimeError("Hermes Relay runtime is shutting down")
+                raise RuntimeError("Xinyuan Relay runtime is shutting down")
             self._active_operations += 1
             self._operations_idle.clear()
 
@@ -602,7 +602,7 @@ class RelayRuntime:
         return RelayOperationLease(self)
 
     def apply_tool_request_intercepts(self, *, session_id: str, tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
-        """Apply Relay request rewriting before Hermes authorizes a tool call."""
+        """Apply Relay request rewriting before Xinyuan authorizes a tool call."""
         request_intercepts = getattr(getattr(self.relay, "tools", None), "request_intercepts", None)
         managed = self.managed_execution_enabled() and callable(request_intercepts)
         session = self.ensure_session({"session_id": session_id}) if managed else None
@@ -632,10 +632,10 @@ class RelayRuntime:
                 pop_relay_scope(self.relay, top, output=orphan_output, metadata=metadata)
                 drained += 1
             except Exception:
-                logger.warning("Hermes Relay orphaned scope drain failed", exc_info=True)
+                logger.warning("Xinyuan Relay orphaned scope drain failed", exc_info=True)
                 break
         if drained:
-            logger.warning("Hermes Relay drained %d orphaned scope(s) before closing %s", drained, handle)
+            logger.warning("Xinyuan Relay drained %d orphaned scope(s) before closing %s", drained, handle)
         try:
             pop_relay_scope(self.relay, handle, output=output, metadata=metadata)
             return None
@@ -691,7 +691,7 @@ class RelayRuntime:
                 del self._sessions[session_id]
             self._forget_subagent(session_id)
         if failure:
-            logger.warning("Hermes Relay session %s closed with errors: %s", session_id, failure)
+            logger.warning("Xinyuan Relay session %s closed with errors: %s", session_id, failure)
 
     def shutdown(self) -> None:
         """Close core scopes and release process plugin configuration."""
@@ -712,7 +712,7 @@ class RelayRuntime:
         except Exception:
             with self._sessions_lock:
                 self._shutdown_started = False
-            logger.warning("Hermes Relay deferred shutdown could not start", exc_info=True)
+            logger.warning("Xinyuan Relay deferred shutdown could not start", exc_info=True)
 
     def _finish_shutdown(self) -> None:
         try:
@@ -730,7 +730,7 @@ class RelayRuntime:
         except Exception:
             with self._sessions_lock:
                 self._shutdown_started = False
-            logger.warning("Hermes Relay shutdown failed", exc_info=True)
+            logger.warning("Xinyuan Relay shutdown failed", exc_info=True)
             return
         with self._sessions_lock:
             self._shutdown_complete.set()
@@ -759,7 +759,7 @@ RelayHost = RelayRuntime | NoopRelayRuntime
 
 
 class RelayHostRegistry:
-    """Own exactly one Relay host for each canonical Hermes profile."""
+    """Own exactly one Relay host for each canonical Xinyuan profile."""
 
     def __init__(self) -> None:
         self._lock = threading.RLock()
@@ -774,7 +774,7 @@ class RelayHostRegistry:
             try:
                 host = RelayRuntime(profile_key=key)
             except Exception as exc:
-                logger.warning("Hermes Relay runtime initialization failed", exc_info=True)
+                logger.warning("Xinyuan Relay runtime initialization failed", exc_info=True)
                 host = NoopRelayRuntime(profile_key=key, reason=str(exc))
             self._hosts[key] = host
             return host
@@ -808,7 +808,7 @@ class ConversationLease:
 
 @dataclass
 class RelayTurnContext:
-    """Runtime-only context for one Hermes turn or top-level task."""
+    """Runtime-only context for one Xinyuan turn or top-level task."""
 
     lease: ConversationLease
     turn_id: str
@@ -827,7 +827,7 @@ _CURRENT_TURN: contextvars.ContextVar[RelayTurnContext | None] = contextvars.Con
     "hermes_relay_turn", default=None
 )
 
-# >0 while the native pipeline is mid-dispatch of a Hermes tool/LLM callback. Nested managed
+# >0 while the native pipeline is mid-dispatch of a Xinyuan tool/LLM callback. Nested managed
 # execution there is structurally broken (the pipeline binds its Futures to the OUTER call's
 # loop, blocked inside the synchronous callback), so resolve_execution_context() bypasses Relay.
 # A ContextVar so the marker follows copy_context() into worker threads / per-thread loops.
@@ -848,11 +848,11 @@ def managed_callback_guard():
 
 
 def _warn_on_error(what: str, callback: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
-    """Run fail-open telemetry work: log ``Hermes Relay <what> failed`` and return None on error."""
+    """Run fail-open telemetry work: log ``Xinyuan Relay <what> failed`` and return None on error."""
     try:
         return callback(*args, **kwargs)
     except Exception:
-        logger.warning("Hermes Relay %s failed", what, exc_info=True)
+        logger.warning("Xinyuan Relay %s failed", what, exc_info=True)
         return None
 
 
@@ -874,7 +874,7 @@ def _flag_open_session(session: RelaySession, flag: str) -> None:
 
 
 class RelaySessionCoordinator:
-    """Own semantic conversation and turn lifetimes for Hermes core."""
+    """Own semantic conversation and turn lifetimes for Xinyuan core."""
 
     def __init__(self, registry: RelayHostRegistry = HOST_REGISTRY) -> None:
         self.registry = registry
@@ -895,7 +895,7 @@ class RelaySessionCoordinator:
             try:
                 callback(host, context)
             except Exception:
-                logger.warning("Hermes Relay session initializer failed: %s", name, exc_info=True)
+                logger.warning("Xinyuan Relay session initializer failed: %s", name, exc_info=True)
 
     def acquire_conversation(
         self, *, profile_key: str, session_id: str, platform: str, parent_session_id: str = "", model: str = "",
@@ -931,7 +931,7 @@ class RelaySessionCoordinator:
         metadata: dict[str, Any] | None = None,
     ) -> RelayTurnContext:
         if lease.released:
-            raise RuntimeError("Hermes Relay conversation lease is released")
+            raise RuntimeError("Xinyuan Relay conversation lease is released")
         turn = RelayTurnContext(lease=lease, turn_id=turn_id, task_id=task_id)
         key = (lease.profile_key, lease.session_id)
         with self._active_turns_lock:
@@ -939,7 +939,7 @@ class RelaySessionCoordinator:
                 # One physical scope stack per session; concurrent turns' sibling scopes would not close LIFO.
                 turn.relay_enabled = False
                 logger.warning(
-                    "Skipping Relay instrumentation for concurrent Hermes turn %s in session %s",
+                    "Skipping Relay instrumentation for concurrent Xinyuan turn %s in session %s",
                     turn_id, lease.session_id,
                 )
             else:
@@ -1010,7 +1010,7 @@ class RelaySessionCoordinator:
             turn.lease.session, turn.handle, output={"outcome": outcome}, failure_label="turn scope close failed",
         )
         if failure:
-            logger.warning("Hermes Relay turn finalization failed: %s", failure)
+            logger.warning("Xinyuan Relay turn finalization failed: %s", failure)
 
     @_fail_open("deferred session close")
     def _consume_deferred_close(self, lease: ConversationLease) -> None:
@@ -1092,7 +1092,7 @@ class RelaySessionCoordinator:
                 # Stack-owned: if the newest handle cannot close even after drain, older ones cannot either.
                 for pending_request_id, pending_handle in logical_calls:
                     turn.logical_llm_calls.setdefault(pending_request_id, pending_handle)
-            logger.warning("Hermes Relay logical LLM finalization failed: %s", failure)
+            logger.warning("Xinyuan Relay logical LLM finalization failed: %s", failure)
             break
 
     @staticmethod
@@ -1154,7 +1154,7 @@ def resolve_execution_context(session_id: str) -> tuple[RelayRuntime | None, Rel
     # still records the tool-level event.
     if _MANAGED_CALLBACK_DEPTH.get() > 0 or not relay_instrumentation_enabled():
         # A managed Relay callback is already executing on this logical call path (e.g. the native
-        # ``tools.execute`` pipeline is mid-dispatch of a Hermes tool). Nested managed execution here is
+        # ``tools.execute`` pipeline is mid-dispatch of a Xinyuan tool). Nested managed execution here is
         # structurally impossible: the native pipeline binds its Futures to the OUTER call's event loop,
         # which is blocked inside the synchronous tool callback until the tool returns. A nested managed LLM
         # call (the vision_analyze auxiliary path) therefore awaits a foreign-loop Future that can never
@@ -1176,7 +1176,7 @@ def resolve_execution_context(session_id: str) -> tuple[RelayRuntime | None, Rel
 
 
 def apply_tool_request_intercepts(*, session_id: str, tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
-    """Return Relay-rewritten arguments at Hermes's authorization boundary."""
+    """Return Relay-rewritten arguments at Xinyuan's authorization boundary."""
     runtime = get_runtime(create=False) if session_id else None
     if runtime is None:
         return args
@@ -1195,7 +1195,7 @@ def _is_relay_wrapped_callback_error(relay_error: BaseException, callback_error:
 
 
 def get_runtime(*, create: bool = True, profile_key: str | None = None) -> RelayRuntime | None:
-    """Return the Relay host for the active Hermes profile."""
+    """Return the Relay host for the active Xinyuan profile."""
     host = HOST_REGISTRY.for_profile(profile_key, create=create)
     return host if isinstance(host, RelayRuntime) else None
 
@@ -1231,7 +1231,7 @@ def _configured_plugin_inputs(relay: Any) -> tuple[dict[str, Any], list[Any]] | 
         with config_path.open("rb") as config_file:
             config = tomllib.load(config_file)
         if "dynamic_plugins" in config:
-            raise ValueError("Hermes [[dynamic_plugins]] records are unsupported; use Relay [[plugins.dynamic]] records")
+            raise ValueError("Xinyuan [[dynamic_plugins]] records are unsupported; use Relay [[plugins.dynamic]] records")
         dynamic_plugins = relay.plugin.load_dynamic_plugin_activation_specs(config_path) if "plugins" in config else []
         return {k: v for k, v in config.items() if k != "plugins"}, dynamic_plugins
     except Exception as exc:
@@ -1279,7 +1279,7 @@ def emit_mark(
     data: Any = None,
     metadata: Any = None,
 ) -> bool:
-    """Emit a fail-open Relay mark under a Hermes session."""
+    """Emit a fail-open Relay mark under a Xinyuan session."""
     runtime = get_runtime(create=False)
     if runtime is None:
         return False
@@ -1291,18 +1291,18 @@ def emit_mark(
             metadata=metadata,
         )
     except Exception:
-        logger.warning("Hermes Relay mark failed: %s", name, exc_info=True)
+        logger.warning("Xinyuan Relay mark failed: %s", name, exc_info=True)
         return False
 
 def ensure_session(*, session_id: str, **context: Any) -> RelaySession | None:
-    """Create or return the shared Relay session used by Hermes core."""
+    """Create or return the shared Relay session used by Xinyuan core."""
     runtime = get_runtime()
     if runtime is None:
         return None
     try:
         return runtime.ensure_session({"session_id": session_id, **context})
     except Exception:
-        logger.warning("Hermes Relay session initialization failed", exc_info=True)
+        logger.warning("Xinyuan Relay session initialization failed", exc_info=True)
         return None
 
 def get_host(
@@ -1324,15 +1324,15 @@ def run_in_session(
     *args: Any,
     **kwargs: Any,
 ) -> Any:
-    """Run a scope, LLM, or tool API against a shared Hermes session."""
+    """Run a scope, LLM, or tool API against a shared Xinyuan session."""
     runtime = get_runtime()
     if runtime is None:
-        raise RuntimeError("Hermes Relay runtime is unavailable")
+        raise RuntimeError("Xinyuan Relay runtime is unavailable")
     session = runtime.get_session(session_id)
     if session is None:
         session = runtime.ensure_session({"session_id": session_id})
     if session is None:
-        raise RuntimeError("Hermes Relay session is unavailable")
+        raise RuntimeError("Xinyuan Relay session is unavailable")
     return runtime.run_in_session(session, callback, *args, **kwargs)
 
 async def run_in_session_async(
@@ -1341,14 +1341,14 @@ async def run_in_session_async(
     *args: Any,
     **kwargs: Any,
 ) -> Any:
-    """Await a Relay operation inside a shared Hermes session context."""
+    """Await a Relay operation inside a shared Xinyuan session context."""
     runtime = get_runtime()
     if runtime is None:
-        raise RuntimeError("Hermes Relay runtime is unavailable")
+        raise RuntimeError("Xinyuan Relay runtime is unavailable")
     session = runtime.get_session(session_id)
     if session is None:
         session = runtime.ensure_session({"session_id": session_id})
     if session is None:
-        raise RuntimeError("Hermes Relay session is unavailable")
+        raise RuntimeError("Xinyuan Relay session is unavailable")
     return await runtime.run_in_session_async(session, callback, *args, **kwargs)
 # ---- END PLUGIN-COMPAT ----

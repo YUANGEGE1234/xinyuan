@@ -1,4 +1,4 @@
-"""Image-authored deployment provenance for immutable Hermes runtimes.
+"""Image-authored deployment provenance for immutable Xinyuan runtimes.
 
 The image bakes ``/etc/hermes/image-provenance.json`` outside ``$HERMES_HOME`` and the checkout, so a
 bind-mounted checkout cannot hide the build fact and env/config cannot forge it. Absence preserves every

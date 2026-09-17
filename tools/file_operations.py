@@ -356,7 +356,7 @@ class ShellFileOperations(LintMixin, SearchMixin, FileOperations):
 
     def _escape_native_tool_arg(self, arg: str) -> str:
         """Quote a path for a NATIVE Windows binary (rg, node, git ...): those don't
-        understand the MSYS ``/c/...`` form and Hermes disables MSYS argument
+        understand the MSYS ``/c/...`` form and Xinyuan disables MSYS argument
         conversion, so nothing translates it back (→ ``os error 3``). ``C:/Users/x``
         is accepted by every layer. Identical to ``_escape_shell_arg`` off Windows."""
         from tools.environments.local import _IS_WINDOWS, _msys_to_windows_path

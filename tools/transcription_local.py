@@ -69,7 +69,7 @@ def _try_lazy_install_stt() -> bool:
     except Exception as exc:
         logger.warning(
             "Lazy install of faster-whisper failed: %s. "
-            "This is often a permission issue: the Hermes process user cannot "
+            "This is often a permission issue: the Xinyuan process user cannot "
             "write to the virtual environment. Try running manually as the "
             "venv owner: `stat -c '%%u' '$(dirname $(dirname $(which python3)))'` "
             "then `su - <owner> -c 'VIRTUAL_ENV=/opt/hermes/.venv "
@@ -279,8 +279,8 @@ def _transcribe_local_command(
             command = command_template.format(
                 input_path=shlex.quote(prepared_input), output_dir=shlex.quote(output_dir),
                 language=shlex.quote(language), model=shlex.quote(normalized_model))
-            # Scrub Hermes secrets from the child env (same policy as _run_command_stt).
-            # Scrub Hermes secrets from the child env (sibling path to #56332 / _run_command_stt — this
+            # Scrub Xinyuan secrets from the child env (same policy as _run_command_stt).
+            # Scrub Xinyuan secrets from the child env (sibling path to #56332 / _run_command_stt — this
             # local-whisper path previously inherited the full process environment).
             from tools.environments.local import hermes_subprocess_env
             _run_quiet(shlex.split(command), timeout=300, env=hermes_subprocess_env(inherit_credentials=False))

@@ -1,4 +1,4 @@
-"""Hermes middleware contract helpers.
+"""Xinyuan middleware contract helpers.
 
 Observer hooks report what happened. Middleware can change what happens by rewriting a request or
 wrapping the actual execution callback. Agent-loop call sites and plugins share this vocabulary.

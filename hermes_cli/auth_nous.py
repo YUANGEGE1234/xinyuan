@@ -339,7 +339,7 @@ def _nous_shared_auth_dir() -> Path:
 def _nous_shared_store_path() -> Path:
     path = _nous_shared_auth_dir() / NOUS_SHARED_STORE_FILENAME
     # Seat belt (mirrors the _auth_file_path() guard): under pytest, refuse a path under the real
-    # user's Hermes root so a test that forgot HERMES_SHARED_AUTH_DIR fails loudly instead of
+    # user's Xinyuan root so a test that forgot HERMES_SHARED_AUTH_DIR fails loudly instead of
     # corrupting cross-profile state.
     if os.environ.get("PYTEST_CURRENT_TEST"):
         from hermes_constants import get_default_hermes_root
@@ -612,16 +612,16 @@ def _refresh_access_token(
     description = str(error_payload.get("error_description") or "Refresh token exchange failed")
     relogin = code in {"invalid_grant", "invalid_token", "refresh_token_reused"}
     # OAuth 2.1 "refresh token reuse": an external process (health check, monitoring tool, custom
-    # self-heal hook) redeemed Hermes's refresh_token without persisting the rotated token, so the
+    # self-heal hook) redeemed Xinyuan's refresh_token without persisting the rotated token, so the
     # server retired the original and revoked the whole session chain as a token-theft signal.
     if code == "refresh_token_reused" or "reuse" in description.lower():
         description = (
             "Nous Portal detected refresh-token reuse and revoked this session.\n"
             "This usually means an external process (monitoring script, "
-            "custom self-heal hook, or another Hermes install sharing "
-            "~/.hermes/auth.json) called POST /api/oauth/token with Hermes's "
+            "custom self-heal hook, or another Xinyuan install sharing "
+            "~/.hermes/auth.json) called POST /api/oauth/token with Xinyuan's "
             "refresh token without persisting the rotated token back.\n"
-            "Nous refresh tokens are single-use — only Hermes may call the "
+            "Nous refresh tokens are single-use — only Xinyuan may call the "
             "refresh endpoint. For health checks, use `hermes auth status` "
             "instead.\n"
             "Re-authenticate with: hermes auth add nous")
@@ -717,7 +717,7 @@ def fetch_nous_models(
     model_ids: List[str] = []
     for item in data:
         model_id = item.get("id") if isinstance(item, dict) else None
-        # Hermes models aren't reliable for agentic tool-calling
+        # Xinyuan models aren't reliable for agentic tool-calling
         if _nonempty_str(model_id) and "hermes" not in model_id.lower():
             model_ids.append(model_id.strip())
     model_ids.sort(key=_model_priority)
@@ -1054,7 +1054,7 @@ def _resolve_nous_runtime_credentials(
         _tls_state_from_verify)
     with _provider_state_transaction("nous") as (auth_store, state, state_source_path):
         if not state:
-            raise _nous_err("Hermes is not logged into Nous Portal.", relogin=True)
+            raise _nous_err("Xinyuan is not logged into Nous Portal.", relogin=True)
         run = _NousRuntimeResolve(
             auth_store, state, state_source_path, force_refresh=force_refresh,
             stale_access_token=stale_access_token, timeout_seconds=timeout_seconds)

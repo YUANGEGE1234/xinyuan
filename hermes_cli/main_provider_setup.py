@@ -218,7 +218,7 @@ def _aux_config_menu() -> None:
         _say("", "  Auxiliary models — side-task routing", "",
              "  Side tasks (vision, compression, web extraction, etc.) default",
              '  to your main chat model.  "auto" means "use my main model" —',
-             "  Hermes only falls back to a lightweight backend (OpenRouter,",
+             "  Xinyuan only falls back to a lightweight backend (OpenRouter,",
              "  Nous Portal) if the main model is unavailable.  Override a",
              "  task below if you want it pinned to a specific provider/model.", "")
 
@@ -404,7 +404,7 @@ _DEFAULT_QWEN_PORTAL_MODELS = [
 
 # (mode value, label, description, accepted answers); "" = auto-detect
 _CUSTOM_API_MODES = (
-    ("", "Auto-detect", "Use Hermes URL heuristics; best for standard OpenAI-compatible endpoints.",
+    ("", "Auto-detect", "Use Xinyuan URL heuristics; best for standard OpenAI-compatible endpoints.",
      ("1", "auto", "detect", "auto-detect")),
     ("chat_completions", "Chat Completions", "Use /chat/completions for standard OpenAI-compatible servers.",
      ("2", "chat", "chat_completions", "completions")),

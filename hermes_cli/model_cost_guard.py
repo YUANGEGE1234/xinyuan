@@ -17,7 +17,7 @@ GPT55_SUGGESTION = "did you mean to select openai/gpt-5.5?"
 
 @dataclass(frozen=True)
 class ExpensiveModelWarning:
-    """Confirmation payload for models above Hermes' cost guardrail."""
+    """Confirmation payload for models above Xinyuan' cost guardrail."""
 
     model: str
     provider: str

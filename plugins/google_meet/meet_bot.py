@@ -311,7 +311,7 @@ def _config_from_env() -> _BotConfig:
         out_dir=Path(out_raw) if out_raw else None,
         headed=env("HERMES_MEET_HEADED", "").lower() in {"1", "true", "yes"},
         auth_state=env("HERMES_MEET_AUTH_STATE", "").strip(),
-        guest_name=env("HERMES_MEET_GUEST_NAME", "Hermes Agent"),
+        guest_name=env("HERMES_MEET_GUEST_NAME", "Xinyuan Agent"),
         duration_s=_parse_duration(env("HERMES_MEET_DURATION", "")),
         realtime=env("HERMES_MEET_MODE", "transcribe").strip().lower() == "realtime",
         # HERMES_MEET_REALTIME_KEY is resolved by process_manager.start() via the parent's

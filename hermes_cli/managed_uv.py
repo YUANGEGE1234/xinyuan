@@ -1,6 +1,6 @@
 """Hermes-managed uv and Python runtime repair.
 
-The Python backing the install is shared by every Hermes profile because the checkout's ``venv``
+The Python backing the install is shared by every Xinyuan profile because the checkout's ``venv``
 is shared. Runtime repair therefore uses an install-scoped store under
 ``<checkout>/.hermes-runtime/python``. A vulnerable interpreter is never reinstalled in place.
 """
@@ -42,7 +42,7 @@ _Provisioned = tuple[Path, Path, SQLiteRuntimeInfo]
 
 
 def managed_uv_path() -> Path:
-    """Path of Hermes' own uv binary (``$HERMES_HOME/bin/uv[.exe]``); may not exist yet."""
+    """Path of Xinyuan' own uv binary (``$HERMES_HOME/bin/uv[.exe]``); may not exist yet."""
     return get_hermes_home() / "bin" / ("uv.exe" if platform.system() == "Windows" else "uv")
 
 
@@ -55,7 +55,7 @@ def resolve_uv() -> Optional[str]:
 def pip_install_hint(package: str) -> str:
     """Copy-pasteable command that installs *package* into the running interpreter.
 
-    Names Hermes' own uv when it exists: the installer drops it in ``$HERMES_HOME/bin``
+    Names Xinyuan' own uv when it exists: the installer drops it in ``$HERMES_HOME/bin``
     without putting that on PATH, so a bare ``uv`` would fail for installer-only users.
     """
     return f"{resolve_uv() or 'uv'} pip install --python {sys.executable} {package}"
@@ -148,7 +148,7 @@ def _report_runtime_repair_failure(repair: RuntimeRepairResult) -> None:
     if repair.backup_venv is None:
         print("  ℹ Managed Python runtime was not replaced; "
               f"the existing venv is unchanged ({repair.detail}).")
-        print("    Sessions stay protected meanwhile: Hermes keeps databases "
+        print("    Sessions stay protected meanwhile: Xinyuan keeps databases "
               "out of WAL mode on this SQLite build. The next `hermes update` "
               "will retry.")
         return
@@ -450,7 +450,7 @@ def _attempt_install_generation(
     try:
         python.resolve().relative_to(generation.resolve())
     except (OSError, ValueError):
-        return reject("uv resolved Python outside the Hermes generation: %s", python)
+        return reject("uv resolved Python outside the Xinyuan generation: %s", python)
     # Sign before the candidate is probed or promoted so each immutable generation does not look
     # like a new TCC principal on macOS. Non-fatal: the SQLite repair proceeds regardless.
     _macos_sign_managed_python(python)
@@ -962,7 +962,7 @@ def _repair_windows_preflight(
             "that lives outside this venv, e.g.:",
             f"      cd {root}",
             "      <system Python> -m hermes_cli.main update",
-            "    Sessions stay protected meanwhile: Hermes keeps databases "
+            "    Sessions stay protected meanwhile: Xinyuan keeps databases "
             "out of WAL mode on this SQLite build."):
             print(line)
         return _result("skipped", current, self_detail)
@@ -981,7 +981,7 @@ def _repair_under_lock(
     if not current.wal_reset_vulnerable:
         return _result("safe", current, sqlite_after=current.sqlite_version_string)
     print(
-        "  ⚠ Hermes venv links SQLite "
+        "  ⚠ Xinyuan venv links SQLite "
         f"{current.sqlite_version_string}, which has the WAL-reset bug.")
     provisioned = _install_safe_python_generation(uv_bin, project_root=root, current=current)
     # Likely a stale managed-uv catalog: python-build-standalone re-releases the same patch

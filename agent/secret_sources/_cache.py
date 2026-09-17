@@ -4,7 +4,7 @@ Two-layer fetch cache (in-process + on-disk); the disk half writes atomically
 with ``0600`` permissions and honours a TTL, so that logic is audited in exactly
 one place. Each backend supplies only its cache-key shape and a serializer.
 The disk layer is strictly best-effort: a miss just triggers a refetch, because
-a cache problem must never block Hermes startup.
+a cache problem must never block Xinyuan startup.
 """
 
 from __future__ import annotations

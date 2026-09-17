@@ -62,7 +62,7 @@ class SlashCommandsMixin:
             "Queue a prompt to run after the current turn finishes",
             "prompt to run next",
         ),
-        "version": ("Show Hermes version", "Show Hermes version", None),
+        "version": ("Show Xinyuan version", "Show Xinyuan version", None),
     }
 
 
@@ -96,7 +96,7 @@ class SlashCommandsMixin:
         handler = getattr(self, f"_cmd_{cmd}")
 
         # Handlers run outside the per-turn cwd-pinning context. ``/compress``
-        # and ``/model`` REBUILD the system prompt, so unpinned they'd bake the Hermes install tree
+        # and ``/model`` REBUILD the system prompt, so unpinned they'd bake the Xinyuan install tree
         # into the persisted cached prompt. Pin inside a fresh context: no leak, no teardown.
         def _dispatch() -> str | None:
             try:

@@ -1,4 +1,4 @@
-"""Cross-process mutual exclusion for in-flight Hermes updates.
+"""Cross-process mutual exclusion for in-flight Xinyuan updates.
 
 The marker file the Tauri updater writes (``UpdateMarkerGuard`` in
 ``apps/bootstrap-installer/src-tauri/src/update.rs``) and the Electron desktop reads
@@ -32,14 +32,14 @@ HANDOFF_PID_ENV = "HERMES_UPDATE_HANDOFF_PID"
 
 # Exit code meaning "another updater/instance owns this install right now" — the same
 # contract as the Windows shim / venv-holder guards in _cmd_update_impl, matched by the
-# Tauri updater (UPDATE_EXIT_CONCURRENT in update.rs) to show "Hermes is still running".
+# Tauri updater (UPDATE_EXIT_CONCURRENT in update.rs) to show "Xinyuan is still running".
 UPDATE_EXIT_CONCURRENT = 2
 
 
 def update_marker_path() -> Path:
     """Path of the shared update marker.
 
-    Uses the *process* Hermes home (never the context-local profile override): the Rust
+    Uses the *process* Xinyuan home (never the context-local profile override): the Rust
     updater resolves ``$HERMES_HOME`` or the platform default and the desktop pins that same
     value into the updater's env, so a profile-scoped path would be one the other owners never look at.
     """

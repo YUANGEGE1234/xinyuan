@@ -1,7 +1,7 @@
 """Import-safe helpers for inspecting a Python interpreter's linked SQLite.
 
 This module intentionally depends only on the standard library. Installer and update code must be
-able to use it before Hermes' third-party dependencies are healthy.
+able to use it before Xinyuan' third-party dependencies are healthy.
 """
 
 from __future__ import annotations

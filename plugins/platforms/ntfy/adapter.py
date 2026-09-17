@@ -355,11 +355,11 @@ async def _standalone_send(
 
 
 def register(ctx) -> None:
-    """Plugin entry point — called by the Hermes plugin system at startup."""
+    """Plugin entry point — called by the Xinyuan plugin system at startup."""
     ctx.register_platform(
         name="ntfy", label="ntfy", adapter_factory=lambda cfg: NtfyAdapter(cfg),
         check_fn=check_requirements, validate_config=validate_config, is_connected=is_connected,
-        required_env=["NTFY_TOPIC"], install_hint="pip install httpx   # already a Hermes dependency",
+        required_env=["NTFY_TOPIC"], install_hint="pip install httpx   # already a Xinyuan dependency",
         env_enablement_fn=_env_enablement,  # env-only setups show in `gateway status`
         cron_deliver_env_var="NTFY_HOME_CHANNEL",
         standalone_sender_fn=_standalone_send,  # out-of-process cron delivery

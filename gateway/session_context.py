@@ -1,4 +1,4 @@
-"""Session-scoped context variables for the Hermes gateway.
+"""Session-scoped context variables for the Xinyuan gateway.
 
 Replaces the old ``os.environ``-based ``HERMES_SESSION_*`` state with task-local ``ContextVar``s
 (inherited by ``run_in_executor`` threads), so concurrently handled messages no longer clobber each

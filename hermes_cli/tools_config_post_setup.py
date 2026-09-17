@@ -64,7 +64,7 @@ def _post_setup_lightpanda() -> None:
         _print_warning("    lightpanda binary not found on PATH, ~/.lightpanda or ~/.local/bin")
         _print_info(f"    {LIGHTPANDA_INSTALL_HINT}")
         if os.name == "nt":
-            _print_info("    Lightpanda has no native Windows build; run Hermes under WSL2.")
+            _print_info("    Lightpanda has no native Windows build; run Xinyuan under WSL2.")
 
 
 def _install_chromium(install_cmd: list[str]) -> None:
@@ -289,7 +289,7 @@ def _post_setup_langfuse() -> None:
     except Exception as exc:
         _print_warning(f"    Could not enable plugin automatically: {exc}")
         _info_lines("Run manually: hermes plugins enable observability/langfuse")
-    _info_lines("Restart Hermes for tracing to take effect.", "Verify: hermes plugins list")
+    _info_lines("Restart Xinyuan for tracing to take effect.", "Verify: hermes plugins list")
 
 
 def _post_setup_xai_grok() -> None:

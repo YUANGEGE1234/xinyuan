@@ -383,7 +383,7 @@ _AUTH_ERROR_TYPES: Optional[tuple] = None
 def _get_auth_error_types() -> tuple:
     """Cached ``(auth_types, http_status_types)``: SDK ``OAuthFlowError``/``OAuthTokenError`` (+ legacy
     ``UnauthorizedError``), our ``OAuthNonInteractiveError``, and ``HTTPStatusError`` from both httpx
-    flavours — a 401 may come from the SDK's own stack (``httpx2`` on mcp >= 2.0) or Hermes' pinned
+    flavours — a 401 may come from the SDK's own stack (``httpx2`` on mcp >= 2.0) or Xinyuan' pinned
     ``httpx``; the classes are unrelated and still need the 401 check in :func:`_is_auth_error`."""
     global _AUTH_ERROR_TYPES
     if not (_AUTH_ERROR_TYPES and _AUTH_ERROR_TYPES[0]):  # retry while empty (SDK may import later)

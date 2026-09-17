@@ -105,7 +105,7 @@ def _format_live_history_output(sid: str, session: dict, arg: str) -> str:
     lines = ["Conversation History", "────────────────────────────────────────"]
     for idx, message in enumerate(messages, start=1):
         role = str(message.get("role") or "unknown")
-        label = {"user": "You", "assistant": "Hermes"}.get(role, role.title())
+        label = {"user": "You", "assistant": "Xinyuan"}.get(role, role.title())
         text = str(message.get("text") or message.get("context") or "").strip()
         text = f"{text[:400]}..." if len(text) > 400 else text
         lines.append(f"[{label} #{idx}] {text or '(no text)'}")

@@ -274,7 +274,7 @@ class HomeAssistantAdapter(BasePlatformAdapter):
         reads from the same WS connection.
         """
         url = f"{self._hass_url}/api/services/persistent_notification/create"
-        payload = {"title": "Hermes Agent", "message": content[:self.MAX_MESSAGE_LENGTH]}
+        payload = {"title": "Xinyuan Agent", "message": content[:self.MAX_MESSAGE_LENGTH]}
 
         async def _post(session) -> SendResult:
             async with session.post(
@@ -343,7 +343,7 @@ _is_connected = _env_is_connected("HASS_TOKEN")
 
 
 def register(ctx) -> None:
-    """Plugin entry point — called by the Hermes plugin system."""
+    """Plugin entry point — called by the Xinyuan plugin system."""
     ctx.register_platform(
         name="homeassistant", label="Home Assistant", adapter_factory=HomeAssistantAdapter,
         check_fn=check_ha_requirements, validate_config=validate_ha_config, is_connected=_is_connected,

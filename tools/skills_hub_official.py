@@ -1,4 +1,4 @@
-"""Skills Hub official sources: repo-shipped optional skills and the centralized Hermes index."""
+"""Skills Hub official sources: repo-shipped optional skills and the centralized Xinyuan index."""
 
 import logging
 from pathlib import Path, PurePosixPath
@@ -280,7 +280,7 @@ class OptionalSkillSource(SkillSource):
 
 
 class HermesIndexSource(SkillSource):
-    """Skill source backed by the centralized Hermes Skills Index: a JSON catalog on the docs site,
+    """Skill source backed by the centralized Xinyuan Skills Index: a JSON catalog on the docs site,
     rebuilt daily by CI, with metadata + resolved GitHub paths for every skill — search and path
     discovery cost zero GitHub API calls. When unavailable every method returns empty/None so
     downstream sources take over transparently."""

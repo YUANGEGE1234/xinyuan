@@ -23,7 +23,7 @@ from typing import Iterable
 # makes every LATER session ``source`` that stale value and see a FOREIGN session's identity — overriding
 # the correct per-command Popen env (issue: cross-session HERMES_SESSION_ID leak via the shared snapshot).
 # Stripping them from the snapshot is safe because they are re-injected on every command; a snapshot should
-# only carry the user's own shell state (PATH, functions, exports they set), not Hermes' per-turn session
+# only carry the user's own shell state (PATH, functions, exports they set), not Xinyuan' per-turn session
 # identity. Used by unit tests as the Python-side contract for the exclusion set; the dump path unsets by
 # name/prefix instead of grepping declare lines (see below / issue #71296).
 _SNAPSHOT_EXCLUDED_ENV_REGEX = (

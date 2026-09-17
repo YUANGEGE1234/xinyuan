@@ -175,7 +175,7 @@ def _env_or_cfg(env_name: str, camofox_cfg: Dict[str, Any], cfg_key: str, *, sec
 
 def _camofox_identity_override(task_id: Optional[str], camofox_cfg: Dict[str, Any]) -> Optional[Dict[str, str]]:
     """Externally configured identity (integrations owning the visible Camofox browser
-    share a user ID so Hermes uses the same profile), or None."""
+    share a user ID so Xinyuan uses the same profile), or None."""
     user_id = _env_or_cfg("CAMOFOX_USER_ID", camofox_cfg, "user_id", secret=True)
     if not user_id:
         return None

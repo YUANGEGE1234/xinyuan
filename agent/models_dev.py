@@ -106,7 +106,7 @@ class ModelCapabilities:
     model_family: str = ""
 
 
-# Hermes provider names → models.dev provider IDs
+# Xinyuan provider names → models.dev provider IDs
 PROVIDER_TO_MODELS_DEV: Dict[str, str] = {
     "openrouter": "openrouter", "novita": "novita-ai", "anthropic": "anthropic",
     "openai": "openai", "openai-api": "openai", "openai-codex": "openai", "zai": "zai",
@@ -126,18 +126,18 @@ PROVIDER_TO_MODELS_DEV: Dict[str, str] = {
     "xai-oauth": "xai",  # OAuth is a transport path for the same xAI catalog
     "xiaomi": "xiaomi", "nvidia": "nvidia",
     # Meta Model API (Muse Spark, api.meta.ai): models.dev keys it "meta", the
-    # Hermes provider is "meta-ai"; both aliases are needed or muse-spark-*
+    # Xinyuan provider is "meta-ai"; both aliases are needed or muse-spark-*
     # falls back to the generic 256K default instead of its true 1M window.
     "meta-ai": "meta", "meta": "meta", "groq": "groq", "mistral": "mistral",
     "togetherai": "togetherai", "perplexity": "perplexity", "cohere": "cohere",
     "ollama-cloud": "ollama-cloud",
 }
-# Reverse mapping: models.dev id → Hermes ids (built lazily; many-to-one).
+# Reverse mapping: models.dev id → Xinyuan ids (built lazily; many-to-one).
 _MODELS_DEV_TO_PROVIDER: Optional[Dict[str, List[str]]] = None
 
 
 def _models_dev_to_hermes_ids(mdev_id: str) -> List[str]:
-    """Return the Hermes provider ids that map to *mdev_id* (may be [])."""
+    """Return the Xinyuan provider ids that map to *mdev_id* (may be [])."""
     global _MODELS_DEV_TO_PROVIDER
     if _MODELS_DEV_TO_PROVIDER is None:
         _MODELS_DEV_TO_PROVIDER = {}
@@ -460,7 +460,7 @@ def _registry_models(mdev_id: str, *, allow_network: bool) -> Optional[Dict[str,
 
 
 def _get_provider_models(provider: str, *, allow_network: bool = False) -> Optional[Dict[str, Any]]:
-    """Resolve a Hermes provider ID to its models dict, or None if unknown.
+    """Resolve a Xinyuan provider ID to its models dict, or None if unknown.
     ``allow_network`` defaults to False — hot-path callers must never block."""
     mdev_id = PROVIDER_TO_MODELS_DEV.get(provider)
     return _registry_models(mdev_id, allow_network=allow_network) if mdev_id else None
@@ -561,7 +561,7 @@ def lookup_models_dev_context(provider: str, model: str, *, allow_network: bool 
 # accept): context_window, supports_tools, supports_vision, supports_reasoning,
 # model_family. ``<provider>.<model_id>`` is an explicit partial patch that always wins over the
 # catalog. ``<provider>._default`` / top-level ``_default`` are FILL-GAP defaults: they apply ONLY to
-# models the catalog does not know and never displace catalog data. Provider keys accept the Hermes
+# models the catalog does not know and never displace catalog data. Provider keys accept the Xinyuan
 # or models.dev id; model ids match exactly, then case-insensitively (mirroring catalog lookup).
 # Resolution semantics: 1. 2. See #84482, #8731.
 _OVERRIDE_WARNED_KEYS: set = set()
@@ -607,12 +607,12 @@ def _load_model_overrides() -> Dict[str, Any]:
 
 
 def _provider_override_section(provider: str) -> Optional[Dict[str, Any]]:
-    """Override section for *provider* (keyed by Hermes OR models.dev id), or None."""
+    """Override section for *provider* (keyed by Xinyuan OR models.dev id), or None."""
     overrides = _load_model_overrides()
     provider_key = (provider or "").strip()
     if not overrides or not provider_key:
         return None
-    # Forward (Hermes → models.dev id) and reverse (caller passed a models.dev id, config keyed by Hermes id) aliases.
+    # Forward (Xinyuan → models.dev id) and reverse (caller passed a models.dev id, config keyed by Xinyuan id) aliases.
     candidates = [provider_key, PROVIDER_TO_MODELS_DEV.get(provider_key), *_models_dev_to_hermes_ids(provider_key)]
     return next((section for section in (overrides.get(key) if key else None for key in candidates) if isinstance(section, dict)), None)
 
@@ -832,14 +832,14 @@ def _parse_provider_info(provider_id: str, raw: Dict[str, Any]) -> ProviderInfo:
 
 
 def get_provider_info(provider_id: str, *, allow_network: bool = True) -> Optional[ProviderInfo]:
-    """Provider metadata by Hermes or models.dev ID, or None if not cataloged. ``allow_network`` defaults to True (interactive setup)."""
+    """Provider metadata by Xinyuan or models.dev ID, or None if not cataloged. ``allow_network`` defaults to True (interactive setup)."""
     mdev_id = PROVIDER_TO_MODELS_DEV.get(provider_id, provider_id)
     raw = _registry_provider(mdev_id, allow_network)
     return _parse_provider_info(mdev_id, raw) if raw is not None else None
 
 
 def get_model_info(provider_id: str, model_id: str, *, allow_network: bool = False) -> Optional[ModelInfo]:
-    """Full model metadata by Hermes or models.dev provider ID (exact match, then case-insensitive), or
+    """Full model metadata by Xinyuan or models.dev provider ID (exact match, then case-insensitive), or
     None if not found. EXPLICIT ``model_overrides`` patch known catalog models; ``_default`` fills the gap
     only for unknown ones. ``allow_network`` defaults to False — cost guard and inventory are hot paths.
 

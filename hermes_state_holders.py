@@ -105,7 +105,7 @@ def _python_execution_target(argv: Sequence[str]) -> Optional[Tuple[str, str]]:
 
 
 def _looks_like_hermes(argv: Sequence[str]) -> bool:
-    """Return whether argv identifies a supported Hermes execution target."""
+    """Return whether argv identifies a supported Xinyuan execution target."""
     if not argv:
         return False
     program = os.path.basename(argv[0]).lower().removesuffix(".exe")
@@ -136,7 +136,7 @@ def _argv_scoped_to_other_home(argv: Sequence[str], db_path: Path) -> bool:
 
     ``state.db`` lives at the HERMES_HOME root, so an absolute-path token
     containing a ``/.hermes`` segment (or naming a ``state.db``/WAL/SHM under
-    some other parent) identifies that token's own Hermes home.  When at least
+    some other parent) identifies that token's own Xinyuan home.  When at least
     one such token exists AND no token references this instance's state.db,
     its sidecars, or its home directory, the process provably works on a
     different generation and must not be counted as an uninspectable holder

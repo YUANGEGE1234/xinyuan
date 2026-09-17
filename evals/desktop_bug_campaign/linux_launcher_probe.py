@@ -62,7 +62,7 @@ def main():
     original = entry.read_bytes()
     rows["second_install"] = run([str(python), "-c", install], env, "/")
     rows["stable_rewrite"] = entry.read_bytes() == original
-    custom = original.replace(b"Name=Hermes\n", b"Name=Hermes custom\n").replace(b"Terminal=false", b"Terminal=true")
+    custom = original.replace(b"Name=Hermes\n", b"Name=Xinyuan custom\n").replace(b"Terminal=false", b"Terminal=true")
     entry.write_bytes(custom)
     config = Path(env["HERMES_HOME"]) / "config.yaml"
     config.write_text("desktop:\n  manage_launcher_entry: false\n")

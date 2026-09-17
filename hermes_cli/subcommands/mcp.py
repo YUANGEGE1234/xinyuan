@@ -11,15 +11,15 @@ from hermes_cli.subcommands._shared import add_accept_hooks_flag
 def build_mcp_parser(subparsers, *, cmd_mcp: Callable) -> None:
     """Attach the ``mcp`` subcommand to ``subparsers``."""
     mcp_parser = subparsers.add_parser(
-        "mcp", help="Manage MCP servers and run Hermes as an MCP server",
-        description="Manage MCP server connections and run Hermes as an MCP server.\n\n"
+        "mcp", help="Manage MCP servers and run Xinyuan as an MCP server",
+        description="Manage MCP server connections and run Xinyuan as an MCP server.\n\n"
             "MCP servers provide additional tools via the Model Context Protocol.\n"
             "Use 'hermes mcp add' to connect to a new server, or\n"
-            "'hermes mcp serve' to expose Hermes conversations over MCP.")
+            "'hermes mcp serve' to expose Xinyuan conversations over MCP.")
     mcp_sub = mcp_parser.add_subparsers(dest="mcp_action")
 
     mcp_serve_p = mcp_sub.add_parser(
-        "serve", help="Run Hermes as an MCP server (expose conversations to other agents)")
+        "serve", help="Run Xinyuan as an MCP server (expose conversations to other agents)")
     mcp_serve_p.add_argument(
         "-v", "--verbose", action="store_true", help="Enable verbose logging on stderr")
     add_accept_hooks_flag(mcp_serve_p)

@@ -1,6 +1,6 @@
 """Hermes-tools-as-MCP server for the codex_app_server runtime.
 
-Codex owns the loop and tool list there, so a curated subset of Hermes tools is
+Codex owns the loop and tool list there, so a curated subset of Xinyuan tools is
 exposed over stdio MCP; codex registers it via ``~/.codex/config.toml
 [mcp_servers.hermes-tools]``. Run: ``python -m agent.transports.hermes_tools_mcp_server``.
 """
@@ -41,7 +41,7 @@ def _signature_from_schema(schema: dict | None) -> tuple[inspect.Signature, dict
     return inspect.Signature(params, return_annotation=str), annots
 
 
-# Each name MUST match a registered Hermes tool ``model_tools.handle_function_call()`` can dispatch.
+# Each name MUST match a registered Xinyuan tool ``model_tools.handle_function_call()`` can dispatch.
 # NOT exposed: terminal/file/search/process/clarify (codex built-ins + its own approval UI);
 # delegate_task/memory/session_search/todo (need the running AIAgent context).
 EXPOSED_TOOLS: tuple[str, ...] = (
@@ -59,7 +59,7 @@ EXPOSED_TOOLS: tuple[str, ...] = (
 
 
 def _build_server() -> Any:
-    """Create the MCP server with Hermes tools attached (lazy imports: importable without ``mcp``)."""
+    """Create the MCP server with Xinyuan tools attached (lazy imports: importable without ``mcp``)."""
     try:
         # mcp 2.0 renamed `mcp.server.fastmcp` to `mcp.server.MCPServer` (same surface).
         from mcp.server import MCPServer
@@ -71,7 +71,7 @@ def _build_server() -> Any:
     mcp = MCPServer(
         HERMES_TOOLS_MCP_SERVER_NAME,
         instructions=(
-            "Hermes Agent's tool surface, exposed for use inside a Codex "
+            "Xinyuan Agent's tool surface, exposed for use inside a Codex "
             "session. Use these for capabilities Codex's built-in toolset "
             "doesn't cover: web search/extract, browser automation, "
             "subagent delegation, vision, image generation, persistent "
@@ -79,7 +79,7 @@ def _build_server() -> Any:
         ),
     )
 
-    # Authoritative Hermes schemas so MCP clients see the same parameter docs the model does.
+    # Authoritative Xinyuan schemas so MCP clients see the same parameter docs the model does.
     all_defs = {
         td["function"]["name"]: td["function"]
         for td in (get_tool_definitions(quiet_mode=True) or [])
@@ -108,7 +108,7 @@ def _build_server() -> Any:
     for name in EXPOSED_TOOLS:
         spec = all_defs.get(name)
         if spec is None:
-            logger.debug("skipping %s — not registered in this Hermes process", name)
+            logger.debug("skipping %s — not registered in this Xinyuan process", name)
             continue
         description = spec.get("description") or f"Hermes {name} tool"
         params_schema = spec.get("parameters") or {"type": "object", "properties": {}}
@@ -132,7 +132,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         stream=sys.stderr,  # MCP uses stdio for protocol — logs MUST go to stderr
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
-    # Keep Hermes' own banners off stdout (the MCP wire).
+    # Keep Xinyuan' own banners off stdout (the MCP wire).
     os.environ.setdefault("HERMES_QUIET", "1")
     os.environ.setdefault("HERMES_REDACT_SECRETS", "true")
 

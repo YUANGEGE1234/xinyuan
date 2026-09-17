@@ -430,7 +430,7 @@ class CLITuiMixin:
         multi_select = state.get("multi_select", False)
         selected_indices = state.get("selected_indices", set()) if multi_select else set()
         freetext = self._clarify_freetext
-        title = "Hermes needs your input"
+        title = "Xinyuan needs your input"
         header = f"{len(questions_list)} questions"
 
         def _status_rows(width):
@@ -510,7 +510,7 @@ class CLITuiMixin:
         multi_select = state.get("multi_select", False)
         selected_indices = state.get("selected_indices", set()) if multi_select else set()
         freetext = self._clarify_freetext
-        title = "Hermes needs your input"
+        title = "Xinyuan needs your input"
         other_idx = len(choices)
 
         def _label(i, text):
@@ -706,7 +706,7 @@ class CLITuiMixin:
             return self._render_sudo_style_panel(
                 f'🔐 Verification code for {code["site"]}',
                 [f'{code["site"]} is asking for a one-time code (text message, email or authenticator app).',
-                 'Type the code and press Enter; Hermes enters it into the page for you.',
+                 'Type the code and press Enter; Xinyuan enters it into the page for you.',
                  'Enter on an empty line skips. The model never sees the code.'])
         if save := self._sudo_state.get("vault_save"):
             if save["step"] == "identifier":
@@ -1113,7 +1113,7 @@ class CLITuiMixin:
         import signal as _sig
         from prompt_toolkit.application import run_in_terminal
         from hermes_cli.skin_engine import get_active_skin
-        agent_name = get_active_skin().get_branding("agent_name", "Hermes Agent")
+        agent_name = get_active_skin().get_branding("agent_name", "Xinyuan Agent")
         msg = f"\n{agent_name} has been suspended. Run `fg` to bring {agent_name} back."
 
         def _suspend():

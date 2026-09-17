@@ -1,11 +1,11 @@
-"""Shared loaders for the post-mortem forensics: point at ANY Hermes ``state.db`` (a copy, never the live
+"""Shared loaders for the post-mortem forensics: point at ANY Xinyuan ``state.db`` (a copy, never the live
 file) and get the run tree, the in-run session set, fitted pricing and message iterators.
 
 Nothing here knows about a particular run. The root is discovered as the session with the most
 descendants unless ``--root`` is given; compression-rollover children (a child whose ``id`` the parent's
 ``compaction`` metadata names as its continuation) are excluded from the tree so cost populations stay
 disjoint. Pricing is fitted by least squares from ``sessions`` usage columns to ``estimated_cost_usd``, so
-the recomputed dollars match what THAT Hermes recorded, not an invoice.
+the recomputed dollars match what THAT Xinyuan recorded, not an invoice.
 
 Usage from a lane script::
 

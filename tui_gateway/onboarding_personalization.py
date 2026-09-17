@@ -30,7 +30,7 @@ def remember_onboarding(answers: dict) -> dict:
         raise ValueError('Onboarding facts are too long to remember')
 
     # The entry must land in the 'default' profile directory even when this RPC arrives on the guide's
-    # backend or under a custom Hermes home.
+    # backend or under a custom Xinyuan home.
     token = set_hermes_home_override(get_profile_dir('default'))
     try:
         result = json.loads(memory_tool(action='add', target='user', content=content, store=load_on_disk_store()))

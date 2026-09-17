@@ -226,7 +226,7 @@ def _holder_value_flags() -> frozenset:
 
 
 def _hermes_holder_subcommand(cmdline: str) -> str | None:
-    """The actual Hermes SUBCOMMAND a venv-holder argv runs, or None (callers must NOT guess a label).
+    """The actual Xinyuan SUBCOMMAND a venv-holder argv runs, or None (callers must NOT guess a label).
 
     Token-based, never substring (``kanban --preserve-cache`` contains "serve"): find the ``hermes_cli.main`` /
     ``hermes(.exe)`` entry token, return the first following token that isn't a flag or a flag's value.
@@ -269,11 +269,11 @@ def _format_venv_python_holders_message(matches: list[tuple[int, str, str]]) -> 
     See #90778.
     """
     hint_by_subcommand = {
-        "serve": "  ← Hermes backend (if the Desktop app is open, close it)",
+        "serve": "  ← Xinyuan backend (if the Desktop app is open, close it)",
         "dashboard": "  ← hermes dashboard (stop it: hermes dashboard stop, or close that terminal)",
         "gateway": "  ← gateway",
     }
-    lines = ["✗ Other Hermes processes are running from this install's venv:"]
+    lines = ["✗ Other Xinyuan processes are running from this install's venv:"]
     for pid, name, cmdline in matches[:6]:
         hint = hint_by_subcommand.get(_hermes_holder_subcommand(cmdline) or "", "")
         lines.append(f"  PID {pid}  {name}  {cmdline[:120]}{hint}")
@@ -282,7 +282,7 @@ def _format_venv_python_holders_message(matches: list[tuple[int, str, str]]) -> 
     lines.append(
         "\n  On Windows these keep native extension files (.pyd) locked, so the\n"
         "  dependency update would fail partway and leave a broken install.\n"
-        "  Close the Hermes desktop app / other Hermes terminals, then re-run:\n    hermes update\n"
+        "  Close the Xinyuan desktop app / other Xinyuan terminals, then re-run:\n    hermes update\n"
         "  (or use `hermes update --force-venv` to proceed anyway at your own risk)"
     )
     return "\n".join(lines)
@@ -450,8 +450,8 @@ def _orphaned_desktop_backend_pids(matches: list[tuple[int, str, str]]) -> list[
     """``(pid, start_time)`` roots from *matches* when every remaining holder is an ORPHANED backend, else ``None``.
 
     Killing a Desktop-owned ``serve`` is futile (the app respawns it), but a straggler whose Desktop is gone
-    would dead-end the update with "Hermes is still running" and zero open windows. Qualifies only if cmdline
-    is a Hermes backend AND the parent is demonstrably gone (PID missing or reused). Tree-aware: holders inside
+    would dead-end the update with "Xinyuan is still running" and zero open windows. Qualifies only if cmdline
+    is a Xinyuan backend AND the parent is demonstrably gone (PID missing or reused). Tree-aware: holders inside
     an accepted root's tree fold into it; only roots are returned (``taskkill /T`` reaps descendants). Any
     live-parent backend, unjustified non-backend, unprovable case, or no psutil -> ``None``. Never raises.
 
@@ -462,7 +462,7 @@ def _orphaned_desktop_backend_pids(matches: list[tuple[int, str, str]]) -> list[
     update-in-progress marker parks any relaunched Desktop from spawning a fresh backend (#50238). A
     ``serve`` backend still holding the venv at that point is a straggler whose supervisor is gone: SIGTERM
     raced its spawn, or it belongs to a crashed window. Nothing will respawn it, and refusing on it
-    dead-ends the update with "Hermes is still running" while the user stares at zero open windows (ryanc's
+    dead-ends the update with "Xinyuan is still running" while the user stares at zero open windows (ryanc's
     2026-08-09 01:59/02:17 failures).
     """
     psutil = _psutil()
@@ -574,7 +574,7 @@ def _stop_process_trees(pids: list[int] | list[tuple[int, int]]) -> None:
                 logger.debug("Skipping taskkill of PID %s: process identity unavailable", pid)
                 continue
             if not pid_is_hermes(pid, expected_start_time=expected_start_time):
-                logger.debug("Skipping taskkill of non-Hermes or changed PID %s", pid)
+                logger.debug("Skipping taskkill of non-Xinyuan or changed PID %s", pid)
                 continue
             subprocess.run(
                 ["taskkill", "/PID", str(pid), "/T", "/F"], check=False,
@@ -896,7 +896,7 @@ def _pause_windows_gateways_for_update() -> dict | None:
     # Resolve venv-side launchers BEFORE draining: a dead worker's parent cannot be recovered (NoSuchProcess).
     # The launcher keeps ``.pyd`` mapped and would trip the venv-holder guard; it is killed with the survivors.
     launcher_pids = _m()._venv_launcher_ancestors(mapped_pids)
-    print("→ Stopping Windows gateway process(es) before updating Hermes...")
+    print("→ Stopping Windows gateway process(es) before updating Xinyuan...")
     drain_timeout = _gateway_drain_timeout(socket_acks)
     survivors = _m()._wait_for_windows_update_gateway_exit(mapped_pids, timeout=drain_timeout)
     unmapped_pids = [pid for pid in running_pids if pid not in profile_processes and pid not in service_gateway_pids]
@@ -1334,7 +1334,7 @@ def _clear_windows_venv_holders_or_exit(args, gateway_mode: bool, _windows_gatew
     # provably dead; no PPID archaeology). Orphan rung = Desktop `serve` whose app is GONE (nothing
     # respawns an orphan); live-Desktop backends return None and keep the refusal.
     for classifier, message in (
-        (_m()._ledger_reapable_backend_pids, "ledger-identified orphaned Hermes backend process(es) hold the venv"),
+        (_m()._ledger_reapable_backend_pids, "ledger-identified orphaned Xinyuan backend process(es) hold the venv"),
         (_m()._orphaned_desktop_backend_pids, "orphaned Desktop backend process(es) still hold the venv"),
     ):
         if holders and (backends := classifier(holders)):

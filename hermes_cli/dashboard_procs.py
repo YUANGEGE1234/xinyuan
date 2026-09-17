@@ -77,7 +77,7 @@ def _scan_dashboard_processes(*, exclude_pids: set[int] | None = None) -> list[t
     ``hermes update`` (every API call 401s). *exclude_pids* (Desktop's HERMES_DESKTOP_CHILD_PID
     backends) are never returned.
 
-    *exclude_pids* is an optional set of PIDs that must never be returned. This is used by the Hermes
+    *exclude_pids* is an optional set of PIDs that must never be returned. This is used by the Xinyuan
     Desktop Electron app to protect its own backend child process: when the desktop spawns ``hermes serve``
     as a backend and triggers an auto-update, the update must not kill the backend that the desktop itself
     manages. The desktop sets the environment variable ``HERMES_DESKTOP_CHILD_PID`` on the spawned backend
@@ -606,7 +606,7 @@ _HEX32 = set("0123456789abcdef")
 
 
 def _hermes_home_dir() -> Path:
-    """The process's Hermes home: remote-backend locks are a process-level asset, so a request scoped
+    """The process's Xinyuan home: remote-backend locks are a process-level asset, so a request scoped
     to another profile must still see the same lock dir."""
     from hermes_constants import get_process_hermes_home
     return get_process_hermes_home()

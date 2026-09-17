@@ -1,6 +1,6 @@
 """Process identity: spawn tags, the machine-wide spawn ledger, and the Windows job-object self-attach.
 
-Three layers make every long-lived Hermes process positively identifiable, so reapers (``hermes
+Three layers make every long-lived Xinyuan process positively identifiable, so reapers (``hermes
 update``, Desktop startup sweeps) never guess lineage from PPID archaeology or cmdline matching:
 1. spawn tags (``HERMES_SPAWN`` env stamped by the spawner); 2. a ``(pid, create_time)`` ledger;
 3. Windows job-object self-attach with ``KILL_ON_JOB_CLOSE`` so the whole child tree dies with the
@@ -281,7 +281,7 @@ def register_child(pid: int, purpose: str, *, project_root: Optional[Path] = Non
     """Record a CHILD process this process just spawned. Best-effort.
 
     Mirror of :func:`register_self` for children that cannot register themselves (stdio MCP
-    helpers: arbitrary ``npx``/binary servers never import Hermes code). Records the child's
+    helpers: arbitrary ``npx``/binary servers never import Xinyuan code). Records the child's
     ``(pid, create_time)`` with THIS process as spawner, so a helper whose spawner is provably gone
     is a reapable orphan and one whose spawner is alive is never reaped.
     """

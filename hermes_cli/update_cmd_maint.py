@@ -62,7 +62,7 @@ def _sqlite_partial_completion_lines(sqlite_version: str) -> list[str]:
     from hermes_cli.update_cmd import _m
     return [
         f"⚠ Update partially complete — your Python's SQLite ({sqlite_version}) has a known "
-        "corruption bug. Hermes works, but sessions could be damaged.",
+        "corruption bug. Xinyuan works, but sessions could be damaged.",
         f"  Fix: run the installer again ({_REINSTALL_ONE_LINER[bool(_m()._is_windows())]}) "
         "which installs a safe Python, then run `hermes doctor` to confirm.",
     ]
@@ -131,7 +131,7 @@ def _evict_module(modules: dict, name: str) -> bool:
 
 
 def _purge_stale_hermes_modules() -> None:
-    """Evict every cached Hermes module after the checkout changed in-place. Never raises.
+    """Evict every cached Xinyuan module after the checkout changed in-place. Never raises.
 
     The update runs in the pre-pull process; later phases lazily import NEW source into an OLD
     ``sys.modules`` world and die when new code references a symbol missing from a cached
@@ -139,7 +139,7 @@ def _purge_stale_hermes_modules() -> None:
     their module objects — so later imports rebuild a self-consistent graph from the new tree.
     """
     from hermes_cli.update_cmd import _m
-    with _best_effort('Could not purge stale Hermes modules: %s'):
+    with _best_effort('Could not purge stale Xinyuan modules: %s'):
         importlib.invalidate_caches()
         modules = _m().sys.modules
         prefixes = _stale_purge_prefixes()
@@ -152,7 +152,7 @@ def _purge_stale_hermes_modules() -> None:
             and _evict_module(modules, name)
         ]
         if purged:
-            logger.debug("Purged %d stale Hermes module(s) after checkout update", len(purged))
+            logger.debug("Purged %d stale Xinyuan module(s) after checkout update", len(purged))
 
 
 def _reload_updated_runtime_modules() -> None:
@@ -458,7 +458,7 @@ def _post_update_sqlite_runtime_status():
 
 
 def _print_verified_update_completion(message: str) -> bool:
-    """Print a success completion only after probing the next Hermes runtime."""
+    """Print a success completion only after probing the next Xinyuan runtime."""
     from hermes_cli.update_cmd import _post_update_sqlite_runtime_status
     if not message.startswith("✓"):
         _print_update_completion(message)
@@ -551,7 +551,7 @@ def _restore_state_db_from_snapshot(state_path: Path, snap_state: Path) -> bool:
     except LiveConnectionError as exc:
         print(
             f"  ✗ Auto-restore refused: {exc} Close the in-process database "
-            "handles (or restart Hermes) and retry."
+            "handles (or restart Xinyuan) and retry."
         )
         return False
     restored = verify_sqlite_integrity(state_path, check_header=True, run_pragma=True)
@@ -678,7 +678,7 @@ def _ensure_fhs_path_guard() -> None:
         return  # already on PATH, nothing to do
 
     path_line = 'export PATH="/usr/local/bin:$PATH"'
-    path_comment = "# Hermes Agent — ensure /usr/local/bin is on PATH (RHEL non-login shells)"
+    path_comment = "# Xinyuan Agent — ensure /usr/local/bin is on PATH (RHEL non-login shells)"
     wrote_any = False
     for candidate in (".bashrc", ".bash_profile"):
         cfg = Path(home) / candidate
@@ -734,7 +734,7 @@ def _ensure_acp_launcher() -> None:
                 continue
             shim = (
                 "#!/usr/bin/env bash\n"
-                "# Hermes Agent — ACP launcher (written by `hermes update`).\n"
+                "# Xinyuan Agent — ACP launcher (written by `hermes update`).\n"
                 "# ACP hosts (Zed, JetBrains, Buzz) resolve the agent by this\n"
                 "# command name on the login-shell PATH.\n"
                 f'exec "{hermes_cmd}" acp "$@"\n'
@@ -1065,7 +1065,7 @@ def _run_post_update_maintenance(
     if sys.platform == "darwin" and had_desktop_app_before_update:
         print()
         print(
-            "  ℹ macOS: if Hermes re-prompts for permissions you already "
+            "  ℹ macOS: if Xinyuan re-prompts for permissions you already "
             "granted (toggle shows ON), the stored grant is stale — run "
             "`tccutil reset ScreenCapture com.nousresearch.hermes` (repeat "
             "per affected service), toggle it ON in System Settings, then "

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Agent emoji reaction in the Hermes desktop app: the counterpart to the user's tapback
+"""Agent emoji reaction in the Xinyuan desktop app: the counterpart to the user's tapback
 (same store, one-per-author, ``author="agent"``). Lives in the ``desktop_ui`` toolset so it
 costs nothing elsewhere (adapters expose reactions via ``send_message(action="react")``);
 defaults to the triggering message and emits ``message.reaction`` for live painting."""

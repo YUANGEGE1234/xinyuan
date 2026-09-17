@@ -7,7 +7,7 @@ Two data sources:
    (official optional). These give us full metadata — overview prose, version,
    license, env vars, commands — that the unified index doesn't carry.
 
-2. The unified Hermes Skills Index at ``website/static/api/skills-index.json``,
+2. The unified Xinyuan Skills Index at ``website/static/api/skills-index.json``,
    built twice daily by ``scripts/build_skills_index.py`` (workflow
    ``.github/workflows/skills-index.yml``). Covers skills.sh, ClawHub, browse.sh,
    LobeHub, well-known endpoints, and the GitHub taps

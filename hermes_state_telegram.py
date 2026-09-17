@@ -294,7 +294,7 @@ class SessionTelegramTopicsMixin:
         self, *, chat_id: str, thread_id: str, user_id: str, session_key: str,
         session_id: str, managed_mode: str = "auto", profile_name: str = "default",
     ) -> None:
-        """Bind one Telegram DM topic thread to one Hermes session. A session may be linked to
+        """Bind one Telegram DM topic thread to one Xinyuan session. A session may be linked to
         only one topic: rebinding the same pair is idempotent; linking the session to a
         different topic raises ValueError."""
         self.apply_telegram_topic_migration()

@@ -1,4 +1,4 @@
-"""On-demand supply-chain audit for Hermes Agent installs.
+"""On-demand supply-chain audit for Xinyuan Agent installs.
 
 Vulnerabilities are looked up against OSV.dev (``api.osv.dev/v1/querybatch`` + ``/v1/vulns/{id}``).
 Single-shot, on-demand, never daily — see ``references/security-disclosure-triage.md``.

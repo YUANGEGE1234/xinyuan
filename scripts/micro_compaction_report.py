@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize micro-compaction telemetry from Hermes logs.
+"""Summarize micro-compaction telemetry from Xinyuan logs.
 
 Reads the content-free JSON lines emitted by
 ``ContextCompressor._emit_micro_compaction_telemetry`` and reports what the

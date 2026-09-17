@@ -358,7 +358,7 @@ def _ensure_reference_path_allowed(path: Path) -> None:
     if path in blocked_exact:
         raise ValueError("path is a sensitive credential file and cannot be attached")
     if any(_is_under(path, blocked_dir) for blocked_dir in blocked_dirs):
-        raise ValueError("path is a sensitive credential or internal Hermes path and cannot be attached")
+        raise ValueError("path is a sensitive credential or internal Xinyuan path and cannot be attached")
     # Anchor to the canonical read deny-list (agent/file_safety.get_read_block_error): the
     # narrow list above never caught auth.json, .anthropic_oauth.json, mcp-tokens/, webhook
     # secrets or project .env files, and it grows automatically with that deny-list.
@@ -372,7 +372,7 @@ def _ensure_reference_path_allowed(path: Path) -> None:
         # guard closes; a spurious block is recoverable, a leaked credential is not.
         raise ValueError("path could not be verified against the credential deny-list and cannot be attached")
     if blocked:
-        raise ValueError("path is a sensitive credential or internal Hermes path and cannot be attached")
+        raise ValueError("path is a sensitive credential or internal Xinyuan path and cannot be attached")
 
 
 def _strip_trailing_punctuation(value: str) -> str:

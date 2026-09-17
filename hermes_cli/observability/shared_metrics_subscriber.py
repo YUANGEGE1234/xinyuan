@@ -1,4 +1,4 @@
-"""Relay subscriber for the persisted Hermes shared-metrics slice."""
+"""Relay subscriber for the persisted Xinyuan shared-metrics slice."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ def _named(metric_name: str, dimensions: dict | None) -> tuple[str, dict] | None
 
 
 class SharedMetricsSubscriber:
-    """Persist validated Hermes counters from Relay lifecycle events."""
+    """Persist validated Xinyuan counters from Relay lifecycle events."""
 
     def __init__(
         self,
@@ -94,5 +94,5 @@ class SharedMetricsSubscriber:
                     self.store.record_counter(metric_name, dimensions, self._client_resource)
             except Exception:
                 logger.warning(
-                    "Unable to persist the Hermes shared metric: %s", metric_name, exc_info=True
+                    "Unable to persist the Xinyuan shared metric: %s", metric_name, exc_info=True
                 )

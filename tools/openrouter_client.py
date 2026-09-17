@@ -1,4 +1,4 @@
-"""OpenRouter API key probe shared by Hermes tools."""
+"""OpenRouter API key probe shared by Xinyuan tools."""
 
 import os
 

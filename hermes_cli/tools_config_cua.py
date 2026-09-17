@@ -103,7 +103,7 @@ def _resolved_cua_driver_cmd() -> Optional[str]:
 
 
 def _cua_driver_env() -> dict:
-    """cua-driver child env with the Hermes telemetry policy applied; falls back to the current
+    """cua-driver child env with the Xinyuan telemetry policy applied; falls back to the current
     environment if the helper can't be imported, so install/status never break."""
     try:
         from tools.computer_use.cua_backend import cua_driver_child_env
@@ -116,7 +116,7 @@ _CUA_DRIVER_CONTRACT_CACHE: dict = {}
 
 
 def _cua_driver_contract_status(binary: Optional[str] = None) -> dict:
-    """Inspect whether an installed driver supports Hermes' runtime contract (30s cache keyed on the
+    """Inspect whether an installed driver supports Xinyuan' runtime contract (30s cache keyed on the
     binary's path/mtime/size fingerprint)."""
     from tools.computer_use.cua_backend_driver import cua_driver_runtime_contract_status
     resolved = binary or _resolved_cua_driver_cmd()
@@ -149,7 +149,7 @@ def _pip_install(args: List[str], *, timeout: int = 300, capture_output: bool = 
     venv_root = Path(sys.executable).parent.parent
     install_flags = _post_setup_no_window_flags(streams_to_console=not capture_output)
 
-    # Managed uv first: $HERMES_HOME/bin is never on PATH, so a bare which() misses the uv Hermes
+    # Managed uv first: $HERMES_HOME/bin is never on PATH, so a bare which() misses the uv Xinyuan
     # installed; ensure_uv() (not a pure lookup) because installing uv is in scope during setup.
     from hermes_cli.managed_uv import ensure_uv
     uv_bin = ensure_uv()
@@ -290,8 +290,8 @@ def install_cua_driver(upgrade: bool = False, require_confirmed_update: bool = F
                          f"      {_CUA_MANUAL_README}")
         return _run_cua_driver_installer(label="Installing")
 
-    # A driver failing Hermes' runtime contract (version floor, missing manifest verbs) is repaired
-    # regardless of mode. Hermes' minimum requirement IS the confirmation an upgrade is needed, so
+    # A driver failing Xinyuan' runtime contract (version floor, missing manifest verbs) is repaired
+    # regardless of mode. Xinyuan' minimum requirement IS the confirmation an upgrade is needed, so
     # this path must not defer to the driver's `check-update` verb — a cached/indeterminate "no
     # update" answer would pin users on an unusable driver forever.
     contract = _cua_driver_contract_status(binary) if binary else None
@@ -308,7 +308,7 @@ def install_cua_driver(upgrade: bool = False, require_confirmed_update: bool = F
         return True
     if repair_existing:
         _print_warning(f"    Found cua-driver {contract.get('version') or 'unknown version'}, but "
-                       "Hermes cannot use its current runtime contract: "
+                       "Xinyuan cannot use its current runtime contract: "
                        f"{contract.get('reason') or 'required runtime features are missing'}.")
         if override:
             return _fail("    Update the binary selected by HERMES_CUA_DRIVER_CMD, or unset the "
@@ -557,7 +557,7 @@ def _print_cua_platform_notes(is_windows: bool, is_linux: bool, *, fresh_install
         _print_info("      System Settings > Privacy & Security > Accessibility")
         _print_info("      System Settings > Privacy & Security > Screen Recording")
         if fresh_install:
-            _print_info("    Both must allow the terminal / Hermes process.")
+            _print_info("    Both must allow the terminal / Xinyuan process.")
 
 
 def _kill_installer_tree(proc, *, is_windows: bool) -> None:

@@ -3,7 +3,7 @@
 Users map env-var names to ``op://vault/item/field`` references in
 ``secrets.onepassword.env``; each is resolved with one ``op read -- <ref>``
 call using whatever auth the user's ``op`` already has (``OP_SERVICE_ACCOUNT_TOKEN``
-headless, ``OP_SESSION_*`` interactive) — Hermes never authenticates on the
+headless, ``OP_SESSION_*`` interactive) — Xinyuan never authenticates on the
 user's behalf, and failures never block startup. Complete pulls are cached
 in-process and under ``<hermes_home>/cache/op_cache.json`` (values only; auth
 material is fingerprinted, never stored).

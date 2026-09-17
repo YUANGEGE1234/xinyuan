@@ -85,7 +85,7 @@ def _xai_error(error: str, error_type: str, prompt: str, model: str = "", aspect
 
 def _media_ref_to_xai_url(value: str, *, kind: str, fallback_mime: str) -> str:
     """URL/data URI accepted by xAI for ``kind`` (``image``/``video``) inputs: remote URLs and matching data URIs pass
-    through; a readable local file of the right MIME class is inlined as base64 (after Hermes' read deny-list /
+    through; a readable local file of the right MIME class is inlined as base64 (after Xinyuan' read deny-list /
     credential-store guard, which fails open if unavailable); anything else is returned as-is so the caller rejects it."""
     ref = (value or "").strip()
     path = Path(ref).expanduser()

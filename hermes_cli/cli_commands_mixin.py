@@ -166,14 +166,14 @@ _CRON_SUBCOMMANDS = {
 _ON_WORDS = {"on", "enable", "true", "1"}
 _OFF_WORDS = {"off", "disable", "false", "0"}
 
-# /busy mode -> what Enter does while Hermes is working (status line / post-set explanation).
+# /busy mode -> what Enter does while Xinyuan is working (status line / post-set explanation).
 _BUSY_MODE_SHORT = {
     "queue": "queues for next turn", "steer": "steers into current run (after next tool call)",
     "interrupt": "redirects current run immediately"}
 _BUSY_MODE_LONG = {
-    "queue": "Enter will queue follow-up input while Hermes is busy.",
+    "queue": "Enter will queue follow-up input while Xinyuan is busy.",
     "steer": "Enter will steer your message into the current run (after the next tool call).",
-    "interrupt": "Enter will redirect the current run while Hermes is busy; /stop still cancels it.",
+    "interrupt": "Enter will redirect the current run while Xinyuan is busy; /stop still cancels it.",
 }
 
 # /fast argument -> (service_tier value, persisted config value)
@@ -379,11 +379,11 @@ def _print_side_result_panel(cli, *, header_lines, body, title_suffix, empty_not
     try:
         from hermes_cli.skin_engine import get_active_skin
         _skin = get_active_skin()
-        label = _skin.get_branding("response_label", "☤ Hermes")
+        label = _skin.get_branding("response_label", "☤ Xinyuan")
         _resp_color = _maybe_remap_for_light_mode(_skin.get_color("response_border", "#CD7F32"))
         _resp_text = _maybe_remap_for_light_mode(_skin.get_color("banner_text", "#FFF8DC"))
     except Exception:
-        label, _resp_color, _resp_text = "☤ Hermes", "#CD7F32", "#FFF8DC"
+        label, _resp_color, _resp_text = "☤ Xinyuan", "#CD7F32", "#FFF8DC"
     rich_console.print(Panel(
         _render_final_assistant_content(body, mode=cli.final_response_markdown),
         title=f"[{_resp_color} bold]{label} {title_suffix}[/]", title_align="left",
@@ -706,7 +706,7 @@ class CLICommandsMixin:
     # ---- /diff ----------------------------------------------------------------------------
     def _handle_diff_command(self, command: str):
         """Handle /diff [working|staged|all|session] [--stat] [<path>...] — git changes in the
-        cwd; ``session`` is everything Hermes changed since the checkpoint baseline."""
+        cwd; ``session`` is everything Xinyuan changed since the checkpoint baseline."""
         stat_only = False
         mode = "working"
         paths: list[str] = []
@@ -763,7 +763,7 @@ class CLICommandsMixin:
             return print(f"  {result.get('error', 'Could not generate diff')}")
         stat, diff = result.get("stat", ""), result.get("diff", "")
         if result.get("empty") or (not stat and not diff):
-            return print("  No changes — Hermes hasn't edited any files here yet.")
+            return print("  No changes — Xinyuan hasn't edited any files here yet.")
         if stat:
             self._print_diff_text(f"\n{stat}")
         if diff and not stat_only:
@@ -2204,7 +2204,7 @@ class CLICommandsMixin:
         _cp(f"  ♥ Heartbeat set (every {format_interval(state.interval_seconds)}): {state.prompt}",
             _dim_line("Fires as a normal turn whenever the session is idle and the interval has "
                       "elapsed. /heartbeat pause | resume | clear to manage; lives only while this "
-                      "Hermes process runs — use `hermes cron` for durable schedules."))
+                      "Xinyuan process runs — use `hermes cron` for durable schedules."))
 
     def _handle_refine_command(self, cmd: str) -> None:
         """Dispatch /refine — run the memory/skill review fork on demand (same machinery as the
@@ -2578,7 +2578,7 @@ class CLICommandsMixin:
         _cp(_accent_line(f"✓ Reasoning effort set to '{arg}' {_scope_outcome(explicit_global, saved)}"))
 
     def _handle_busy_command(self, cmd: str):
-        """Handle /busy [status|queue|steer|interrupt] — what Enter does while Hermes is working."""
+        """Handle /busy [status|queue|steer|interrupt] — what Enter does while Xinyuan is working."""
         arg = _command_arg(cmd, lower=True)
         usage = _dim_line('Usage: /busy [queue|steer|interrupt|status]')
         if not arg or arg == "status":
@@ -2650,13 +2650,13 @@ class CLICommandsMixin:
         prompt_toolkit restores terminal modes), False when cancelled."""
         from hermes_cli.config import is_managed, format_managed_message
         if is_managed():
-            print(f"  ✗ {format_managed_message('update Hermes Agent')}")
+            print(f"  ✗ {format_managed_message('update Xinyuan Agent')}")
             return False
         # prompt_toolkit-native modal: renders above the composer, no raw input() races.
-        choices = [("once", "Update Now", "exit the current session and update Hermes Agent"),
+        choices = [("once", "Update Now", "exit the current session and update Xinyuan Agent"),
                    ("cancel", "Cancel", "keep the current session")]
         raw = self._prompt_text_input_modal(
-            title="☤  Update Hermes Agent",
+            title="☤  Update Xinyuan Agent",
             detail="This will exit the current session and run `hermes update`.", choices=choices)
         if raw is None or self._normalize_slash_confirm_choice(raw, choices) != "once":
             print("  🟡 /update cancelled.")
@@ -2678,7 +2678,7 @@ class CLICommandsMixin:
             _cp(f"Unknown voice subcommand: {subcommand}", "Usage: /voice [on|off|tts|status]")
 
     def _handle_wake_command(self, command: str):
-        """Handle /wake [on|off|status] — the 'Hey Hermes' hotword listener. The toggle IS the
+        """Handle /wake [on|off|status] — the 'Hey Xinyuan' hotword listener. The toggle IS the
         config: on/off also writes ``wake_word.enabled`` so the choice persists; startup
         auto-arm only reads it."""
         subcommand = _command_arg(command, lower=True) or (

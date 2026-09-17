@@ -1,4 +1,4 @@
-"""Directory initialization and storage diagnostics for the active Hermes home."""
+"""Directory initialization and storage diagnostics for the active Xinyuan home."""
 
 import os
 from pathlib import Path
@@ -48,7 +48,7 @@ def _ensure_directory(path: Path, *, create: bool, secure: bool, home: Path) -> 
             + (f"Directory links: {detail}. " if detail else "")
             + "Check the directory/link target, mount availability and access permissions; "
             "restore the mount or repair the link before retrying. "
-            "Hermes has not replaced the link or created its missing target."
+            "Xinyuan has not replaced the link or created its missing target."
         ) from exc
 
 

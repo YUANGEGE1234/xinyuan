@@ -1,6 +1,6 @@
 """Sliding-window budget for bot-authored inbound messages.
 
-``{PLATFORM}_ALLOW_BOTS`` only decides admission, so two Hermes profiles replying to each other never stop.
+``{PLATFORM}_ALLOW_BOTS`` only decides admission, so two Xinyuan profiles replying to each other never stop.
 The guard counts admitted bot messages per conversation and drops further ones for ``cooldown_seconds``
 once ``max_events`` land inside ``window_seconds``. Settings: config.yaml ``gateway.bot_loop_guard``.
 """

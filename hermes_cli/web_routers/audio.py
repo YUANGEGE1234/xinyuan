@@ -180,7 +180,7 @@ async def create_voice_live_session(payload: VoiceLiveSessionRequest, profile: O
 
     The project API key stays on this host; the renderer only receives the session id and the
     SDP answer. Client delegation is fixed at creation: every ``session.delegation.created`` the
-    renderer receives becomes a Hermes turn on the session it belongs to.
+    renderer receives becomes a Xinyuan turn on the session it belongs to.
     """
     from tools.voice_live import create_webrtc_session
     # Validate emptiness only: the vendor's SDP parser needs the offer byte-exact, including the

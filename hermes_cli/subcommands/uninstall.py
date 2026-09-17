@@ -10,8 +10,8 @@ from hermes_cli.subcommands._shared import add_yes_flag
 def build_uninstall_parser(subparsers, *, cmd_uninstall: Callable) -> None:
     """Attach the ``uninstall`` subcommand to ``subparsers``."""
     uninstall_parser = subparsers.add_parser(
-        "uninstall", help="Uninstall Hermes Agent",
-        description="Remove Hermes Agent from your system. Can keep configs/data for reinstall.")
+        "uninstall", help="Uninstall Xinyuan Agent",
+        description="Remove Xinyuan Agent from your system. Can keep configs/data for reinstall.")
     uninstall_parser.add_argument(
         "--full", action="store_true",
         help="Full uninstall - remove everything including configs and data")

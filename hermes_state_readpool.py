@@ -49,7 +49,7 @@ _HANDLES_PER_PATH_WARN = 4
 
 # Descriptors kept in reserve for everything that is NOT this module (httpx
 # sockets, terminal pipes, log files): the EMFILE SQLite pushes over surfaces elsewhere.
-# The ceilings above bound Hermes's SQLite descriptors, which is only ever part of the fd table. The #98573
+# The ceilings above bound Xinyuan's SQLite descriptors, which is only ever part of the fd table. The #98573
 # report is exactly that case: ~20 state.db descriptors were not the whole 256, they were the share that
 # pushed httpx and terminal pipes over, and the EMFILE surfaced in tools/terminal_tool.py rather than here.
 # So the read pool also yields when the PROCESS is close to its limit, whatever is consuming it.

@@ -282,7 +282,80 @@ Ignoring stale Hermes backend exit (1)
 
 ---
 
-## 9. 已知限制
+## 9. 补漏（第二版）：AI 的「自我认知」漏改名
+
+### 现象
+
+界面文案已经全部改成 Xinyuan 了，但**一对话就露馅**：AI 会自称
+「Hermes Agent, built by Nous Research」，并把界面称作 "the Hermes desktop app"。
+
+### 根因
+
+第一版的改名正则只匹配**紧跟引号的** `Hermes`：
+
+```python
+re.compile(r"(['\"`])Hermes(?![A-Za-z0-9_$])")
+```
+
+它只能命中 `"Hermes"` 这种独立字符串字面量。而系统提示里写的是
+`"You are Hermes Agent, ..."` —— `Hermes` 前面是**空格**，永远匹配不到。
+于是 UI 改到位了，**发给模型的系统提示**和**首启播种的人格文件**全漏了。
+
+### 影响面
+
+| 文件 | 作用 |
+| --- | --- |
+| `agent/prompt_builder.py` | **每一轮对话**都会发给模型的系统提示 |
+| `hermes_cli/default_soul.py` | 首启播种 `data/SOUL.md` 的模板 |
+| `backend/SOUL.md` | 随包分发的人格文件 |
+
+交付包内用户可见的 `Hermes` 文案合计 **2,086 处 / 656 个文件**。
+
+### 修法
+
+用 Python `tokenize` **只对 STRING / COMMENT token** 做替换。
+这样从构造上就不可能碰到代码标识符 —— `hermes_cli`、`HERMES_HOME`、
+`hermes_state_*` 这些必须原样保留，改了应用直接崩。
+
+### 刻意**不改**的三类（关键）
+
+机械改名不只是「有风险」，而是会**改错**：
+
+| 类型 | 例子 | 为什么不能改 |
+| --- | --- | --- |
+| 模型名 | `Hermes 3` / `Hermes 4` | 这是 Nous Research 的**大模型名**，不是本 agent |
+| 搜索替换表 | `_OAUTH_SYSTEM_REPLACEMENTS` 里的 `("Hermes Agent", "Claude Code")` | 左值是**被匹配的原文**，改了 Anthropic OAuth 的伪装就失效 |
+| 等值判断 | `value == "Hermes Agent"`、`author != "Hermes Agent"` | 比较用，不是展示用 |
+
+另外三类同样保持原样：
+
+- **URL** —— `https://hermes-agent.nousresearch.com/docs`、`HTTP-Referer`，指向真实上游文档
+- **CLI 命令** —— 控制台脚本仍然是 `hermes`（`pyproject.toml` 里 `hermes = "hermes_cli.main:main"`），
+  技能里写的 `hermes config` / `hermes doctor` 都是**正确的**，不能改
+- **第三方真实页面** —— `the portal's Hermes Agent page`（Nous Portal 的页面）
+
+### 两处必须回退的改动
+
+1. **`hermes_cli/default_soul.py` 的 `_SCAFFOLD_HEAD` / `_LEGACY_TEMPLATE_SOULS`**
+   这两个常量是**用来识别**用户磁盘上旧版 `SOUL.md`（内容是 "Hermes Agent"）以便原地升级的。
+   改名会让老安装不再被识别 → 已强制保留原文，只改 `DEFAULT_SOUL_MD`。
+
+2. **`backend/skills/` 与 `backend/optional-skills/` 下的文件一律不动**
+   它们的内容哈希通过 `data/skills/.bundled_manifest` 决定 `skills_sync` 是否跳过同步。
+   改了会让清单失效，下次启动就重新全量 `copytree` 播种 —— 正是那个 **85~109 秒、
+   会撞爆桌面端 90 秒启动超时**的路径。实测：改了 → 启动直接失败。
+
+### 验证
+
+| 项 | 结果 |
+| --- | --- |
+| 改动文件语法校验（656 个 `.py`） | **0 失败** |
+| 端到端启动 | **18.0 秒** → `Xinyuan backend is ready. Finalizing desktop startup` |
+| 系统提示 | `You are Xinyuan（鑫源）, a local desktop AI assistant built on Hermes Agent by Nous Research.` |
+
+---
+
+## 10. 已知限制
 
 - 仅提供 **Windows x64** 便携包。macOS / Linux 需自行从源码构建。
 - 需要能访问 `https://yuangeluyou.com`；离线环境无法使用。

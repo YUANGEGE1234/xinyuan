@@ -3,7 +3,7 @@
 
 Registers the actual tool schemas captured live from Epic's UE 5.8
 ModelContextProtocol + AllToolsets plugins (probe_raw_5.8.0_alltoolsets.json,
-probe date 2026-07-02) into the Hermes tool registry with mock handlers,
+probe date 2026-07-02) into the Xinyuan tool registry with mock handlers,
 then runs UE-realistic scenarios in three modes:
 
   eager    — all schemas in the tools array (at 830 tools: ~165K tokens)

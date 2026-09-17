@@ -276,8 +276,8 @@ def _recover_core_update_marker_locked() -> None:
         logger.debug("Interrupted-install recovery failed: %s", exc)
         print("✗ Could not auto-recover the interrupted install.")
         manual = (
-            "  Hermes is still running from the launcher that needs "
-            "replacing. Close other Hermes windows, restart from a "
+            "  Xinyuan is still running from the launcher that needs "
+            "replacing. Close other Xinyuan windows, restart from a "
             "different terminal, then run:",
             f'    cd /d "{PROJECT_ROOT}"',
             f'    "{sys.executable}" -m pip install -e ".[all]"',
@@ -539,7 +539,7 @@ def _quarantine_running_hermes_exe(
     ``Access is denied. (os error 5)``), so live shims are renamed to ``<shim>.old.<unix-ms>``
     first; ``_cleanup_quarantined_exes`` sweeps the ``.old`` files next invocation. Rename can
     still fail when another process holds the .exe without ``FILE_SHARE_DELETE`` (AV scanner:
-    transient; Hermes Desktop backend child: until closed) — retry with backoff, then warn
+    transient; Xinyuan Desktop backend child: until closed) — retry with backoff, then warn
     naming the likely culprit. Returns ``(original, quarantined)`` pairs for rollback;
     ``failed_out`` collects shims whose rename failed every attempt so the update dependency
     sync can refuse instead of stranding a half-broken venv.
@@ -567,7 +567,7 @@ def _quarantine_running_hermes_exe(
             f"  ⚠ Could not quarantine {shim.name} ({last_exc.__class__.__name__}: "
             f"another process is holding it open).")
         print(
-            "    Close Hermes Desktop, exit other `hermes` REPLs, stop the "
+            "    Close Xinyuan Desktop, exit other `hermes` REPLs, stop the "
             "gateway, or pause AV scanning, then re-run `hermes update`.")
         if failed_out is not None:
             failed_out.append(shim.name)
@@ -607,7 +607,7 @@ def _filter_pending_shim_renames(entries: list[str], shims: list[Path]) -> tuple
 
 
 def _cleanup_pending_shim_renames(scripts_dir: Path) -> int:
-    """Drop reboot renames older Hermes versions queued for our shims: ``MOVEFILE_DELAY_UNTIL_REBOOT``
+    """Drop reboot renames older Xinyuan versions queued for our shims: ``MOVEFILE_DELAY_UNTIL_REBOOT``
     fallbacks outlive the update that queued them and move away whatever sits at the shim path
     at next boot — even a shim a later repair just wrote. Needs elevation; a no-op otherwise."""
     if not _is_windows():

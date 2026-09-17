@@ -18,12 +18,12 @@ _ARG_SYNONYMS = {
     "off": "auto", "default": "auto", "disable": "auto", "hermes": "auto"}
 
 _HERMES_TOOLS_CALLBACK_NOTE = (
-    "Hermes tool callback registered: codex can now use "
+    "Xinyuan tool callback registered: codex can now use "
     "web_search, web_extract, browser_*, vision_analyze, "
     "image_generate, skill_view, skills_list, text_to_speech, "
     "kanban_* (worker + orchestrator) via MCP.",
     "  (delegate_task, memory, session_search, todo run "
-    "only on the default Hermes runtime — they need the "
+    "only on the default Xinyuan runtime — they need the "
     "agent loop context.)")
 
 
@@ -173,18 +173,18 @@ def apply(
         ok, ver = _check_binary_cached()
         if ok:
             msg_lines.append(f"codex CLI: {ver}")
-        # Migrate Hermes' MCP servers + Codex's curated plugins into ~/.codex/config.toml so the
-        # spawned codex subprocess sees the same tool surface AND can call back into Hermes.
+        # Migrate Xinyuan' MCP servers + Codex's curated plugins into ~/.codex/config.toml so the
+        # spawned codex subprocess sees the same tool surface AND can call back into Xinyuan.
         msg_lines.extend(_migration_lines(config))
         msg_lines.append(
             "OpenAI/Codex turns now run through `codex app-server` "
             "(terminal/file ops/patching inside Codex; "
-            "Hermes tools available via MCP callback).")
+            "Xinyuan tools available via MCP callback).")
         msg_lines.append(
             "Effective on next session — current cached agent keeps "
             "the prior runtime to preserve prompt cache.")
     else:
-        msg_lines.append("OpenAI/Codex turns will use the default Hermes runtime.")
+        msg_lines.append("OpenAI/Codex turns will use the default Xinyuan runtime.")
         msg_lines.append("Effective on next session.")
     return CodexRuntimeStatus(
         success=True, new_value=new_value, old_value=current,

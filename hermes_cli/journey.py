@@ -1,4 +1,4 @@
-"""``hermes journey`` — what Hermes has learned, on a timeline."""
+"""``hermes journey`` — what Xinyuan has learned, on a timeline."""
 
 from __future__ import annotations
 
@@ -222,7 +222,7 @@ def _cmd_show(args: argparse.Namespace) -> int:
 
     if not payload.get("nodes"):
         console.print(
-            "[grey62]No learning yet — use Hermes a while and your learned skills and "
+            "[grey62]No learning yet — use Xinyuan a while and your learned skills and "
             "memories will start mapping out here.[/grey62]"
         )
         return 0

@@ -26,7 +26,7 @@ def resolve_passthrough_env(explicit_forward: Iterable[str] = (),
     """Values to forward into a remote shell plus the scoped names that must be unset there.
 
     Implicit passthrough (skill ``required_environment_variables`` + ``terminal.env_passthrough``)
-    is filtered through the Hermes provider-credential blocklist and the dynamic internal-secret
+    is filtered through the Xinyuan provider-credential blocklist and the dynamic internal-secret
     check; ``explicit_forward`` entries (docker_forward_env) are an operator opt-in that bypasses
     both. Each value is the routed profile's secret when multiplex is active; a name the active
     scope lacks is returned in the unset set so a shared sandbox cannot leak another profile's

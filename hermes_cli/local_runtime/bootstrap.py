@@ -20,7 +20,7 @@ from hermes_cli.local_runtime.gguf import SPLIT_PART_RE, model_id_from_stem
 
 logger = logging.getLogger(__name__)
 
-_SUPERVISOR = None  # process-wide singleton; one router per Hermes process
+_SUPERVISOR = None  # process-wide singleton; one router per Xinyuan process
 
 
 def _detect_gpu_vendor() -> str | None:
@@ -190,7 +190,7 @@ def ensure_local_runtime(config: dict, force: bool = False) -> "object | None":
         logger.info("local runtime enabled but no models staged; not booting")
         return None
 
-    # Another Hermes process may already be supervising — reuse via state, but ONLY while its
+    # Another Xinyuan process may already be supervising — reuse via state, but ONLY while its
     # launch policy still covers every staged model. A server whose preset file predates a
     # download serves the new model with no policy at all (--models-autoload + stock fit). A stale
     # incumbent gets stopped and replaced by a fresh boot with regenerated presets; sessions ride

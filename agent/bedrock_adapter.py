@@ -82,7 +82,7 @@ def _require_boto3():
         raise ImportError(
             "The 'boto3' package is required for the AWS Bedrock provider. "
             "Install it with: pip install boto3\n"
-            "Or install Hermes with Bedrock support: pip install -e '.[bedrock]'"
+            "Or install Xinyuan with Bedrock support: pip install -e '.[bedrock]'"
         )
     try:
         version = tuple(int(x) for x in boto3.__version__.split(".")[:3])

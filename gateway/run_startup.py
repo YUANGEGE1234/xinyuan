@@ -1387,7 +1387,7 @@ class GatewayStartupMixin:
 
     async def start(self) -> bool:
         """Start the gateway and all configured platform adapters."""
-        logger.info("Starting Hermes Gateway...")
+        logger.info("Starting Xinyuan Gateway...")
         self._start_install_faulthandler()
         self._start_log_startup_environment()
         if await self._abort_startup_if_shutdown_requested():

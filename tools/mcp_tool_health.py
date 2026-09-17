@@ -71,9 +71,9 @@ class MCPServerHealthMixin:
         return task
 
     def _make_logging_callback(self):
-        """``logging_callback`` forwarding server ``notifications/message`` into Hermes logging (SDK default drops them).
+        """``logging_callback`` forwarding server ``notifications/message`` into Xinyuan logging (SDK default drops them).
 
-        Routes MCP ``notifications/message`` log notifications from the server into Hermes' logging
+        Routes MCP ``notifications/message`` log notifications from the server into Xinyuan' logging
         (agent.log via hermes_logging), tagged with the server name. Without this, the SDK's default
         callback silently discards them, so server-side warnings/errors during a tool call were invisible.
         Port of anomalyco/opencode#34529.

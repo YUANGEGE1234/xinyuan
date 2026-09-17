@@ -48,7 +48,7 @@ _BOUNDED_SYNC_WAIT_SLICE_S = 0.2
 
 
 class DeadlineExpired(TimeoutError):
-    """A deadline enforced by this layer expired (Hermes's own bound, not the provider's)."""
+    """A deadline enforced by this layer expired (Xinyuan's own bound, not the provider's)."""
 
     def __init__(self, label: str, timeout_s: float):
         super().__init__(f"deadline expired after {timeout_s:.1f}s: {label}")

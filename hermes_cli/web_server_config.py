@@ -135,7 +135,7 @@ _SCHEMA_OVERRIDES: Dict[str, Dict[str, Any]] = {
         "", "minimal", "low", "medium", "high", "xhigh", "max", "ultra",
     ),
     "updates.non_interactive_local_changes": _select(
-        "When the chat app / gateway updates Hermes (no terminal prompt), "
+        "When the chat app / gateway updates Xinyuan (no terminal prompt), "
         "what to do with uncommitted local source edits. 'stash' keeps them "
         "and re-applies them after the update; 'discard' throws them away. "
         "Terminal updates always ask, regardless of this setting.",
@@ -549,10 +549,10 @@ def _dashboard_skew_restart_hint() -> str:
     if os.environ.get("HERMES_SERVE_HEADLESS") == "1":
         return (
             "restart the Desktop-owned backend to load the new code "
-            "(use Restart backend in Hermes Desktop, or quit and reopen the app)"
+            "(use Restart backend in Xinyuan Desktop, or quit and reopen the app)"
         )
     return (
-        "restart this Hermes process to load the new code "
+        "restart this Xinyuan process to load the new code "
         "(hermes dashboard --port <port>, or the equivalent service restart for this install)"
     )
 

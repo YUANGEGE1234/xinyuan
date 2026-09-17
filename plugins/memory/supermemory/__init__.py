@@ -189,7 +189,7 @@ class _SupermemoryClient:
                                    default_headers={"x-sm-source": "hermes"})
 
     def _merge_metadata(self, metadata: Optional[dict]) -> dict:
-        # sm_source routes Hermes writes into the "Hermes" Space in the Supermemory app so the user
+        # sm_source routes Xinyuan writes into the "Xinyuan" Space in the Supermemory app so the user
         # can filter / bulk-manage them per source agent (a routing key for the user, not telemetry).
         merged = {"sm_source": "hermes", **(metadata or {})}
         if (legacy_source := merged.pop("source", None)) and "type" not in merged:
@@ -429,7 +429,7 @@ class SupermemoryMemoryProvider(MemoryProvider):
                 batch = [t for t in turns if t["session_id"] == sid]
                 now = datetime.now(timezone.utc)
                 content = "\n\n".join(_format_turn(t["user"], t["assistant"]) for t in batch)
-                metadata = {"type": "conversation", "session_id": sid, "timestamp": now.isoformat()}  # no sm_capture_mode: Hermes policy
+                metadata = {"type": "conversation", "session_id": sid, "timestamp": now.isoformat()}  # no sm_capture_mode: Xinyuan policy
                 result = _quietly(lambda: self._client.add_memory(content, metadata=metadata, entity_context=self._entity_context,
                                                                   custom_id=_capture_custom_id(sid, now)),
                                   "Supermemory capture failed (%s, session=%s, %d turns pending)", mode, sid, len(batch),

@@ -90,12 +90,12 @@ def _state_dir() -> Path:
 
 
 def _http_cache_dir() -> Path:
-    """Filesystem HTTP cache shared by every Lightpanda this Hermes spawns.
+    """Filesystem HTTP cache shared by every Lightpanda this Xinyuan spawns.
 
     Shared rather than per-session so a cached asset survives session churn.
     Lightpanda holds it in sqlite (WAL) with a best-effort write path, and
     ``--http-cache-entry-limit`` (upstream default 1000, not passed here)
-    bounds it without Hermes managing eviction.
+    bounds it without Xinyuan managing eviction.
     """
     path = _state_dir() / "http-cache"
     path.mkdir(parents=True, exist_ok=True)
@@ -200,7 +200,7 @@ def launch_lightpanda(session_name: str, *, block_private_networks: bool = False
     if not binary:
         if os.name == "nt":
             return None, ("browser.engine is 'lightpanda' but Lightpanda has no Windows "
-                          "build. Set browser.engine to auto (or run Hermes under WSL2).")
+                          "build. Set browser.engine to auto (or run Xinyuan under WSL2).")
         return None, ("browser.engine is 'lightpanda' but no lightpanda binary was found on PATH, ~/.lightpanda "
                       f"or ~/.local/bin. {LIGHTPANDA_INSTALL_HINT}, or set browser.engine to auto.")
 
@@ -299,7 +299,7 @@ def _is_lightpanda_process(pid: int, port, start_time) -> bool:
 
 
 def reap_orphaned_lightpanda() -> int:
-    """Kill ``lightpanda serve`` processes whose owning Hermes is gone; return the count. A live owner is
+    """Kill ``lightpanda serve`` processes whose owning Xinyuan is gone; return the count. A live owner is
     never touched; a PID is only signalled after psutil confirms it is still ``lightpanda serve`` on the recorded port."""
     try:
         state_dir = _state_dir()

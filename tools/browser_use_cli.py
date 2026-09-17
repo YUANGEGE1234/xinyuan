@@ -140,11 +140,11 @@ def _base_subprocess_env() -> dict:
     from tools.browser_tool import _build_browser_env
     env = _build_browser_env()
     # The CLI runs under its own Python (uv tool / uvx); an inherited PYTHONPATH/PYTHONHOME
-    # (Hermes's venv) wins over its site-packages → wrong-ABI C-extensions and a crash.
-    # PYTHONPATH/PYTHONHOME inherited from the agent process point at Hermes's venv site-packages, and a
+    # (Xinyuan's venv) wins over its site-packages → wrong-ABI C-extensions and a crash.
+    # PYTHONPATH/PYTHONHOME inherited from the agent process point at Xinyuan's venv site-packages, and a
     # child interpreter honors them ahead of its own site-packages — so the CLI imports compiled
     # C-extensions (e.g. pydantic_core) built for the wrong interpreter and crashes on ABI mismatch (#83427,
-    # #84841, #86006, #86104). Strip both — the CLI manages its own environment and never needs Hermes's
+    # #84841, #86006, #86104). Strip both — the CLI manages its own environment and never needs Xinyuan's
     # import path.
     env.pop("PYTHONPATH", None)
     env.pop("PYTHONHOME", None)
@@ -250,7 +250,7 @@ def _managed_bin_dir() -> str:
 
 
 def _find_cli() -> Optional[List[str]]:
-    """Locate the browser-use CLI, or None when it can't be run. MANAGED-FIRST: Hermes' own ``$HERMES_HOME/bin``
+    """Locate the browser-use CLI, or None when it can't be run. MANAGED-FIRST: Xinyuan' own ``$HERMES_HOME/bin``
     copy always wins so every session drives one Hermes-controlled binary; PATH and the user-level tool dir
     (~/.local/bin, or uv's %APPDATA%/uv/bin on Windows — Desktop/TUI workers may start with a minimal PATH
     that omits it) are fallbacks; uvx zero-install (same probe order) is last."""
@@ -395,7 +395,7 @@ def _resolve_lightpanda_cdp(env: dict, task_id: Optional[str], session_name: str
 
 
 def _resolve_managed_chromium_cdp(env: dict, task_id: Optional[str], session_name: str = "") -> Optional[str]:
-    """Point the harness at Hermes' packaged Chromium, launched through agent-browser for this cache key —
+    """Point the harness at Xinyuan' packaged Chromium, launched through agent-browser for this cache key —
     the same browser the built-in tools drive. Left alone, the harness discovers the user's INSTALLED
     Chrome on its default profile, which needs the chrome://inspect toggle + an Allow popup per run and
     is blocked outright on Chrome >=136; on a headless box it just reports ``chrome-not-running``.
@@ -433,7 +433,7 @@ def _resolve_backend_cdp(env: dict, task_id: Optional[str], session_name: str = 
     Precedence: (1) ``BU_CDP_WS``/``BU_CDP_URL`` already in env (operator override); (2) ``BROWSER_CDP_URL``
     env / ``browser.cdp_url`` (``/browser connect``); (3) a cloud provider via the legacy ``_get_session_info()``
     so browser_exec shares the SAME session machinery (per-task cache, expiry, reaper, atexit);
-    (4) the local engine — ``browser.engine: lightpanda`` or Hermes' packaged Chromium via agent-browser
+    (4) the local engine — ``browser.engine: lightpanda`` or Xinyuan' packaged Chromium via agent-browser
     (never the harness's own discovery of the user's installed Chrome); (5) BU direct-API configs → None:
     the CLI reaches BU cloud natively (BU_AUTOSPAWN). ``session_name`` (BU_NAME) keys the session cache so
     each name gets its OWN browser — what makes named sessions concurrent-safe.

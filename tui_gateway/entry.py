@@ -1,7 +1,7 @@
 import os
 import sys
 
-# Stop a ``utils/``-style package in the launch directory from shadowing Hermes's own
+# Stop a ``utils/``-style package in the launch directory from shadowing Xinyuan's own
 # top-level modules; ``hermes_bootstrap``'s name can't collide, so importing it first is safe.
 import hermes_bootstrap
 
@@ -259,7 +259,7 @@ def main():
             "skin": resolve_skin(), "change_events": True, "replay_epoch": replay_epoch()}}},
         "startup write failed (broken stdout pipe before first event)")
 
-    # Live-apply skins Hermes activates mid-conversation.
+    # Live-apply skins Xinyuan activates mid-conversation.
     server._ensure_skin_watcher()
 
     # Warm the /model picker's provider-models cache in this idle window (fire-and-forget).

@@ -9,7 +9,7 @@ from typing import Optional
 @dataclass(frozen=True)
 class Session:
     """A verified interactive identity (from ``complete_login`` / ``verify_session``). All fields
-    mandatory; providers without orgs set ``org_id=""``. The tokens are opaque to Hermes."""
+    mandatory; providers without orgs set ``org_id=""``. The tokens are opaque to Xinyuan."""
     user_id: str
     email: str
     display_name: str

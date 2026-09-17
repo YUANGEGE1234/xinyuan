@@ -1,4 +1,4 @@
-"""Baked-in build metadata for Hermes Agent.
+"""Baked-in build metadata for Xinyuan Agent.
 
 Source installs report their git revision live via ``git rev-parse`` (``hermes_cli/dump.py``,
 ``hermes_cli/banner.py``). Inside the published Docker image ``.dockerignore`` excludes ``.git``,

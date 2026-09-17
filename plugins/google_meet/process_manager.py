@@ -52,7 +52,7 @@ _NO_ACTIVE = {"ok": False, "reason": "no active meeting"}
 
 
 def start(url: str, *, out_dir: Optional[Path] = None, headed: bool = False,
-          auth_state: Optional[str] = None, guest_name: str = "Hermes Agent", duration: Optional[str] = None,
+          auth_state: Optional[str] = None, guest_name: str = "Xinyuan Agent", duration: Optional[str] = None,
           session_id: Optional[str] = None, mode: str = "transcribe", realtime_model: Optional[str] = None,
           realtime_voice: Optional[str] = None, realtime_instructions: Optional[str] = None,
           realtime_api_key: Optional[str] = None) -> Dict[str, Any]:

@@ -1,6 +1,6 @@
 """Nous Portal ``anthropic/*`` wire selection when ``nous.anthropic_wire`` is ``auto``.
 
-Portal serves Claude two ways and Hermes cannot tell which from the request: an OpenRouter
+Portal serves Claude two ways and Xinyuan cannot tell which from the request: an OpenRouter
 passthrough (today, for every ``anthropic/*`` id) or GMI/Vertex (planned once GMI is back). The
 native Messages wire is the better transport, but on the OpenRouter path it re-writes the previous
 turn's prompt cache on 14-20% of consecutive calls in concurrent tool loops (measured 2026-09-06;

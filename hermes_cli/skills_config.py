@@ -1,4 +1,4 @@
-"""Skills configuration for Hermes Agent. `hermes skills` enters this module."""
+"""Skills configuration for Xinyuan Agent. `hermes skills` enters this module."""
 from typing import List, Optional, Set
 
 from hermes_cli.config import cfg_get, load_config, save_config

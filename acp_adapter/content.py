@@ -150,7 +150,7 @@ def _resource_link_to_parts(block: ResourceContentBlock) -> list[dict[str, Any]]
 
     if path is None:
         return _text_parts(
-            **ident, body="[Resource link only; Hermes cannot read non-file ACP resource URIs directly.]"
+            **ident, body="[Resource link only; Xinyuan cannot read non-file ACP resource URIs directly.]"
         )
 
     image_mime = mime_type if _is_image_resource(mime_type) else _IMAGE_SUFFIX_MIME.get(path.suffix.lower())

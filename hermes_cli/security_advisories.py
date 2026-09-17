@@ -1,4 +1,4 @@
-"""Security advisory checker for Hermes Agent.
+"""Security advisory checker for Xinyuan Agent.
 
 Cheap (one ``importlib.metadata.version()`` call per advisory package, safe on every CLI startup)
 and silent unless a compromised package is actually installed.

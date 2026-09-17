@@ -1,6 +1,6 @@
 """Turn-end guard for kanban workers, which must end with ``kanban_complete`` or
 ``kanban_block``. Some models narrate the next step and stop with no tool calls;
-Hermes treats that as a clean exit → ``rc=0`` → dispatcher ``protocol_violation``.
+Xinyuan treats that as a clean exit → ``rc=0`` → dispatcher ``protocol_violation``.
 Policy-only: return a bounded synthetic nudge so the loop continues instead of exiting.
 """
 
@@ -66,7 +66,7 @@ def build_kanban_stop_nudge(
 
     tid = (task_id or os.environ.get("HERMES_KANBAN_TASK") or "").strip() or "this task"
     return (
-        "[System: You are a Hermes kanban worker. A plain-text reply is NOT a "
+        "[System: You are a Xinyuan kanban worker. A plain-text reply is NOT a "
         "terminal state for the board.\n\n"
         f"Task `{tid}` is still `running`. Ending now without a board tool "
         "causes a protocol violation (clean exit with no "

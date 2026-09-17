@@ -99,7 +99,7 @@ class LiveTranscriptWriter:
             d.mkdir(parents=True, exist_ok=True)
             path = d / f"task-{task_index}.log"
             path.write_text(
-                "=== Hermes subagent live transcript ===\n"
+                "=== Xinyuan subagent live transcript ===\n"
                 f"delegation: {delegation_id}   task: {task_index}\n"
                 f"goal: {_redact(goal_line)}\n"  # header bypasses event(), so redact here too
                 f"started: {time.strftime(_TIME_FMT)}\n"

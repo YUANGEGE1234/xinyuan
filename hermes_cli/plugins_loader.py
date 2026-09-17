@@ -56,7 +56,7 @@ def _serialized_replacement(method):
 
 @contextmanager
 def _plugin_home_scope(home: Path):
-    """Bind discovery and loading to the manager's immutable Hermes home."""
+    """Bind discovery and loading to the manager's immutable Xinyuan home."""
     token = set_hermes_home_override(home)
     try:
         yield
@@ -220,7 +220,7 @@ class PluginLoaderMixin:
         """Warn about missing declared pip dependencies with an install hint — NEVER auto-install.
 
         See #64165.
-        python_dependencies is a declaration seam ONLY: Hermes validates and prints the requirements with an
+        python_dependencies is a declaration seam ONLY: Xinyuan validates and prints the requirements with an
         install hint but NEVER auto-installs them. The isolation design (constraints installs vs. vendored
         dirs vs. conflict-detection-and-refusal) is an explicitly deferred follow-up — see the round-2
         review on #64165 and #15220.
@@ -233,7 +233,7 @@ class PluginLoaderMixin:
         if missing:
             logger.warning(
                 "Plugin %s declares Python dependencies that are not "
-                "installed: %s. Hermes does not install plugin dependencies "
+                "installed: %s. Xinyuan does not install plugin dependencies "
                 "automatically; install them yourself, e.g.: pip install %s",
                 key, ", ".join(missing), " ".join(f"'{m}'" for m in missing),
             )
@@ -443,7 +443,7 @@ class PluginLoaderMixin:
             ns_pkg.__package__ = _NS_PARENT
             sys.modules[_NS_PARENT] = ns_pkg
         module_name = module_name or self._directory_module_name(manifest)
-        # Evict stale entries for this slug (same slug cached from another Hermes home, or an earlier force
+        # Evict stale entries for this slug (same slug cached from another Xinyuan home, or an earlier force
         # reload). Replacing only sys.modules[module_name] is not enough: the plugin's relative imports are
         # cached as "module_name.sub" and resolve from sys.modules first, so a stale submodule would keep
         # serving the previous load's code/state.

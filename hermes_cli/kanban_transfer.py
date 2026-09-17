@@ -202,14 +202,14 @@ def _available_slug(preferred: str) -> str:
 def _read_manifest(root: Path) -> dict[str, Any]:
     path = root / "manifest.json"
     if not path.exists():
-        raise ValueError("archive is not a Hermes kanban board export (no manifest.json)")
+        raise ValueError("archive is not a Xinyuan kanban board export (no manifest.json)")
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"archive manifest is not valid JSON: {exc}") from exc
     if not isinstance(manifest, dict) or manifest.get("format") != ARCHIVE_FORMAT:
         raise ValueError(
-            "archive is not a Hermes kanban board export "
+            "archive is not a Xinyuan kanban board export "
             f"(format={manifest.get('format') if isinstance(manifest, dict) else None!r})"
         )
     version = manifest.get("format_version")

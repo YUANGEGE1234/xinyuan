@@ -21,7 +21,7 @@ Forked from Anthropic's claude-plugins-official repository
   limitations under the License.
 
 NousResearch modifications: pattern data unchanged from upstream; the upstream RuleId
-telemetry table (Claude Code PostToolUse metrics) is dropped — Hermes has no consumer.
+telemetry table (Claude Code PostToolUse metrics) is dropped — Xinyuan has no consumer.
 Hermes-side wiring lives in __init__.py.
 """
 _JS_EXTS = (".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts", ".vue", ".svelte")

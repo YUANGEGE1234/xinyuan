@@ -2,7 +2,7 @@
 
 A *secret source* resolves credentials from an external secret manager into
 env-var-shaped values at process startup, AFTER ``~/.hermes/.env`` has loaded
-and BEFORE the rest of Hermes reads ``os.environ``. The contract is deliberately
+and BEFORE the rest of Xinyuan reads ``os.environ``. The contract is deliberately
 narrow: read-only; startup-time and synchronous (one ``fetch()`` per process per
 HERMES_HOME, under a registry-enforced wall-clock timeout, no background
 refreshers); never raises, never prompts (errors go in ``FetchResult.error``

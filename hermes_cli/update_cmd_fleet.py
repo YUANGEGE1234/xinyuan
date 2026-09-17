@@ -360,7 +360,7 @@ def _run_pending_fleet_restart() -> bool:
     print("→ Restarting gateways left on pre-update code...")
     with suppress(Exception):
         _m()._purge_stale_hermes_modules()
-    # Warn if legacy Hermes gateway unit files are still installed. When both hermes.service (from a
+    # Warn if legacy Xinyuan gateway unit files are still installed. When both hermes.service (from a
     # pre-rename install) and the current hermes-gateway.service are enabled, they SIGTERM-fight for the
     # same bot token (see PR #11909). Flagging here means every `hermes update` surfaces the issue until the
     # user migrates.
@@ -1342,7 +1342,7 @@ def _restart_gateway_fleet_after_update(_pre_update_plan, gateway_mode: bool):
     # already-restarted units to ``_finish_dashboard_update_cleanup`` (review on #83595).
     restarted_scoped_units: set = set()
 
-    # Purge stale cached Hermes modules FIRST: the import below loads new gateway
+    # Purge stale cached Xinyuan modules FIRST: the import below loads new gateway
     # source into this pre-update interpreter, and a cached sibling missing a
     # symbol the new source expects would ImportError and abort the whole phase.
     _m()._purge_stale_hermes_modules()
@@ -1408,7 +1408,7 @@ def _print_legacy_units_warning() -> None:
     if not (supports_systemd_services() and has_legacy_hermes_units()):
         return
     print()
-    print("⚠ Legacy Hermes gateway unit(s) detected:")
+    print("⚠ Legacy Xinyuan gateway unit(s) detected:")
     for name, path, is_sys in _find_legacy_hermes_units():
         scope = "system" if is_sys else "user"
         print(f"    {path}  ({scope} scope)")

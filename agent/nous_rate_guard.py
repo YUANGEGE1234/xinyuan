@@ -3,7 +3,7 @@
 Writes rate limit state to a shared file so all sessions (CLI, gateway, cron,
 auxiliary) can check whether Nous Portal is currently rate-limited before making
 requests. Without it each 429 fans out into up to 9 calls per turn (3 SDK
-retries x 3 Hermes retries), all counted against RPH.
+retries x 3 Xinyuan retries), all counted against RPH.
 """
 
 from __future__ import annotations

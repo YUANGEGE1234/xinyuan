@@ -961,7 +961,7 @@ END;
 # only when provably dead, indeterminate liveness defers.  `<db>.fts_rebuild.lock` is distinct from
 # `<db>.repair.lock` (offline schema surgery, minutes in VACUUM).  Lives here: mixins cannot import hermes_state.
 
-# ── Cross-process full-FTS-rebuild admission (single authority) ────────────── Several independent Hermes
+# ── Cross-process full-FTS-rebuild admission (single authority) ────────────── Several independent Xinyuan
 # processes routinely share one state.db (gateway service, the Desktop app's `hermes serve` backend,
 # interactive CLI sessions, the TUI slash worker). A full structural FTS rebuild — the FTS5 'rebuild'
 # command or the drop/recreate script in `_recover_stale_fts` — must only ever run in ONE of them at a time:
@@ -1138,7 +1138,7 @@ def _acquire_db_flock(lock_path, handle, timeout_seconds, poll_seconds, descript
 def _describe_lock_holder(record) -> str:
     """Human-readable holder identity for deferral warnings."""
     if not isinstance(record, dict) or "pid" not in record:
-        return "unknown (no holder record; pre-fix writer or non-Hermes)"
+        return "unknown (no holder record; pre-fix writer or non-Xinyuan)"
     age = ""
     with contextlib.suppress(TypeError, ValueError):
         if record.get("acquired_at") is not None:

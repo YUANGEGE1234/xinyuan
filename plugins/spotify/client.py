@@ -1,4 +1,4 @@
-"""Thin Spotify Web API helper used by Hermes native tools.
+"""Thin Spotify Web API helper used by Xinyuan native tools.
 
 Owns auth (token refresh/401 retry), error mapping and id/URI normalization;
 endpoint paths live with their tool handlers in ``tools.py``.

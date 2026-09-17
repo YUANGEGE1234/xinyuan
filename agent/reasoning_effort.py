@@ -1,6 +1,6 @@
 """Canonical reasoning-effort vocabulary and wire clamping.
 
-Hermes' internal effort ladder (``VALID_REASONING_EFFORTS`` plus ``none``) is wider than any
+Xinyuan' internal effort ladder (``VALID_REASONING_EFFORTS`` plus ``none``) is wider than any
 single provider wire accepts; hand-rolled per-transport maps leaked new levels (``ultra``) to
 wires that 400 and inverted the ladder (unknown → weak default). Single source of truth:
 :data:`EFFORT_LADDER` (low→high), :func:`clamp_effort` (verbatim if supported, else the

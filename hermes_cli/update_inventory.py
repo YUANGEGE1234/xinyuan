@@ -1,6 +1,6 @@
 """Runtime inventory + update plan for the fleet-update pipeline.
 
-One read-only pass answering, BEFORE any mutation: which Hermes runtimes run on this machine, how
+One read-only pass answering, BEFORE any mutation: which Xinyuan runtimes run on this machine, how
 each is deployed, which ones this update touches, and how each restarts. Every collector is a
 side-effect-free probe, so ``hermes update --plan`` is safe on a live fleet.
 """
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class RuntimeRecord:
-    """One running (or expected) Hermes runtime on this machine."""
+    """One running (or expected) Xinyuan runtime on this machine."""
 
     kind: str                     # gateway | dashboard | serve
     profile: str
@@ -267,7 +267,7 @@ def print_update_plan(plan: UpdatePlan) -> None:
         print(f"    Update via: {plan.update_mechanism}")
     print(f"  Profiles: {', '.join(plan.profiles) if plan.profiles else '(none found)'}")
     if not plan.runtimes:
-        print("  Running Hermes services: none detected — code swap only.")
+        print("  Running Xinyuan services: none detected — code swap only.")
         return
     print(f"  Running services to restart ({len(plan.runtimes)}):")
     for runtime in plan.runtimes:

@@ -15,7 +15,7 @@ CONNECTOR_SCHEMAS_PATH = f"{CONNECTORS_PATH}/schemas"
 CONNECTOR_EXECUTE_PATH = f"{CONNECTORS_PATH}/execute"
 CONNECTOR_CONNECTIONS_PATH = f"{CONNECTORS_PATH}/connections"
 
-# Hermes dispatch caps batches lower, so client-side chunking is deliberately absent.
+# Xinyuan dispatch caps batches lower, so client-side chunking is deliberately absent.
 WIRE_BATCH_MAX = 25
 
 # A 200 execute envelope carries per-tool failures as results, not HTTP errors.

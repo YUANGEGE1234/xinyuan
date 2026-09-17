@@ -1,4 +1,4 @@
-"""Language Server Protocol (LSP) integration for Hermes Agent.
+"""Language Server Protocol (LSP) integration for Xinyuan Agent.
 
 Real language servers (pyright, gopls, ...) run as subprocesses and their
 ``publishDiagnostics`` feed the post-write lint delta filter of ``write_file`` /

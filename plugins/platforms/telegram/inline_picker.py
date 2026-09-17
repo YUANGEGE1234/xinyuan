@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Telegram inline command picker — searchable access to EVERY command/skill.
 
-The BotCommand menu is capped (100/scope, Hermes uses 60), so inline mode (``@yourbot <query>``, 50 per
+The BotCommand menu is capped (100/scope, Xinyuan uses 60), so inline mode (``@yourbot <query>``, 50 per
 page) exposes the rest; tapping a result sends ``/cmd args`` as the user through the normal command path.
 PTB-object-free on purpose: plain dicts keep catalog/filter/pagination unit-testable; the adapter converts
 to ``InlineQueryResultArticle``. Inert until inline mode is enabled via BotFather ``/setinline``.

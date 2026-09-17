@@ -377,7 +377,7 @@ def _read_json(path: Path) -> Optional[dict]:
 
 
 def check_for_updates(*, passive: bool = False) -> Optional[int]:
-    """Check whether a Hermes update is available.
+    """Check whether a Xinyuan update is available.
 
     If ``HERMES_REVISION`` is set (nix builds embed it), compare it to upstream main; otherwise
     compare the local checkout's HEAD. Both go through the GitHub API, never ``git fetch``.
@@ -425,7 +425,7 @@ def check_for_updates(*, passive: bool = False) -> Optional[int]:
 
 
 def _resolve_repo_dir() -> Optional[Path]:
-    """The active Hermes git checkout, or None if this isn't a git install.
+    """The active Xinyuan git checkout, or None if this isn't a git install.
 
     Prefers the running code's location: ``$HERMES_HOME/hermes-agent/`` may be a stale copy
     carried over by ``--clone-all``.

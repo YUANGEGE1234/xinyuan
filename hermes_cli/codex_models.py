@@ -45,7 +45,7 @@ _FORWARD_COMPAT_TEMPLATE_MODELS: List[tuple[str, tuple[str, ...]]] = [
     ("gpt-5.5", ("gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex")),
     ("gpt-5.4-mini", ("gpt-5.3-codex",)),
     ("gpt-5.4", ("gpt-5.3-codex",)),
-    # Spark surfaces whenever a compatible template is present; the backend (not Hermes)
+    # Spark surfaces whenever a compatible template is present; the backend (not Xinyuan)
     # gates real availability by ChatGPT Pro entitlement.
     ("gpt-5.3-codex-spark", ("gpt-5.3-codex",))]
 

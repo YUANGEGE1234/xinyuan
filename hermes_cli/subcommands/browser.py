@@ -11,7 +11,7 @@ def build_browser_parser(subparsers) -> None:
         "browser", help="Real-profile browsing helpers (close a browser locking its profile)",
         description="Helpers for real-profile browsing (browser.use_real_profile). "
             "close-profile terminates the browser process tree holding your "
-            "default profile so Hermes can copy it — DESTRUCTIVE (unsaved tabs "
+            "default profile so Xinyuan can copy it — DESTRUCTIVE (unsaved tabs "
             "in that browser are lost). The agent runs this only after you "
             "approve closing the browser.")
     browser_subparsers = browser_parser.add_subparsers(dest="browser_action")

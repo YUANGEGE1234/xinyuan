@@ -194,7 +194,7 @@ def _capture_active_tool_dependencies() -> list[str]:
         from hermes_cli import tools_config
         return tools_config.active_restorable_python_tool_dependencies()
     except Exception as exc:
-        logger.debug("Could not snapshot active Hermes Tools dependencies: %s", exc)
+        logger.debug("Could not snapshot active Xinyuan Tools dependencies: %s", exc)
         return []
 
 
@@ -223,7 +223,7 @@ def _restore_active_tool_dependencies(
     try:
         from hermes_cli import tools_config
     except Exception as exc:
-        logger.debug("Hermes Tools dependency restore skipped (import failed): %s", exc)
+        logger.debug("Xinyuan Tools dependency restore skipped (import failed): %s", exc)
         return
 
     target_python = _m()._resolve_install_target_python(install_cmd_prefix, env)
@@ -347,7 +347,7 @@ def _refresh_active_lazy_features(
 
 def _refresh_active_memory_provider_dependencies() -> None:
     """Refresh pip deps for the configured external memory provider: its bridge packages live in
-    ``plugin.yaml`` (not Hermes extras / ``LAZY_DEPS``), so the core reinstall can strip them;
+    ``plugin.yaml`` (not Xinyuan extras / ``LAZY_DEPS``), so the core reinstall can strip them;
     re-run the ACTIVE provider's install last so its writes land last. Never raises.
 
     Re-run the provider's declared install for the ACTIVE provider only, after the core install and lazy
@@ -954,7 +954,7 @@ def _refuse_update_if_venv_foreign_owned(project_root) -> None:
     if not foreign:
         return
     print("\n✗ Update stopped: this install's venv contains files owned by another user.")
-    print("  Updating now would fail midway (Permission denied) and leave Hermes broken.")
+    print("  Updating now would fail midway (Permission denied) and leave Xinyuan broken.")
     print("  This usually happens after running hermes or pip with sudo. Offending paths:")
     for p, uid in foreign:
         print(f"    - {p} (owner uid {uid})")

@@ -1,4 +1,4 @@
-"""Hermes Achievements dashboard plugin backend, mounted at /api/plugins/hermes-achievements/.
+"""Xinyuan Achievements dashboard plugin backend, mounted at /api/plugins/hermes-achievements/.
 
 Scans the session history into per-session stats (checkpointed by fingerprint so warm
 scans are cheap), aggregates them, and evaluates the tiered / multi-condition catalog.
@@ -56,9 +56,9 @@ def _ach(
 
 ACHIEVEMENTS: List[Dict[str, Any]] = [
     # Agent Autonomy — mostly best-session feats
-    _ach("let_him_cook", "Let Him Cook", "Let Hermes run a serious autonomous tool chain in one session.", "Agent Autonomy", "flame", metric="max_tool_calls_in_session", tiers=[200, 500, 1200, 3000, 8000]),
-    _ach("autonomous_avalanche", "Autonomous Avalanche", "Accumulate a lifetime avalanche of Hermes tool calls across sessions.", "Agent Autonomy", "avalanche", metric="total_tool_calls", tiers=[1000, 3000, 8000, 20000, 50000]),
-    _ach("toolchain_maxxer", "Toolchain Maxxer", "Use a wide spread of distinct Hermes tools in one session.", "Agent Autonomy", "nodes", metric="max_distinct_tools_in_session", tiers=[18, 28, 45, 70, 100]),
+    _ach("let_him_cook", "Let Him Cook", "Let Xinyuan run a serious autonomous tool chain in one session.", "Agent Autonomy", "flame", metric="max_tool_calls_in_session", tiers=[200, 500, 1200, 3000, 8000]),
+    _ach("autonomous_avalanche", "Autonomous Avalanche", "Accumulate a lifetime avalanche of Xinyuan tool calls across sessions.", "Agent Autonomy", "avalanche", metric="total_tool_calls", tiers=[1000, 3000, 8000, 20000, 50000]),
+    _ach("toolchain_maxxer", "Toolchain Maxxer", "Use a wide spread of distinct Xinyuan tools in one session.", "Agent Autonomy", "nodes", metric="max_distinct_tools_in_session", tiers=[18, 28, 45, 70, 100]),
     _ach("full_send", "Full Send", "Terminal, files, and web/browser all get involved in one real run.", "Agent Autonomy", "rocket", requires=[("max_terminal_calls_in_session", 180), ("max_file_tool_calls_in_session", 120), ("max_web_browser_calls_in_session", 60)]),
     _ach("subagent_commander", "Subagent Commander", "Coordinate delegated agent work.", "Agent Autonomy", "branch", metric="total_delegate_calls", tiers=[5, 40, 100, 1000, 5000]),
     _ach("background_process_enjoyer", "Background Process Enjoyer", "Start or control enough long-running processes to deserve the title.", "Agent Autonomy", "daemon", metric="total_process_calls", tiers=[300, 800, 2000, 6000, 15000]),
@@ -85,15 +85,15 @@ ACHIEVEMENTS: List[Dict[str, Any]] = [
     _ach("css_exorcist", "CSS Exorcist", "Cast repeated styling demons out of the interface.", "Vibe Coding", "spark_cursor", metric="css_activity_events", tiers=[10000, 30000, 80000, 200000, 500000]),
     _ach("one_character_fix", "One Character Fix", "A tiny edit after a pile of errors. Painful. Beautiful.", "Vibe Coding", "needle", requires=[("tiny_patch_after_errors_events", 5), ("total_errors", 4000)], secret=True),
 
-    # Hermes Native
-    _ach("skillsmith", "Skillsmith", "Work with Hermes skills enough to leave fingerprints.", "Hermes Native", "hammer_scroll", metric="skill_events", tiers=[5000, 15000, 40000, 100000, 250000]),
-    _ach("skill_issue_skill_created", "Skill Issue? Skill Created.", "Create or patch durable procedures instead of repeating yourself.", "Hermes Native", "anvil", metric="skill_manage_events", tiers=[25, 75, 200, 600, 1500]),
-    _ach("memory_keeper", "Memory Keeper", "Persist durable knowledge with memory or Mnemosyne.", "Hermes Native", "crystal", metric="memory_events", tiers=[100, 300, 1000, 3000, 8000]),
-    _ach("memory_palace", "Memory Palace", "Build a serious durable-memory trail.", "Hermes Native", "palace", metric="memory_write_events", tiers=[100, 300, 1000, 3000, 8000]),
-    _ach("context_dragon", "Context Dragon", "Brush against compression, huge context, or token pressure repeatedly.", "Hermes Native", "dragon", metric="context_events", tiers=[5000, 15000, 40000, 100000, 250000]),
-    _ach("gateway_dweller", "Gateway Dweller", "Live through gateway-connected Hermes workflows.", "Hermes Native", "antenna", metric="gateway_events", tiers=[5000, 15000, 40000, 100000, 250000]),
-    _ach("plugin_goblin", "Plugin Goblin", "Use or develop plugins enough that the dashboard notices.", "Hermes Native", "puzzle", metric="plugin_events", tiers=[1000, 3000, 8000, 20000, 50000]),
-    _ach("rollback_wizard", "Rollback Wizard", "Invoke rollback/checkpoint recovery magic.", "Hermes Native", "rewind", metric="rollback_events", tiers=[500, 1500, 4000, 10000, 25000], secret=True),
+    # Xinyuan Native
+    _ach("skillsmith", "Skillsmith", "Work with Xinyuan skills enough to leave fingerprints.", "Xinyuan Native", "hammer_scroll", metric="skill_events", tiers=[5000, 15000, 40000, 100000, 250000]),
+    _ach("skill_issue_skill_created", "Skill Issue? Skill Created.", "Create or patch durable procedures instead of repeating yourself.", "Xinyuan Native", "anvil", metric="skill_manage_events", tiers=[25, 75, 200, 600, 1500]),
+    _ach("memory_keeper", "Memory Keeper", "Persist durable knowledge with memory or Mnemosyne.", "Xinyuan Native", "crystal", metric="memory_events", tiers=[100, 300, 1000, 3000, 8000]),
+    _ach("memory_palace", "Memory Palace", "Build a serious durable-memory trail.", "Xinyuan Native", "palace", metric="memory_write_events", tiers=[100, 300, 1000, 3000, 8000]),
+    _ach("context_dragon", "Context Dragon", "Brush against compression, huge context, or token pressure repeatedly.", "Xinyuan Native", "dragon", metric="context_events", tiers=[5000, 15000, 40000, 100000, 250000]),
+    _ach("gateway_dweller", "Gateway Dweller", "Live through gateway-connected Xinyuan workflows.", "Xinyuan Native", "antenna", metric="gateway_events", tiers=[5000, 15000, 40000, 100000, 250000]),
+    _ach("plugin_goblin", "Plugin Goblin", "Use or develop plugins enough that the dashboard notices.", "Xinyuan Native", "puzzle", metric="plugin_events", tiers=[1000, 3000, 8000, 20000, 50000]),
+    _ach("rollback_wizard", "Rollback Wizard", "Invoke rollback/checkpoint recovery magic.", "Xinyuan Native", "rewind", metric="rollback_events", tiers=[500, 1500, 4000, 10000, 25000], secret=True),
 
     # Research/Web
     _ach("rabbit_hole_certified", "Rabbit Hole Certified", "Search or extract enough web content to qualify as a research spiral.", "Research/Web", "spiral", metric="total_web_calls", tiers=[400, 1200, 3000, 8000, 20000]),
@@ -112,24 +112,24 @@ ACHIEVEMENTS: List[Dict[str, Any]] = [
     _ach("model_hopper", "Model Hopper", "Switch or inspect providers/models enough to count as a habit.", "Model Lore", "swap", metric="model_events", tiers=[10000, 30000, 80000, 200000, 500000]),
     _ach("openrouter_enjoyer", "OpenRouter Enjoyer", "Route model work through OpenRouter repeatedly.", "Model Lore", "router", metric="openrouter_events", tiers=[250, 750, 2000, 6000, 15000]),
     _ach("codex_conjurer", "Codex Conjurer", "Summon Codex-flavored assistance often enough for a ritual.", "Model Lore", "codex", metric="codex_events", tiers=[500, 1500, 4000, 10000, 25000]),
-    _ach("multi_model_mage", "Multi-Model Mage", "Use a real spread of distinct model names across Hermes history.", "Model Lore", "prism", metric="distinct_model_count", tiers=[10, 20, 40, 80, 160]),
+    _ach("multi_model_mage", "Multi-Model Mage", "Use a real spread of distinct model names across Xinyuan history.", "Model Lore", "prism", metric="distinct_model_count", tiers=[10, 20, 40, 80, 160]),
     _ach("five_model_flight", "Five-Model Flight", "Try at least five distinct LLMs instead of marrying the first model that answers.", "Model Lore", "prism", metric="distinct_model_count", tiers=[5, 10, 20, 40, 80]),
-    _ach("provider_polyglot", "Provider Polyglot", "Use models from multiple providers across Hermes history.", "Model Lore", "swap", metric="distinct_provider_count", tiers=[2, 3, 5, 8, 12]),
+    _ach("provider_polyglot", "Provider Polyglot", "Use models from multiple providers across Xinyuan history.", "Model Lore", "swap", metric="distinct_provider_count", tiers=[2, 3, 5, 8, 12]),
     _ach("model_sommelier", "Model Sommelier", "Taste enough model/provider conversations to develop preferences.", "Model Lore", "wine", metric="model_events", tiers=[250, 750, 2000, 6000, 15000]),
     _ach("claude_confidant", "Claude Confidant", "Bring Claude-flavored reasoning into the workflow repeatedly.", "Model Lore", "quote", metric="claude_events", tiers=[50, 150, 500, 1500, 4000]),
     _ach("gemini_cartographer", "Gemini Cartographer", "Map enough Gemini-related workflows to know the terrain.", "Model Lore", "compass", metric="gemini_events", tiers=[50, 150, 500, 1500, 4000]),
-    _ach("open_weights_pilgrim", "Open Weights Pilgrim", "Actually chat with local/open-weight models through Hermes session metadata.", "Model Lore", "terminal", metric="local_model_chat_sessions", tiers=[1, 3, 10, 30, 100]),
+    _ach("open_weights_pilgrim", "Open Weights Pilgrim", "Actually chat with local/open-weight models through Xinyuan session metadata.", "Model Lore", "terminal", metric="local_model_chat_sessions", tiers=[1, 3, 10, 30, 100]),
 
     # Workflow Intelligence
-    _ach("toolset_cartographer", "Toolset Cartographer", "Navigate Hermes toolsets deliberately instead of treating tools as a blur.", "Hermes Native", "compass", metric="toolset_events", tiers=[20, 60, 200, 600, 1500]),
-    _ach("config_surgeon", "Config Surgeon", "Operate on real config files, manifests, env files, and dashboard settings without flinching.", "Hermes Native", "key", metric="config_events", tiers=[100, 300, 1000, 3000, 10000]),
+    _ach("toolset_cartographer", "Toolset Cartographer", "Navigate Xinyuan toolsets deliberately instead of treating tools as a blur.", "Xinyuan Native", "compass", metric="toolset_events", tiers=[20, 60, 200, 600, 1500]),
+    _ach("config_surgeon", "Config Surgeon", "Operate on real config files, manifests, env files, and dashboard settings without flinching.", "Xinyuan Native", "key", metric="config_events", tiers=[100, 300, 1000, 3000, 10000]),
     _ach("rebase_acrobat", "Rebase Acrobat", "Handle real git history surgery: rebase, conflict, merge, fetch, push.", "Vibe Coding", "branch", metric="git_history_events", tiers=[10, 30, 100, 300, 800]),
     _ach("test_suite_tamer", "Test Suite Tamer", "Run enough verification commands that green text becomes part of the ritual.", "Tool Mastery", "daemon", metric="test_events", tiers=[100, 300, 800, 2400, 6000]),
     _ach("screenshot_hunter", "Screenshot Hunter", "Capture, inspect, and polish visual proof instead of just claiming it works.", "Tool Mastery", "eye", metric="screenshot_events", tiers=[50, 150, 500, 1500, 5000]),
 
     # Lifestyle
-    _ach("marathon_operator", "Marathon Operator", "Accumulate a serious number of Hermes sessions.", "Lifestyle", "marathon", metric="session_count", tiers=[75, 200, 500, 1500, 5000]),
-    _ach("weekend_warrior", "Weekend Warrior", "Run Hermes on weekends enough times to make it a lifestyle.", "Lifestyle", "calendar", metric="weekend_sessions", tiers=[25, 75, 200, 600, 1500]),
+    _ach("marathon_operator", "Marathon Operator", "Accumulate a serious number of Xinyuan sessions.", "Lifestyle", "marathon", metric="session_count", tiers=[75, 200, 500, 1500, 5000]),
+    _ach("weekend_warrior", "Weekend Warrior", "Run Xinyuan on weekends enough times to make it a lifestyle.", "Lifestyle", "calendar", metric="weekend_sessions", tiers=[25, 75, 200, 600, 1500]),
     _ach("night_shift_operator", "Night Shift Operator", "Run sessions during gremlin hours repeatedly.", "Lifestyle", "moon", metric="night_sessions", tiers=[25, 75, 200, 600, 1500]),
     _ach("cache_hit_appreciator", "Cache Hit Appreciator", "Notice or benefit from prompt/cache behavior.", "Lifestyle", "cache", metric="cache_events", tiers=[100, 300, 1000, 3000, 8000], secret=True),
 
@@ -439,7 +439,7 @@ def evaluate_definition(definition: Dict[str, Any], aggregate: Dict[str, Any]) -
 
 METRIC_LABELS = {
     "max_tool_calls_in_session": "tool calls in one session",
-    "max_distinct_tools_in_session": "distinct Hermes tools used in one session",
+    "max_distinct_tools_in_session": "distinct Xinyuan tools used in one session",
     "max_terminal_calls_in_session": "terminal calls in one session",
     "max_file_tool_calls_in_session": "file/search/patch calls in one session",
     "max_web_browser_calls_in_session": "web search/extract or browser calls in one session",
@@ -463,7 +463,7 @@ METRIC_LABELS = {
     "css_activity_events": "CSS, styling, Tailwind, or className activity",
     "git_events": "git workflow commands",
     "tiny_patch_after_errors_events": "tiny typo-style fixes after error clusters",
-    "skill_events": "Hermes skill mentions or tool use",
+    "skill_events": "Xinyuan skill mentions or tool use",
     "skill_manage_events": "skill_manage create/patch/delete operations",
     "memory_events": "memory or Mnemosyne tool events",
     "memory_write_events": "durable memory writes",
@@ -479,7 +479,7 @@ METRIC_LABELS = {
     "total_web_calls": "lifetime web_search/web_extract calls",
     "total_web_extract_calls": "lifetime web_extract calls",
     "browser_calls": "lifetime browser automation calls",
-    "total_tool_calls": "lifetime Hermes tool calls",
+    "total_tool_calls": "lifetime Xinyuan tool calls",
     "total_terminal_calls": "lifetime terminal calls",
     "total_patch_calls": "lifetime targeted patch edits",
     "total_file_reads_searches": "lifetime read_file/search_files calls",
@@ -490,14 +490,14 @@ METRIC_LABELS = {
     "claude_events": "Claude/Anthropic model mentions",
     "gemini_events": "Gemini/Google model mentions",
     "local_model_events": "local/open-weight model mentions",
-    "local_model_chat_sessions": "Hermes sessions whose model metadata is local/open-weight",
+    "local_model_chat_sessions": "Xinyuan sessions whose model metadata is local/open-weight",
     "toolset_events": "toolset or tool-family mentions",
     "config_events": "configuration/environment/manifest activity",
     "git_history_events": "git history operations such as rebase, merge, fetch, push, or tag",
     "test_events": "test/check/verification command mentions",
     "screenshot_events": "screenshot, Playwright, PNG, or vision-inspection activity",
     "release_events": "release, version, publish, or git tag events",
-    "session_count": "Hermes sessions",
+    "session_count": "Xinyuan sessions",
     "weekend_sessions": "sessions started on weekends",
     "night_sessions": "sessions started late night or before dawn"}
 
@@ -508,23 +508,23 @@ def metric_label(metric: str) -> str:
 
 def criteria_for(definition: Dict[str, Any]) -> str:
     if definition.get("secret") and definition.get("state") == "secret":
-        return "Secret: exact requirement hidden until Hermes sees the first matching signal. Keep using Hermes across debugging, tools, memory, skills, plugins, and model workflows to reveal it."
+        return "Secret: exact requirement hidden until Xinyuan sees the first matching signal. Keep using Xinyuan across debugging, tools, memory, skills, plugins, and model workflows to reveal it."
     if "threshold_metric" in definition:
         tiers_list = sorted(definition.get("tiers", []), key=lambda t: t["threshold"])
         if not tiers_list:
-            return "Requirement: use Hermes in the matching workflow."
+            return "Requirement: use Xinyuan in the matching workflow."
         ladder = ", ".join(f"{t['name']} {t['threshold']}" for t in tiers_list)
         return f"Requirement: {metric_label(definition['threshold_metric'])}. Tier ladder: {ladder}."
     requirements = definition.get("requirements") or []
     if requirements:
         return "Requirement: " + "; ".join(f"{metric_label(r['metric'])} ≥ {int(r.get('gte', 1))}" for r in requirements) + "."
-    return "Requirement: complete the matching Hermes behavior."
+    return "Requirement: complete the matching Xinyuan behavior."
 
 
 def display_achievement(item: Dict[str, Any]) -> Dict[str, Any]:
     clean = dict(item)
     if clean.get("state") == "secret":
-        return {**clean, "name": "???", "description": "Secret achievement: hidden until Hermes detects the first relevant behavior in your session history.", "criteria": criteria_for(clean), "icon": "secret"}
+        return {**clean, "name": "???", "description": "Secret achievement: hidden until Xinyuan detects the first relevant behavior in your session history.", "criteria": criteria_for(clean), "icon": "secret"}
     clean["criteria"] = criteria_for(clean)
     return clean
 
@@ -539,7 +539,7 @@ def _scan_meta(mode: str, total: int, *, rescanned: int = 0, reused: int = 0, sc
 
 
 def scan_sessions(limit: Optional[int] = None, progress_callback: Optional[Any] = None, progress_every: int = 250) -> Dict[str, Any]:
-    """Scan Hermes sessions and build per-session achievement stats.
+    """Scan Xinyuan sessions and build per-session achievement stats.
 
     ``limit=None`` (default) scans the ENTIRE history (SQLite ``LIMIT -1``); a former cap
     of 200 silently shrank lifetime totals on long-running installs. The checkpoint stores

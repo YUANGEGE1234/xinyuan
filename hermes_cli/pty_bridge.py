@@ -87,7 +87,7 @@ class PtyBridge:
         if not _PTY_AVAILABLE:
             if sys.platform.startswith("win"):
                 raise PtyUnavailableError("Pseudo-terminals are unavailable on this platform. "
-                                          "Hermes Agent supports Windows only via WSL.")
+                                          "Xinyuan Agent supports Windows only via WSL.")
             raise PtyUnavailableError("The `ptyprocess` package is missing. "  # only other way _PTY_AVAILABLE is False
                                       "Install with: pip install ptyprocess (or pip install -e '.[pty]').")
         # env=None: callers own env policy (process_registry already sanitizes), so inherit via the

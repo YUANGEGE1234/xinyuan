@@ -229,7 +229,7 @@ def _warn_stale_serve_runtimes(rows) -> None:
             f"      pid {row.get('pid')} — {row.get('kind')}"
             f" (profile {row.get('profile') or 'default'}, {row.get('supervisor') or 'unknown'})")
     print(
-        "    Restart them before using Hermes again, e.g. `systemctl --user restart hermes-serve.service`"
+        "    Restart them before using Xinyuan again, e.g. `systemctl --user restart hermes-serve.service`"
         " or by relaunching `hermes serve` / the Desktop app.")
 
 

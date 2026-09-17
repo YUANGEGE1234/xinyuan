@@ -27,7 +27,7 @@ _run_store_lock = threading.Lock()
 _bound_server = None
 _service = None
 
-_WORKER_UNAVAILABLE = "Group Chat worker is unavailable. Restart the Hermes gateway and try again."
+_WORKER_UNAVAILABLE = "Group Chat worker is unavailable. Restart the Xinyuan gateway and try again."
 _DRIVER_UNAVAILABLE = "hosted room driver is unavailable"
 
 

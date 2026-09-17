@@ -1,4 +1,4 @@
-"""Hermes lifecycle dispatch for first-party observers and plugins."""
+"""Xinyuan lifecycle dispatch for first-party observers and plugins."""
 
 from __future__ import annotations
 

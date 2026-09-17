@@ -482,7 +482,7 @@ class InsightsEngine:
         lines = [
             "",
             "  ╔══════════════════════════════════════════════════════════╗",
-            "  ║                    📊 Hermes Insights                    ║",
+            "  ║                    📊 Xinyuan Insights                    ║",
             f"  ║{' ' * left_pad} {period_label} {' ' * (padding - left_pad)}║",
             "  ╚══════════════════════════════════════════════════════════╝",
             "",

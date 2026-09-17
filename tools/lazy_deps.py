@@ -1,4 +1,4 @@
-"""Lazy dependency installer for opt-in Hermes backends.
+"""Lazy dependency installer for opt-in Xinyuan backends.
 
 Backends call :func:`ensure(feature)` on first import; missing packages are installed into the
 active venv (or the durable target) unless ``security.allow_lazy_installs: false``, in which
@@ -74,7 +74,7 @@ LAZY_DEPS: dict[str, tuple[str, ...]] = {
     # SILK voice-note decoding (WeChat/QQ); silk-v3 codec binding.
     "stt.silk": ("pilk==0.2.4",),
 
-    # ─── Wake word ("Hey Hermes") engines (sync with the `wake` extra) ──────
+    # ─── Wake word ("Hey Xinyuan") engines (sync with the `wake` extra) ──────
     # openWakeWord's ONNX model scores ~0 on macOS ARM64, so macOS uses the tflite backend
     # (ai-edge-litert, bridged in tools/wake_word.py). Separate feature because specs cannot
     # carry PEP 508 markers (";" is rejected) — the caller applies the platform gate.
@@ -340,7 +340,7 @@ def _unsupported_feature_reason(feature: str) -> Optional[str]:
     """Platform capability gate (not policy): why a feature cannot work on this host, or None."""
     if sys.platform == "win32" and feature == "platform.matrix":
         return ("unsupported on Windows: Matrix E2EE depends on python-olm, which has no Windows wheel and "
-                "requires make + libolm to build from sdist. Run Hermes under WSL to use Matrix on Windows.")
+                "requires make + libolm to build from sdist. Run Xinyuan under WSL to use Matrix on Windows.")
     return None
 
 

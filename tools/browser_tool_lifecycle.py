@@ -102,7 +102,7 @@ def _emergency_cleanup_all_sessions():
 
 @contextlib.contextmanager
 def _session_owner_scope(task_id: str):
-    """Run under the Hermes home + secret scope owning ``task_id``'s session (no-op if unrecorded).
+    """Run under the Xinyuan home + secret scope owning ``task_id``'s session (no-op if unrecorded).
 
     The janitor thread is process-global, so each teardown must re-enter its OWN
     profile's scope rather than inherit the spawning profile's; never falls
@@ -433,7 +433,7 @@ def _stop_browser_cleanup_thread():
 
 
 def _update_session_activity(task_id: str):
-    """Touch the activity timestamp and record the owning Hermes home on first sight (the
+    """Touch the activity timestamp and record the owning Xinyuan home on first sight (the
     janitor tears down under the owner's scope). Does NOT reset ``_cleanup_failures``.
 
     See #86402.

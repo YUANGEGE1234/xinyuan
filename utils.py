@@ -345,7 +345,7 @@ def read_json_or_empty(path: Union[str, Path]) -> dict:
 def warn_if_credential_file_broadly_readable(path: Union[str, Path], *, label: str = "", log: logging.Logger | None = None) -> bool:
     """Warn when a credential file is group/world-readable; True when a warning was emitted.
 
-    Hand-made secret files (or ones older Hermes wrote without an explicit mode) commonly end up
+    Hand-made secret files (or ones older Xinyuan wrote without an explicit mode) commonly end up
     0o644 under the default umask; call this before loading any token/credential file. No-op on
     non-POSIX (Windows ACLs don't map onto group/other bits; st_mode there is synthesized), when
     the file is missing, or when permissions are already tight.

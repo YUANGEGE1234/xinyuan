@@ -475,7 +475,7 @@ class CLIModelSwitchMixin:
         if warning is None:
             return True
         choices = [
-            ("once", "Switch anyway", "Use this model for the current Hermes session."),
+            ("once", "Switch anyway", "Use this model for the current Xinyuan session."),
             ("cancel", "Cancel", "Keep the current model.")]
         raw = self._prompt_text_input_modal(
             title=f"!!! {warning.title} !!!", detail=warning.message, choices=choices, timeout=120)
@@ -800,7 +800,7 @@ class CLIModelSwitchMixin:
 
         Usage:
             /codex-runtime                       — show current state
-            /codex-runtime auto                  — Hermes default (chat_completions)
+            /codex-runtime auto                  — Xinyuan default (chat_completions)
             /codex-runtime codex_app_server      — hand turns to codex subprocess
             /codex-runtime on / off              — synonyms for the above
         """

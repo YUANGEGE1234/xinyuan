@@ -40,9 +40,9 @@ def _add_server_runtime_args(parser) -> None:
     # manager / PID file: they scan the process table for `hermes dashboard|serve`
     # cmdlines and SIGTERM them — the same path `hermes update` uses.
     parser.add_argument(
-        "--stop", action="store_true", help="Stop all running Hermes web server processes and exit")
+        "--stop", action="store_true", help="Stop all running Xinyuan web server processes and exit")
     parser.add_argument(
-        "--status", action="store_true", help="List running Hermes web server processes and exit")
+        "--status", action="store_true", help="List running Xinyuan web server processes and exit")
 
 
 def _configure_serve_parser(parser, *, cmd_dashboard: Callable) -> None:
@@ -65,7 +65,7 @@ def build_serve_parser(
     """Build the standalone parser used by the lean ``serve`` dispatch path."""
     parser = argparse.ArgumentParser(
         prog="hermes serve",
-        description="Run the Hermes backend server - the JSON-RPC/WebSocket gateway the "
+        description="Run the Xinyuan backend server - the JSON-RPC/WebSocket gateway the "
             "desktop app and remote clients connect to. Headless: it never opens "
             "a browser UI.",
         add_help=add_help, exit_on_error=exit_on_error)
@@ -78,7 +78,7 @@ def build_dashboard_parser(
     """Attach ``dashboard`` (browser UI) and ``serve`` (headless backend the desktop spawns)."""
     dashboard_parser = subparsers.add_parser(
         "dashboard", help="Start the web UI dashboard",
-        description="Launch the Hermes Agent web dashboard for managing config, API keys, and sessions",
+        description="Launch the Xinyuan Agent web dashboard for managing config, API keys, and sessions",
     )
     _add_server_runtime_args(dashboard_parser)
     dashboard_parser.add_argument(
@@ -94,8 +94,8 @@ def build_dashboard_parser(
     # surfaces that merely share this server.
     serve_parser = subparsers.add_parser(
         "serve",
-        help="Start the Hermes backend server (headless; powers the desktop app and remote backends)",
-        description="Run the Hermes backend server — the JSON-RPC/WebSocket gateway the "
+        help="Start the Xinyuan backend server (headless; powers the desktop app and remote backends)",
+        description="Run the Xinyuan backend server — the JSON-RPC/WebSocket gateway the "
             "desktop app and remote clients connect to. Headless: it never opens "
             "a browser UI.")
     _configure_serve_parser(serve_parser, cmd_dashboard=cmd_dashboard)

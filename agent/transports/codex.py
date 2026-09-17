@@ -71,7 +71,7 @@ _XAI_CLIENT_WEB_SEARCH_ALIAS = "hermes_web_search"
 # OpenCode's /v1/responses endpoints (Zen and Go, including custom providers pointing at opencode.ai)
 # reserve certain function names server-side and reject client tools that use them with HTTP 400 ("custom
 # function name 'X' is reserved"). Same treatment as the xAI web_search collision: rename on the wire
-# (hermes_<name>), map back in normalize_response so Hermes dispatch is unaffected. See #85589.
+# (hermes_<name>), map back in normalize_response so Xinyuan dispatch is unaffected. See #85589.
 _OPENCODE_RESERVED_TOOL_NAMES = ("web_search", "search_files")
 _XAI_RESERVED_TOOL_NAMES = ("tool_search",)
 _RESERVED_TOOL_ALIAS_PREFIX = "hermes_"
@@ -158,7 +158,7 @@ def _alias_wire_tools(response_tools: Any, params: dict[str, Any], is_xai_respon
     """Apply provider-reserved tool-name aliasing; returns ``(tools, {alias: original})`` for THIS request.
 
     xAI: a client ``web_search`` collides with Grok's native search — native mode
-    swaps it 1:1 for the built-in, client mode keeps Hermes dispatch under an alias.
+    swaps it 1:1 for the built-in, client mode keeps Xinyuan dispatch under an alias.
     """
     wire_aliases: dict[str, str] = {}
 
@@ -178,7 +178,7 @@ def _alias_wire_tools(response_tools: Any, params: dict[str, Any], is_xai_respon
     if response_tools and _is_opencode_responses_backend(params):
         response_tools, _oc_aliases = _alias_reserved_tools(response_tools, _OPENCODE_RESERVED_TOOL_NAMES)
         wire_aliases.update(_oc_aliases)
-    # xAI server-side web search vs Hermes web providers. grok models on xAI's /v1/responses surface have a
+    # xAI server-side web search vs Xinyuan web providers. grok models on xAI's /v1/responses surface have a
     # *native*, server-executed web search. A client-side function literally named ``web_search`` collides
     # with that engine: declared as a plain ``function`` rather than ``{"type": "web_search"}``, the search
     # dispatches but never reconciles → incomplete turn + 3 retries. Verified live against
@@ -186,7 +186,7 @@ def _alias_wire_tools(response_tools: Any, params: dict[str, Any], is_xai_respon
     # config: 1. **Native** (active/configured backend is ``xai``, or resolution fails): drop the client
     # ``web_search`` function and declare xAI's built-in instead. 1:1 swap only when client ``web_search``
     # was already present — never an additive grant. 2. **Client** (Firecrawl / Tavily / Exa / … configured
-    # or resolved): keep Hermes dispatch so ``web.backend`` / ``web.search_backend`` is honored, but rename
+    # or resolved): keep Xinyuan dispatch so ``web.backend`` / ``web.search_backend`` is honored, but rename
     # the wire tool to ``hermes_web_search`` so Grok cannot hijack the name. The alias is mapped back to
     # ``web_search`` in ``normalize_response``. Request-local alias provenance: every wire alias THIS
     # request emits is recorded here and stashed on the transport, so the reverse rewrite in

@@ -158,7 +158,7 @@ def session_already_owned_message(session_id: str, entry: dict[str, Any]) -> str
     started = _optional_float(entry.get("started_at"))
     age = f" {format_age(time.time() - started)} ago" if started else ""
     return (
-        "This chat is open in another Hermes window/terminal. Use it there, or start a new chat here.\n"
+        "This chat is open in another Xinyuan window/terminal. Use it there, or start a new chat here.\n"
         f"Details: session {session_id} opened by {surface}{age}."
     )
 
@@ -476,7 +476,7 @@ def try_acquire_active_session(
         )
         if loaded is None:
             return None, ActiveSessionRefusal(
-                "Hermes could not read the active-session registry at "
+                "Xinyuan could not read the active-session registry at "
                 f"{state_path}, so it cannot prove this session has no other "
                 "live owner. Fix or remove that file and try again.",
                 SESSION_COORDINATION_UNAVAILABLE,

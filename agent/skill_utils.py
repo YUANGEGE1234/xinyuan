@@ -707,7 +707,7 @@ _HOME_VAR_RE = re.compile(r"\$(?:\{HOME\}|HOME)(?=$|[/\\])")
 
 
 def _expand_skill_config_path(value: str) -> str:
-    """Expand ``~`` / ``$HOME`` against the HOME Hermes injects into tool subprocesses.
+    """Expand ``~`` / ``$HOME`` against the HOME Xinyuan injects into tool subprocesses.
 
     Skill config defaults describe paths the agent hands to tools, so in a container where the
     control process HOME (``/opt/data``) differs from the tool HOME (``{HERMES_HOME}/home``) a
