@@ -1,3 +1,12 @@
+<!--
+  这是上游 Hermes Agent 官方中文 README 的原文，原样保留以便对照。
+
+  ⚠️ 注意：这份文档描述的是「上游原版 Hermes Agent」，不是本仓库的 Xinyuan。
+  本仓库（Xinyuan）的说明请看 README.md，改动清单看 CHANGES.zh-CN.md。
+
+  上游：https://github.com/NousResearch/hermes-agent  ·  MIT  ·  Copyright (c) 2025 Nous Research
+-->
+
 <p align="center">
   <img src="assets/banner.png" alt="Hermes Agent" width="100%">
 </p>
