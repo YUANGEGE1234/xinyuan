@@ -26,7 +26,7 @@ test('lead sentence is plain and actionable; raw error is confined to the Detail
 test('missing stage and missing error still produce a complete message', () => {
   const message = describeBootstrapFailure(null, undefined)
 
-  assert.match(message, /^Setting up Hermes stopped before it could finish\./)
+  assert.match(message, /^Setting up Xinyuan stopped before it could finish\./)
   assert.match(message, /\nDetails: unknown error$/)
 })
 

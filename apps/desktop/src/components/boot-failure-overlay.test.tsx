@@ -74,7 +74,7 @@ describe('BootFailureOverlay', () => {
       </>
     )
 
-    const recoverySurface = screen.getByRole('dialog', { name: /Hermes couldn't start/i })
+    const recoverySurface = screen.getByRole('dialog', { name: /Xinyuan couldn't start/i })
     const retry = screen.getByRole('button', { name: /retry/i })
     const backgroundAction = screen.getByText(/background action/i)
 

@@ -196,7 +196,7 @@ def _warn_if_unsupervised_pid1(pid: "int | None" = None) -> None:
     if (pid if pid is not None else os.getpid()) != 1:
         return
     print(
-        "[hermes] WARNING: this process is PID 1 with no init above it "
+        "[xinyuan] WARNING: this process is PID 1 with no init above it "
         "(entrypoint override?). Orphaned child processes will not be "
         "reaped and will accumulate as zombies. Use the image's default "
         "ENTRYPOINT (docker/entrypoint-dispatch.sh) instead of overriding "

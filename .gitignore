@@ -114,10 +114,13 @@ apps/desktop/release/
 apps/desktop/.staging-*/
 *.tsbuildinfo
 
-# Xinyuan fork: the desktop build output directory used by this fork's
+# Xinyuan fork: the desktop build output directories used by this fork's
 # packaging step (see scripts/set-exe-identity.mjs). The upstream
-# apps/desktop/release/ rule above does not match it.
-apps/desktop/release-xinyuan/
+# apps/desktop/release/ rule above does not match them. electron-builder
+# cannot always clear a half-written output dir (EBUSY on the locked
+# default_app.asar), so each rebuild gets a fresh release-x<N>/ name -- hence
+# the wildcard rather than one rule per build.
+apps/desktop/release-x*/
 
 # Web UI assets — synced from @nous-research/ui at build time via
 # `npm run sync-assets` (see web/package.json).

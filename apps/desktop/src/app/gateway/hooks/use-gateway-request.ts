@@ -82,7 +82,7 @@ export function useGatewayRequest() {
         const conn = await withTimeout(
           desktop.getConnection($activeGatewayProfile.get()),
           RECONNECT_ATTEMPT_TIMEOUT_MS,
-          'Timed out reconnecting to Hermes backend'
+          'Timed out reconnecting to Xinyuan backend'
         )
 
         connectionRef.current = conn

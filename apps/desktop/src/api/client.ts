@@ -29,7 +29,7 @@ export class HermesGateway extends JsonRpcGatewayClient {
   constructor() {
     super({
       closedErrorMessage: 'Xinyuan gateway connection closed',
-      connectErrorMessage: 'Could not connect to Hermes gateway',
+      connectErrorMessage: 'Could not connect to Xinyuan gateway',
       createRequestId: nextId => nextId,
       notConnectedErrorMessage: 'Xinyuan gateway is not connected',
       requestTimeoutMs: DEFAULT_GATEWAY_REQUEST_TIMEOUT_MS

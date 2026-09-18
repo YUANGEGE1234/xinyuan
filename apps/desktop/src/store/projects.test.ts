@@ -453,7 +453,7 @@ describe('createProject', () => {
     setShowAllProfiles(true)
 
     const pending = createProject({ folders: ['/srv/hermes'], name: 'Xinyuan Agent' })
-    const rejection = expect(pending).rejects.toThrow('Active Hermes profile changed while connecting')
+    const rejection = expect(pending).rejects.toThrow('Active Xinyuan profile changed while connecting')
     const otherGateway = { connectionState: 'open', request }
     $activeGatewayProfile.set('other')
     activeGateway.mockReturnValue(otherGateway as never)

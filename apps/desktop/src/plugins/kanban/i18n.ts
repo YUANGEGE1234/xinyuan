@@ -419,8 +419,8 @@ export const en: KanbanMessages = {
     blockLoopTitle: 'Task routed to triage — needs a decision',
     gaveUpTitle: 'Task stopped',
     gaveUpBody: 'Xinyuan couldn’t finish this task. Open Kanban to see why and reassign it.',
-    crashedTitle: 'Task hit a problem — Hermes will retry it automatically',
-    timedOutTitle: 'Task took too long — Hermes will retry it automatically',
+    crashedTitle: 'Task hit a problem — Xinyuan will retry it automatically',
+    timedOutTitle: 'Task took too long — Xinyuan will retry it automatically',
     openKanban: 'Open Kanban',
     artifacts: (n: number) => `${n} artifacts`
   }
@@ -631,8 +631,8 @@ const ja: KanbanMessages = {
     blockLoopTitle: 'タスクをトリアージへ移動 — 判断が必要です',
     gaveUpTitle: 'タスクが停止しました',
     gaveUpBody: 'Xinyuan はこのタスクを完了できませんでした。かんばんを開いて原因を確認し、再割り当てしてください。',
-    crashedTitle: 'タスクで問題が発生 — Hermes が自動で再試行します',
-    timedOutTitle: 'タスクに時間がかかりすぎました — Hermes が自動で再試行します',
+    crashedTitle: 'タスクで問題が発生 — Xinyuan が自動で再試行します',
+    timedOutTitle: 'タスクに時間がかかりすぎました — Xinyuan が自動で再試行します',
     openKanban: 'かんばんを開く',
     artifacts: (n: number) => `成果物 ${n} 件`
   }
@@ -840,8 +840,8 @@ const zh: KanbanMessages = {
     blockLoopTitle: '任务已转入分类 — 需要人工决定',
     gaveUpTitle: '任务已停止',
     gaveUpBody: 'Xinyuan 无法完成这个任务。打开看板查看原因并重新分配。',
-    crashedTitle: '任务遇到问题 — Hermes 将自动重试',
-    timedOutTitle: '任务耗时过长 — Hermes 将自动重试',
+    crashedTitle: '任务遇到问题 — Xinyuan 将自动重试',
+    timedOutTitle: '任务耗时过长 — Xinyuan 将自动重试',
     openKanban: '打开看板',
     artifacts: (n: number) => `${n} 个产物`
   }
@@ -1049,8 +1049,8 @@ const zhHant: KanbanMessages = {
     blockLoopTitle: '任務已轉入分類 — 需要人工決定',
     gaveUpTitle: '任務已停止',
     gaveUpBody: 'Xinyuan 無法完成這個任務。開啟看板查看原因並重新指派。',
-    crashedTitle: '任務遇到問題 — Hermes 將自動重試',
-    timedOutTitle: '任務耗時過長 — Hermes 將自動重試',
+    crashedTitle: '任務遇到問題 — Xinyuan 將自動重試',
+    timedOutTitle: '任務耗時過長 — Xinyuan 將自動重試',
     openKanban: '開啟看板',
     artifacts: (n: number) => `${n} 個產物`
   }

@@ -432,11 +432,178 @@ re.compile(r"(['\"`])Hermes(?![A-Za-z0-9_$])")
 | 改动文件语法校验（180 个 `.py`） | **0 失败** |
 | 散文残留（运行时字符串 / 文档字符串 / 注释） | **0 / 0 / 0** |
 | 必须保留项复核 | `X-Hermes-Session-Id` 9 处、`X-Title` 12 处、`Hermes 3` 3 处、`hermes-agent` 177 处 —— **全部完好** |
-| 仓库测试（品牌相关 17 个文件） | 见第 11 节说明 |
+| 仓库测试（品牌相关 17 个文件） | 与基线同口径对照：均为 **5 失败 / 965 通过**，且失败项完全相同 → 改名引入回归 **0** |
 
 ---
 
-## 11. 已知限制
+## 11. 补漏（第四版）：桌面外壳（Electron）是一层独立的品牌文案
+
+### 漏在哪
+
+首版本地化确实顺带改过桌面外壳的一部分（README 第 3 行记的「`src/` 与 `electron/`
+下的用户可见字符串，101 个文件、212 处」就是它）。但**之后三轮补漏的工具都只遍历
+`*.py`，再没回头看这一层**，于是留下大量残留 —— 而且是**用户第一眼就能看到**的：
+
+```
+[hermes] [boot] Resolving Hermes backend
+[hermes] [boot] Waiting for Hermes backend to launch
+```
+
+这是启动时的进度条文案。此外还有错误对话框、设置页说明、OAuth 回调页、
+以及更新/卸载相关的全部提示语。
+
+需要说明的是，首版那一轮只覆盖了**一部分**：渲染层的 i18n **取值**改完了
+（`startingHermesDesktop: 'Starting Xinyuan Desktop…'`），主进程 `electron/` 基本没动，
+且两层的**散文句子**都还有大量残留。
+
+实测残留量（把每处 `Hermes` 判为「在字符串字面量内」还是「裸代码」）：
+
+| 层 | 字符串散文（需改） | 标识符（不能改） |
+| --- | --- | --- |
+| `apps/desktop/electron/`（主进程） | **110** | 101 |
+| `apps/desktop/src/`（渲染层） | **95** | 161 |
+
+### 改了什么
+
+新增工具 `js_rebrand.py`，思路与 Python 版一致，但有两个 JS 特有的点：
+
+- **只改字符串字面量内的 `Hermes`**（`'` `"` `` ` ``）。词边界必须带 `$`：
+  `(?<![A-Za-z0-9_$])Hermes(?![A-Za-z0-9_$])` —— JS 标识符允许 `$`。
+  这样 `resolveHermesHome`、`remoteHermesPath`、`HERMES_HOME`、`hermes-bots` 一律不受影响。
+- **模板串里的 `${...}` 是代码不是散文**：扫描时按花括号深度把插值区排除，
+  否则 `${remoteHermesPath}` 会被当散文改掉。这是 JS 侧对应 Python f-string 的那个坑。
+
+最终应用 **188 处 / 55 个文件**。
+
+**测试文件刻意不参与批量改名**：`*.test.ts` 里的 `Hermes` 绝大多数是合成夹具路径
+（`C:\Hermes\venv\Scripts\python.exe`），没有用户价值；夹具与断言同步改写纯属噪声。
+只有少数几个**断言了用户可见文案**的测试需要手工跟进（见下文「测试」一节）。
+
+### 同一层的另外三块：日志前缀、插件面板、更新页
+
+`js_rebrand.py` 的词边界是**大小写敏感**的，所以小写的日志前缀 `[hermes]` 它根本匹配不到 ——
+但那串字符出现在 `data/logs/desktop.log` 与「RECENT LOGS」视图的**每一行**：
+
+```
+[2026-09-17T16:45:15.418Z] [hermes] [boot] Resolving Xinyuan backend
+```
+
+改之前先确认过**没有任何正则回读它**（`tests/install/e2e-assets/known-failures.json` 的
+签名只匹配 `[updates]` 与 CLI 命令名，不匹配前缀）。改动 **17 处**：
+
+- `apps/desktop/electron/desktop-log-line.ts`（前缀定义）
+- `apps/desktop/electron/main.ts`（16 处 `console.log`）
+- `hermes_cli/main.py`（后端侧同名前缀）
+
+⚠️ 注意 `hermes_cli/update_cmd_windows.py:395` 的 `[hermes] + (["--profile", ...])`
+**看着像同一个 token，其实是 Python 列表在包变量**，不是字符串，只能改 STRING 标记内的 ——
+这正是 `patch_logprefix.py` 用 `tokenize` 而不是文本替换的原因。
+
+随包分发的其它 JS/HTML 资源（不在 `apps/desktop` 下，构建链不会覆盖它们，必须单独改）：
+
+| 文件 | 处数 | 说明 |
+| --- | --- | --- |
+| `plugins/hermes-achievements/dashboard/dist/index.js` | 8 | 成就面板标题、提示语 |
+| `plugins/kanban/dashboard/dist/index.js` | 5 | 看板面板的 profile 提示语 |
+| `plugins/platforms/photon/sidecar/index.mjs` | 2 | iMessage 适配器日志 |
+| `scripts/desktop-update/ui.html` | 7 | 更新进度页（HTML 文本节点，需整文件当散文扫） |
+| `scripts/whatsapp-bridge/bridge.js` | 1 | WhatsApp 回复前缀 `☤ *Xinyuan Agent*` |
+
+`plugins/*/dashboard/dist/` 是**构建产物**（平时 `dist` 在跳过名单里），但在这条链路里
+它就是**发布物本身**，所以用 `--allow-dist` 放行。
+
+### 刻意保留（指向上游实体，改了会产生死指针）
+
+| 保留项 | 原因 |
+| --- | --- |
+| `Hermes website` | 上游下载站。改成「Xinyuan 网站」会指向**不存在的站点** |
+| `Hermes Cloud` | 上游真实云服务（门户登录走 `hermes-agent.nousresearch.com`） |
+| `Hermes Agent page` | 上游计费门户里的真实页面 |
+| `Hosted Hermes & Nous-trained models` | 「Nous Portal」提供商的描述，这里的 Hermes 是**模型家族名** |
+| `Hermes-Setup` / `Hermes.exe` / `Hermes.app` / `Hermes.AppImage` | 上游安装器与产物**真实文件名** |
+| `X-Hermes-Session-*` / `Hermes-Agent-Outbound-Webhook` | HTTP 协议头，改了会断会话续传与 Webhook 签名 |
+| `Hermes 3` / `Hermes 4` / `Nous Research` / `hermes-agent` | 上游模型名与归属 |
+| `Hermes Kanban docs` / `Hermes Kanban documentation` | 标签指向的 href **真的是** `hermes-agent.nousresearch.com/docs/...`。改成「Xinyuan 文档」会把一个上游链接标错 |
+| Photon 侧车的 `Hermes patch:` 标记 | 不是散文：它被**写进被改写的第三方文件**再读回来做幂等判断（`if (raw.includes(MARKER)) return`）。改名会让「已打过补丁」的文件看起来没打过，被**重复打补丁** |
+| WhatsApp 的 `browser: ['Hermes Agent', 'Chrome', ...]` | **配对时交给 WhatsApp 的设备标识**（协议值，同类于上面的 Photon 标记）。改名只影响「已连接设备」里的显示名，却有让已有会话**要求重新扫码配对**的风险 —— 紧邻它的、用户真正看得到的回复前缀 `☤ *Xinyuan Agent*` 已改 |
+
+判据与前三版一致：**「本产品自称」改名，「指向上游实体」保留**。
+（同一条原则也是人格文案里保留 `built on Hermes Agent by Nous Research` 的原因。）
+本轮再补一条：**发给第三方的协议值不改** —— 它不算「本产品自称」，
+改错了是功能故障而不是文案问题。
+
+### 顺带修掉的两个功能性 bug
+
+**（1）`tools/skill_linter.py` 的元组被去重。** 首版改名把一处元组写成了：
+
+```python
+author not in ("Xinyuan Agent", "Xinyuan Agent")   # 丢了 "Hermes Agent"
+```
+
+与更早 `gateway/relay/__init__.py` 的 bug 同源，当时只修了 relay 那一处。
+后果是 `author: Hermes Agent` 的技能会被误报「应写作 Xinyuan Agent」。已修回两元素。
+
+**（2）`plugins/hermes-bots/data.ts` 的保留标签名单没跟上改名。** 内置机器人的 @标签
+现在是 `Xinyuan`，但「不允许被用作自定义标签」的保留名单里只有旧名：
+
+```javascript
+!['all', 'everyone', 'user', 'default', 'hermes'].includes(form)   // 少了 'xinyuan'
+```
+
+后果是用户可以把自己建的机器人改名成 `Xinyuan`，**劫持内置标签**。
+保留名单补上 `'xinyuan'`（`'hermes'` 一并留着，兼容老数据）。
+
+### 测试：改名引入的回归为 0
+
+这一层有件事必须先说清楚：**首版只改了源码、没改测试**，所以桌面测试套件
+**从首版起就一直是红的**。用「同口径对照」量出来（同一批文件、同一台机器、
+只切换 `apps/desktop` 的改动）：
+
+| | 失败 | 通过 |
+| --- | --- | --- |
+| 基线（改动前） | 72 | 470 |
+| 本轮改动后 | **48** | **494** |
+
+即：**修好 26 个，新增 0 个**。
+
+**为什么会红 72 个。** 两个原因，都不是本轮引入的：
+
+1. **陈旧的品牌断言（约 29 个）** —— 首版改了 `src/i18n/en.ts` 等目录里的**取值**
+   （`installLocalTitle: 'Install Xinyuan locally'`），测试里还在断言 `Install Hermes locally`。
+   这类已全部同步修正，例如 `desktop-install-overlay.test.tsx` 一次修掉 13 个。
+2. **平台不兼容（约 37 个）** —— 上游测试套件按 POSIX/macOS 写，在 Windows 上本来就跑不过：
+   `hardening.test.ts`（`chmod` 权限位与属主语义）、`ssh-connection.test.ts`（`ControlMaster` 控制套接字）、
+   `git-repo-scan.test.ts`（darwin 的媒体库排除）、`managed-ssh-update.test.ts`（`/bin/sh`）、
+   `stage-native-deps.test.mjs`（darwin 打包）。这些**刻意不动** —— 它们反映的是平台差异，不是品牌问题。
+
+**看起来像回归、实际是 flaky 的 2 个。** `git-worktree-ops.test.ts` 与
+`pool-spawn-coordinator.test.ts` 会真的 `spawn` 真 `git` 进程 / 100 个子进程，
+默认 5 秒超时在负载高时不够。用 `--testTimeout=60000` 单跑这两个文件：
+全部通过，耗时 **660 ms / 2087 ms** —— 是超时，不是逻辑错。
+
+**剩余 48 个的性质**（均已核对，不是本轮引入）：平台不兼容约 37 个；
+4 个是**首版刻意删掉的功能**的遗留测试（`onboarding/index.test.tsx` 的
+「provider Picker 展开列表 / "稍后选择"」，而 `index.tsx:566` 的注释写明这些入口是被主动移除的）；
+2 个 `voice-prefs.test.ts` 与源码注释所声明的行为不一致（与品牌无关）；
+其余是 Windows 文件占用（`EBUSY ... rmdir`）导致的清理失败。
+
+### 关于构建产物的一点说明
+
+`apps/desktop/dist/` 是 **`.gitignore` 忽略的构建产物**，所以 `git ls-files` 里查不到它 ——
+但它才是**真正被打进包里的东西**。构建链为：
+
+```
+npm run build            # vite + scripts/bundle-electron-main.mjs
+npm run builder -- --dir # → apps/desktop/release-xinyuan/win-unpacked/
+                         # → 拷进便携包的 app/
+```
+
+另外 `app.asar` 中 `/dist/**` 全部标记为 `unpacked=True`，Electron 会从
+`app.asar.unpacked/dist/` 读取真实文件，因此这些文件是可安全直接替换的。
+
+---
+
+## 12. 已知限制
 
 - 仅提供 **Windows x64** 便携包。macOS / Linux 需自行从源码构建。
 - 需要能访问 `https://yuangeluyou.com`；离线环境无法使用。

@@ -73,7 +73,7 @@ describe('notifyBotOpenFailure', () => {
 
     const toast = lastToast()
     expect(toast.kind).toBe('error')
-    expect(toast.title).toBe('This bot lives on an older Hermes')
+    expect(toast.title).toBe('This bot lives on an older Xinyuan')
     expect(toast.message).toBe('Update Studio Mac, then try again.')
     expect(toast.message).not.toContain(raw)
     expect(toast.detail).toBe(raw)

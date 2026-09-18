@@ -888,7 +888,7 @@ async function runManagedSshUpdate<TScope extends ManagedSshScope>(
     ...(error ? { error } : {}),
     message:
       outcome === 'updated'
-        ? 'Remote Hermes updated and every managed SSH profile is ready.'
+        ? 'Remote Xinyuan updated and every managed SSH profile is ready.'
         : restoreOk
           ? 'The remote update failed, but every managed SSH profile was restored.'
           : 'The remote update transaction could not restore every managed SSH profile.'

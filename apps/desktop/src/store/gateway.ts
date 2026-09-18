@@ -1055,7 +1055,7 @@ export async function requestGatewayForAgent<T>(
   }
 
   if (!window.hermesDesktop?.getConnectionFor) {
-    throw new Error('This Desktop build cannot dial registry connections. Update Hermes Desktop.')
+    throw new Error('This Desktop build cannot dial registry connections. Update Xinyuan Desktop.')
   }
 
   const entry = g.secondaries.get(scope) ?? createSecondary(key, connectionId)
@@ -1479,7 +1479,7 @@ export async function openGatewayForAgent(
   }
 
   if (!window.hermesDesktop?.getConnectionFor) {
-    throw new Error('This Desktop build cannot dial registry connections. Update Hermes Desktop.')
+    throw new Error('This Desktop build cannot dial registry connections. Update Xinyuan Desktop.')
   }
 
   const entry = g.secondaries.get(scope) ?? createSecondary(profile, connectionId)
@@ -1533,7 +1533,7 @@ export async function ensureGatewayForAgent(
   }
 
   if (!window.hermesDesktop?.getConnectionFor) {
-    throw new Error('This Desktop build cannot dial registry connections. Update Hermes Desktop.')
+    throw new Error('This Desktop build cannot dial registry connections. Update Xinyuan Desktop.')
   }
 
   let entry = g.secondaries.get(scope)

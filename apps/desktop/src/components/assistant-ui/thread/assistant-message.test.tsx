@@ -214,7 +214,7 @@ describe('ownership refusal recovery (#106217)', () => {
   it('explains the refusal in plain words and demotes the lease text to details', async () => {
     render(<Harness assistant={ownershipRefusalMessage()} />)
 
-    expect(await screen.findByText(/open in another Hermes window or terminal/)).toBeTruthy()
+    expect(await screen.findByText(/open in another Xinyuan window or terminal/)).toBeTruthy()
     // The raw refusal ("live owner", "pid", "lease") is kept only inside the
     // collapsed Details disclosure, never as the headline.
     const raw = screen.getByText(/already has a live owner/)

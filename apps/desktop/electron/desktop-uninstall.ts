@@ -203,7 +203,7 @@ function buildWindowsCleanupScript({
   const pid = Number(desktopPid) || 0
   // cmd.exe has no string escaping inside quotes; strip embedded quotes (paths
   // under %LOCALAPPDATA% never contain them). `&`/`^` in a path would still be
-  // a problem, but Hermes install paths don't use them.
+  // a problem, but Xinyuan install paths don't use them.
   const q = s => `"${String(s).replace(/"/g, '')}"`
 
   const lines = [

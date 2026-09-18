@@ -130,12 +130,12 @@ export function pendingNotice(hermesHome: string, userData: string): PendingNoti
   const copy = report.in_effect
     ? {
         title: 'Some plugins were turned off',
-        message: `These plugins were built for an older Hermes and were turned off: ${nameList}. Hermes works normally without them.`,
+        message: `These plugins were built for an older Xinyuan and were turned off: ${nameList}. Xinyuan works normally without them.`,
         detail: `Look for an updated version of each plugin or ask its author.\n\n${list}`
       }
     : {
         title: 'Some plugins need an update',
-        message: `These plugins were built for an older Hermes and will stop working on ${report.removal_date}: ${nameList}.`,
+        message: `These plugins were built for an older Xinyuan and will stop working on ${report.removal_date}: ${nameList}.`,
         detail: `Look for an updated version or ask the plugin's author before then.\n\n${list}`
       }
 

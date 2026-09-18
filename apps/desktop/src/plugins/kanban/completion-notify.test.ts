@@ -474,7 +474,7 @@ describe('terminal kinds beyond completed', () => {
     })
   })
 
-  it('retrying kinds (crashed/timed_out) say Hermes will retry and never expose worker/gateway vocabulary', async () => {
+  it('retrying kinds (crashed/timed_out) say Xinyuan will retry and never expose worker/gateway vocabulary', async () => {
     const m = await loadModule()
     m.bindCompletionNotify(makeRest(() => 100) as never)
 
@@ -482,7 +482,7 @@ describe('terminal kinds beyond completed', () => {
 
     for (const call of hostMock.notify.mock.calls) {
       const toast = call[0] as NotifyInput
-      expect(toast.title).toMatch(/Hermes will retry it automatically/)
+      expect(toast.title).toMatch(/Xinyuan will retry it automatically/)
       expect(`${toast.title} ${toast.message}`).not.toMatch(/worker|gateway|backend/i)
     }
   })
@@ -586,6 +586,6 @@ describe('i18n routing', () => {
 
     await m.onKanbanEventsFrame('smoke', [ev(101, 'timed_out')])
 
-    expect(lastNotify().title).toBe('Task took too long — Hermes will retry it automatically')
+    expect(lastNotify().title).toBe('Task took too long — Xinyuan will retry it automatically')
   })
 })

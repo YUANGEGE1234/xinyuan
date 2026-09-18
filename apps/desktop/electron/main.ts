@@ -524,7 +524,7 @@ if (REMOTE_DISPLAY_REASON) {
   // with only --disable-gpu: force compositing onto the CPU too.
   app.commandLine.appendSwitch('disable-gpu-compositing')
   console.log(
-    `[hermes] remote display detected (${REMOTE_DISPLAY_REASON}); disabling GPU hardware acceleration to prevent flicker`
+    `[xinyuan] remote display detected (${REMOTE_DISPLAY_REASON}); disabling GPU hardware acceleration to prevent flicker`
   )
 }
 
@@ -540,14 +540,14 @@ if (DEV_CDP.port) {
   // so a future edit can't widen it by omission.
   app.commandLine.appendSwitch('remote-debugging-address', '127.0.0.1')
   console.log(
-    `[hermes] renderer debugging on http://127.0.0.1:${DEV_CDP.port} — anything that can reach it ` +
+    `[xinyuan] renderer debugging on http://127.0.0.1:${DEV_CDP.port} — anything that can reach it ` +
       'can run code in the renderer. HERMES_DESKTOP_CDP_PORT=off to disable.'
   )
 } else {
   const why = describeDevCdpDecision(DEV_CDP)
 
   if (why) {
-    console.warn(`[hermes] ${why}`)
+    console.warn(`[xinyuan] ${why}`)
   }
 }
 
@@ -558,7 +558,7 @@ if (IS_WSL && !REMOTE_DISPLAY_REASON && fs.existsSync('/dev/dxg')) {
   app.commandLine.appendSwitch('ignore-gpu-blocklist')
   app.commandLine.appendSwitch('enable-gpu-rasterization')
   app.commandLine.appendSwitch('enable-zero-copy')
-  console.log('[hermes] WSL GPU passthrough (/dev/dxg) detected; enabling GPU acceleration')
+  console.log('[xinyuan] WSL GPU passthrough (/dev/dxg) detected; enabling GPU acceleration')
 }
 
 // Linux: point Chromium at the session's keychain backend so safeStorage can
@@ -569,12 +569,12 @@ if (IS_WSL && !REMOTE_DISPLAY_REASON && fs.existsSync('/dev/dxg')) {
 const PASSWORD_STORE = resolveLinuxPasswordStore()
 
 if (PASSWORD_STORE.warning) {
-  console.warn(`[hermes] ${PASSWORD_STORE.warning}`)
+  console.warn(`[xinyuan] ${PASSWORD_STORE.warning}`)
 }
 
 if (PASSWORD_STORE.store) {
   app.commandLine.appendSwitch('password-store', PASSWORD_STORE.store)
-  console.log(`[hermes] using password-store backend: ${PASSWORD_STORE.store}`)
+  console.log(`[xinyuan] using password-store backend: ${PASSWORD_STORE.store}`)
 }
 
 // Windows sandbox / GPU breakpoint crash recovery (#38216).
@@ -611,9 +611,9 @@ if (IS_WINDOWS) {
     const acl = grantAllApplicationPackagesAcl(exeDir, { execFileSync })
 
     if (acl.ok) {
-      console.log(`[hermes] granted ALL APPLICATION PACKAGES RX on ${exeDir} (#38216)`)
+      console.log(`[xinyuan] granted ALL APPLICATION PACKAGES RX on ${exeDir} (#38216)`)
     } else if (acl.error && acl.error !== 'missing-target-or-exec') {
-      console.warn(`[hermes] AppContainer ACL grant failed on ${exeDir}: ${acl.error}`)
+      console.warn(`[xinyuan] AppContainer ACL grant failed on ${exeDir}: ${acl.error}`)
     }
   }
 
@@ -635,7 +635,7 @@ if (IS_WINDOWS) {
     app.commandLine.appendSwitch('no-sandbox')
     process.env.ELECTRON_DISABLE_SANDBOX = '1'
     console.log(
-      `[hermes] Windows sandbox fallback enabled (${sandboxDecision.reason}); launching with --no-sandbox (#38216)`
+      `[xinyuan] Windows sandbox fallback enabled (${sandboxDecision.reason}); launching with --no-sandbox (#38216)`
     )
   }
 
@@ -666,14 +666,14 @@ if (IS_WINDOWS) {
     }
 
     console.warn(
-      `[hermes] Windows GPU sandbox crashed (exit=${details?.exitCode}); relaunching once with --no-sandbox (#38216)`
+      `[xinyuan] Windows GPU sandbox crashed (exit=${details?.exitCode}); relaunching once with --no-sandbox (#38216)`
     )
 
     try {
       app.relaunch({ args: buildNoSandboxRelaunchArgs(process.argv.slice(1)) })
       void exitAfterBackendShutdown(0)
     } catch (error) {
-      console.error(`[hermes] --no-sandbox relaunch failed: ${error?.message || error}`)
+      console.error(`[xinyuan] --no-sandbox relaunch failed: ${error?.message || error}`)
     }
   })
 }
@@ -734,7 +734,7 @@ function loadInstallStamp() {
       if (parsed && typeof parsed === 'object' && typeof parsed.commit === 'string' && parsed.commit.length >= 7) {
         if (parsed.schemaVersion !== INSTALL_STAMP_SCHEMA_VERSION) {
           console.warn(
-            `[hermes] install-stamp.json schemaVersion ${parsed.schemaVersion} != expected ${INSTALL_STAMP_SCHEMA_VERSION}; ignoring`
+            `[xinyuan] install-stamp.json schemaVersion ${parsed.schemaVersion} != expected ${INSTALL_STAMP_SCHEMA_VERSION}; ignoring`
           )
 
           continue
@@ -751,7 +751,7 @@ function loadInstallStamp() {
         })
       }
     } catch (e) {
-      console.warn(`[hermes] install-stamp.json found at ${p} , but parsing failed with ${e}`)
+      console.warn(`[xinyuan] install-stamp.json found at ${p} , but parsing failed with ${e}`)
       // Either ENOENT or malformed JSON; try the next candidate
     }
   }
@@ -763,13 +763,13 @@ const INSTALL_STAMP = loadInstallStamp()
 
 if (INSTALL_STAMP) {
   console.log(
-    `[hermes] install stamp: ${INSTALL_STAMP.commit.slice(0, 12)}${INSTALL_STAMP.branch ? ` (${INSTALL_STAMP.branch})` : ''}${INSTALL_STAMP.dirty ? ' [DIRTY]' : ''} from ${INSTALL_STAMP.source || 'unknown'}`
+    `[xinyuan] install stamp: ${INSTALL_STAMP.commit.slice(0, 12)}${INSTALL_STAMP.branch ? ` (${INSTALL_STAMP.branch})` : ''}${INSTALL_STAMP.dirty ? ' [DIRTY]' : ''} from ${INSTALL_STAMP.source || 'unknown'}`
   )
 } else if (IS_PACKAGED) {
   // Dev builds without a stamp are normal; packaged builds without one
   // mean the bootstrap won't know what to clone. Surface clearly.
   console.error(
-    '[hermes] WARNING: no install-stamp.json found in packaged build. First-launch bootstrap will not have a pinned ref to install.'
+    '[xinyuan] WARNING: no install-stamp.json found in packaged build. First-launch bootstrap will not have a pinned ref to install.'
   )
 }
 
@@ -1721,7 +1721,7 @@ let bootProgressState = {
   error: null,
   fakeMode: BOOT_FAKE_MODE,
   isCloudBackendDown: false,
-  message: 'Waiting to start Hermes backend',
+  message: 'Waiting to start Xinyuan backend',
   phase: 'idle',
   progress: 0,
   retryable: false,
@@ -2454,7 +2454,7 @@ async function waitForUpdateToFinish() {
 
       await advanceBootProgress(
         'backend.update-wait',
-        'An update is finishing — Hermes will start automatically when it completes…',
+        'An update is finishing — Xinyuan will start automatically when it completes…',
         12
       )
     },
@@ -2527,7 +2527,7 @@ async function waitForUpdateToFinish() {
   if (outcome === 'timeout') {
     rememberLog('[updates] update still in progress after wait timeout; starting backend anyway')
   } else if (relaunchIntoSwappedBundle()) {
-    await advanceBootProgress('backend.update-restart', 'Restarting Hermes to load the updated app…', 14)
+    await advanceBootProgress('backend.update-restart', 'Restarting Xinyuan to load the updated app…', 14)
     // Park while the scheduled exit lands so this stale build never starts a
     // backend; the failsafe below only runs if the exit somehow does not.
     await new Promise(resolve => setTimeout(resolve, BUNDLE_SWAP_RELAUNCH_FAILSAFE_MS))
@@ -3170,8 +3170,8 @@ async function checkUpdates({ force = false }: { force?: boolean } = {}) {
       supported: false,
       reason: 'not-a-git-checkout',
       message:
-        "This copy of Hermes can't update itself from inside the app. Download the latest version from the Hermes website, " +
-        `or reinstall Hermes to enable in-app updates. Details: ${updateRoot} has no version-control metadata.`,
+        "This copy of Xinyuan can't update itself from inside the app. Download the latest version from the Hermes website, " +
+        `or reinstall Xinyuan to enable in-app updates. Details: ${updateRoot} has no version-control metadata.`,
       hermesRoot: updateRoot,
       branch
     }
@@ -3524,7 +3524,7 @@ function killHermesOwnedVenvDaemons(updateRoot) {
     const pid = Number(holder?.ProcessId)
 
     if (Number.isInteger(pid) && pid > 0) {
-      rememberLog(`[updates] stopping Hermes-owned venv daemon (hindsight) PID ${pid} before hand-off`)
+      rememberLog(`[updates] stopping Xinyuan-owned venv daemon (hindsight) PID ${pid} before hand-off`)
       forceKillProcessTree(pid)
     }
   }
@@ -3764,7 +3764,7 @@ async function claimBackendChild(child, command, profile, nonce, outputTail: Bac
   if (decision.action === 'degrade') {
     startMarker = pidOnlyStartMarker(child.pid)
     rememberLog(
-      `WARNING: process start marker probe failed for live Hermes backend PID ${child.pid}; ` +
+      `WARNING: process start marker probe failed for live Xinyuan backend PID ${child.pid}; ` +
         `claiming with PID-only identity instead of stopping it: ${decision.reason}`
     )
   } else {
@@ -3792,7 +3792,7 @@ async function claimBackendChild(child, command, profile, nonce, outputTail: Bac
     stopBackendChild(child)
     await waitForBackendExit(child)
     throw new Error(
-      `Could not persist ownership for the Hermes backend: ${error.message}${outputTail?.describe() ?? ''}`
+      `Could not persist ownership for the Xinyuan backend: ${error.message}${outputTail?.describe() ?? ''}`
     )
   }
 }
@@ -4053,7 +4053,7 @@ async function applyUpdates(opts: { stopSafeBlockers?: boolean } = {}) {
     emitUpdateProgress({
       stage: 'restart',
       message:
-        'Updating Hermes — this window will close and the updater will open. Don’t reopen Hermes yourself; it restarts automatically when the update finishes.',
+        'Updating Xinyuan — this window will close and the updater will open. Don’t reopen Xinyuan yourself; it restarts automatically when the update finishes.',
       percent: 100
     })
     repairMacUpdaterHelper(updater)
@@ -4098,8 +4098,8 @@ async function applyUpdates(opts: { stopSafeBlockers?: boolean } = {}) {
       // user close the holder and retry. Restart our own backend so the app
       // keeps working after the failed attempt.
       const message =
-        'Update aborted: another process is holding the Hermes install open ' +
-        '(a second Hermes window or a terminal running hermes?). Close it and retry.'
+        'Update aborted: another process is holding the Xinyuan install open ' +
+        '(a second Xinyuan window or a terminal running hermes?). Close it and retry.'
 
       emitUpdateProgress({ stage: 'error', message, percent: null })
       startHermes().catch(() => {})
@@ -4636,7 +4636,7 @@ async function applyUpdatesPosixHandoff(opts: any) {
   emitUpdateProgress({
     stage: 'restart',
     message:
-      'Updating Hermes — this window will close. Don’t reopen Hermes yourself; it restarts automatically when the update finishes.',
+      'Updating Xinyuan — this window will close. Don’t reopen Xinyuan yourself; it restarts automatically when the update finishes.',
     percent: 100
   })
 
@@ -5067,7 +5067,7 @@ async function resolveHermesBackend(backendArgs) {
   if (activeRuntime.shouldUseActiveRuntime && !bootstrapRepairRequested) {
     if (!activeRuntime.hasValidMarker) {
       rememberLog(
-        `[bootstrap] Active Hermes runtime at ${ACTIVE_HERMES_ROOT} is usable but the bootstrap marker is missing or stale; skipping first-run bootstrap.`
+        `[bootstrap] Active Xinyuan runtime at ${ACTIVE_HERMES_ROOT} is usable but the bootstrap marker is missing or stale; skipping first-run bootstrap.`
       )
     }
 
@@ -5095,7 +5095,7 @@ async function resolveHermesBackend(backendArgs) {
       } else if (!isWindowsBinaryPathInWsl(hermesOverride, { isWsl: IS_WSL })) {
         hermesCommand = hermesOverride
       } else {
-        rememberLog(`Ignoring Windows Hermes override under WSL: ${hermesOverride}`)
+        rememberLog(`Ignoring Windows Xinyuan override under WSL: ${hermesOverride}`)
       }
     } else {
       hermesCommand = findOnPath('hermes')
@@ -5103,7 +5103,7 @@ async function resolveHermesBackend(backendArgs) {
 
     if (hermesCommand) {
       if (looksLikeDesktopAppBinary(hermesCommand)) {
-        rememberLog(`Ignoring desktop app executable on PATH while resolving Hermes CLI: ${hermesCommand}`)
+        rememberLog(`Ignoring desktop app executable on PATH while resolving Xinyuan CLI: ${hermesCommand}`)
         hermesCommand = null
       }
     }
@@ -5138,7 +5138,7 @@ async function resolveHermesBackend(backendArgs) {
         // same un-memoized import probe, costing up to another full probe
         // timeout on the boot path for an answer we already have.
         return {
-          label: `existing Hermes CLI at ${hermesCommand}`,
+          label: `existing Xinyuan CLI at ${hermesCommand}`,
           command: hermesCommand,
           args: backendArgs,
           bootstrap: false,
@@ -5149,7 +5149,7 @@ async function resolveHermesBackend(backendArgs) {
       }
 
       rememberLog(
-        `Ignoring existing Hermes CLI at ${hermesCommand}: --version probe failed; falling through to bootstrap.`
+        `Ignoring existing Xinyuan CLI at ${hermesCommand}: --version probe failed; falling through to bootstrap.`
       )
     }
   }
@@ -5233,11 +5233,11 @@ async function runEnsureRuntime(backend: any, assertStillOwned: () => void): Pro
   // will rewire startup to spawn the window first and route bootstrap events
   // to a renderer-side install overlay.
   if (backend.kind === 'bootstrap-needed') {
-    rememberLog('[bootstrap] no Hermes install found; starting first-launch bootstrap')
+    rememberLog('[bootstrap] no Xinyuan install found; starting first-launch bootstrap')
 
     if (await handOffWindowsBootstrapRecovery('bootstrap-needed')) {
       const handoffError: Error & { isBootstrapFailure?: boolean; bootstrapHandedOff?: boolean } = new Error(
-        'Xinyuan recovery was handed off to Hermes Setup. The desktop will restart when recovery completes.'
+        'Xinyuan recovery was handed off to Xinyuan Setup. The desktop will restart when recovery completes.'
       )
 
       handoffError.isBootstrapFailure = true
@@ -5349,7 +5349,7 @@ async function runEnsureRuntime(backend: any, assertStillOwned: () => void): Pro
   if (IS_WINDOWS && !findGitBash()) {
     throw new Error(
       "Xinyuan needs a helper called Git for Windows, which isn't installed. " +
-        'Choose Repair install to add it automatically, or install it yourself from git-scm.com and reopen Hermes.'
+        'Choose Repair install to add it automatically, or install it yourself from git-scm.com and reopen Xinyuan.'
     )
   }
 
@@ -5419,7 +5419,7 @@ function fetchJson(url, token, options: any = {}) {
         const timeoutMs = resolveTimeoutMs(options.timeoutMs, DEFAULT_FETCH_TIMEOUT_MS)
 
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-          reject(new Error(`Unsupported Hermes backend URL protocol: ${parsed.protocol}`))
+          reject(new Error(`Unsupported Xinyuan backend URL protocol: ${parsed.protocol}`))
 
           return
         }
@@ -5495,7 +5495,7 @@ function fetchJson(url, token, options: any = {}) {
 
         req.on('error', reject)
         req.setTimeout(timeoutMs, () => {
-          req.destroy(new Error(`Timed out connecting to Hermes backend after ${timeoutMs}ms`))
+          req.destroy(new Error(`Timed out connecting to Xinyuan backend after ${timeoutMs}ms`))
         })
 
         // From here the request goes on the wire: a later transport error can no
@@ -5531,7 +5531,7 @@ function downloadViaTokenToFile(url, token, ctx, options: any = {}) {
     }
 
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      reject(new Error(`Unsupported Hermes backend URL protocol: ${parsed.protocol}`))
+      reject(new Error(`Unsupported Xinyuan backend URL protocol: ${parsed.protocol}`))
 
       return
     }
@@ -5566,7 +5566,7 @@ function downloadViaTokenToFile(url, token, ctx, options: any = {}) {
 
     req.on('error', reject)
     req.setTimeout(timeoutMs, () => {
-      req.destroy(new Error(`Timed out connecting to Hermes backend after ${timeoutMs}ms`))
+      req.destroy(new Error(`Timed out connecting to Xinyuan backend after ${timeoutMs}ms`))
     })
     req.end()
   })
@@ -5597,7 +5597,7 @@ function fetchPublicJson(url, options: any = {}) {
         const timeoutMs = resolveTimeoutMs(options.timeoutMs, DEFAULT_FETCH_TIMEOUT_MS)
 
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-          reject(new Error(`Unsupported Hermes backend URL protocol: ${parsed.protocol}`))
+          reject(new Error(`Unsupported Xinyuan backend URL protocol: ${parsed.protocol}`))
 
           return
         }
@@ -5658,7 +5658,7 @@ function fetchPublicJson(url, options: any = {}) {
 
         req.on('error', reject)
         req.setTimeout(timeoutMs, () => {
-          req.destroy(new Error(`Timed out connecting to Hermes backend after ${timeoutMs}ms`))
+          req.destroy(new Error(`Timed out connecting to Xinyuan backend after ${timeoutMs}ms`))
         })
 
         // Past this point the request is on the wire — see fetchJson.
@@ -7766,7 +7766,7 @@ function openOauthLoginWindow(baseUrl, { silent = false } = {}) {
       win = new BrowserWindow({
         width: 520,
         height: 720,
-        title: silent ? 'Connecting to Hermes Cloud agent…' : 'Sign in to Hermes gateway',
+        title: silent ? 'Connecting to Hermes Cloud agent…' : 'Sign in to Xinyuan gateway',
         autoHideMenuBar: true,
         // Silent cascade: start HIDDEN. The auto-SSO 302 chain completes in
         // well under a second, so the window normally never needs to show. We
@@ -7861,7 +7861,7 @@ function fetchJsonViaOauthSession(url, options: any = {}) {
     }
 
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      reject(new Error(`Unsupported Hermes backend URL protocol: ${parsed.protocol}`))
+      reject(new Error(`Unsupported Xinyuan backend URL protocol: ${parsed.protocol}`))
 
       return
     }
@@ -7894,7 +7894,7 @@ function fetchJsonViaOauthSession(url, options: any = {}) {
         // already finished
       }
 
-      reject(new Error(`Timed out connecting to Hermes backend after ${timeoutMs}ms`))
+      reject(new Error(`Timed out connecting to Xinyuan backend after ${timeoutMs}ms`))
     }, timeoutMs)
 
     request.on('response', res => {
@@ -8056,7 +8056,7 @@ function downloadViaOauthSessionToFile(url, ctx, options: any = {}) {
     }
 
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      reject(new Error(`Unsupported Hermes backend URL protocol: ${parsed.protocol}`))
+      reject(new Error(`Unsupported Xinyuan backend URL protocol: ${parsed.protocol}`))
 
       return
     }
@@ -8086,7 +8086,7 @@ function downloadViaOauthSessionToFile(url, ctx, options: any = {}) {
         // already finished
       }
 
-      reject(new Error(`Timed out connecting to Hermes backend after ${timeoutMs}ms`))
+      reject(new Error(`Timed out connecting to Xinyuan backend after ${timeoutMs}ms`))
     }, timeoutMs)
 
     request.on('response', res => {
@@ -10083,7 +10083,7 @@ async function buildRemoteConnection(
 
   if (!token) {
     throw new Error(
-      'Remote Hermes gateway is selected, but no session token is saved. ' +
+      'Remote Xinyuan gateway is selected, but no session token is saved. ' +
         'Open Settings → Gateway and save a token, or switch back to Local.'
     )
   }
@@ -11134,7 +11134,7 @@ async function testDesktopConnectionConfig(input: any = {}) {
             return {
               reachable: false,
               sshError: 'update-required',
-              error: 'Update Hermes on the remote host before connecting with Desktop SSH.'
+              error: 'Update Xinyuan on the remote host before connecting with Desktop SSH.'
             }
           }
 
@@ -12607,7 +12607,7 @@ async function runPoolBackendStart(profile, entry, opts: { forceLocal?: boolean;
   assertLocalProfileCanStart(profile, profileDeletionGate, key =>
     directoryExists(path.join(HERMES_HOME, 'profiles', key))
   )
-  rememberLog(`Starting Hermes backend for profile "${profile}" via ${backend.label}`)
+  rememberLog(`Starting Xinyuan backend for profile "${profile}" via ${backend.label}`)
 
   const parentStartMarker = await desktopParentStartMarker()
   const backendNonce = crypto.randomBytes(16).toString('hex')
@@ -12926,7 +12926,7 @@ async function runHermesStart() {
   // E2E: simulate a boot failure without breaking the real backend. The boot
   // progresses a few steps, then fails with the given error message.
   if (BOOT_FAKE_ERROR) {
-    await advanceBootProgress('backend.resolve', 'Resolving Hermes backend', 8)
+    await advanceBootProgress('backend.resolve', 'Resolving Xinyuan backend', 8)
     const error = new Error(BOOT_FAKE_ERROR) as any
     error.isBootstrapFailure = true
     bootstrapFailure = error
@@ -12970,7 +12970,7 @@ async function runHermesStart() {
       // remotes and Apply invalidated this attempt), bail before probing.
       backendConnectionState.assertCurrentAttempt(connectionAttempt)
 
-      await advanceBootProgress('backend.remote', `Connecting to remote Hermes backend at ${remote.baseUrl}`, 24)
+      await advanceBootProgress('backend.remote', `Connecting to remote Xinyuan backend at ${remote.baseUrl}`, 24)
       await waitForHermes(remote.baseUrl, remote.token, undefined, remote.authMode, remote.headers)
 
       // Second async boundary: the health probe itself can outlive the
@@ -12979,7 +12979,7 @@ async function runHermesStart() {
 
       updateBootProgress({
         phase: 'backend.ready',
-        message: 'Remote Hermes backend is ready',
+        message: 'Remote Xinyuan backend is ready',
         progress: 94,
         running: true,
         error: null
@@ -12988,7 +12988,7 @@ async function runHermesStart() {
       return createPrimaryRemoteConnection(remote, hermesLog.slice(-80), getWindowState())
     }
 
-    await advanceBootProgress('backend.resolve', 'Resolving Hermes backend', 8)
+    await advanceBootProgress('backend.resolve', 'Resolving Xinyuan backend', 8)
     // Resolve for the desktop's primary profile so a per-profile remote
     // override on the active profile is honored (falls back to env / global).
 
@@ -13028,7 +13028,7 @@ async function runHermesStart() {
       ensureLocalRuntime: backend =>
         ensureRuntime(backend, () => backendConnectionState.assertCurrentAttempt(connectionAttempt)),
       prepareLocalBackend: async () => {
-        await advanceBootProgress('backend.runtime', 'Resolving Hermes runtime', 28)
+        await advanceBootProgress('backend.runtime', 'Resolving Xinyuan runtime', 28)
 
         return resolveHermesBackend(backendArgs)
       },
@@ -13068,8 +13068,8 @@ async function runHermesStart() {
     const webDist = resolveWebDist()
     const readyFile = backend.readyFile ? makeDashboardReadyFile() : null
 
-    await advanceBootProgress('backend.spawn', `Starting Hermes backend via ${backend.label}`, 84)
-    rememberLog(`Starting Hermes backend via ${backend.label}`)
+    await advanceBootProgress('backend.spawn', `Starting Xinyuan backend via ${backend.label}`, 84)
+    rememberLog(`Starting Xinyuan backend via ${backend.label}`)
 
     const profile = primaryProfileKey()
     const parentStartMarker = await desktopParentStartMarker()
@@ -13168,7 +13168,7 @@ async function runHermesStart() {
       releaseBackendChild(hermesProcess)
 
       if (!backendConnectionState.clearForCurrentProcess(processOwner)) {
-        rememberLog(`Ignoring stale Hermes backend error: ${error.message}`)
+        rememberLog(`Ignoring stale Xinyuan backend error: ${error.message}`)
         rejectBackendStart?.(new Error('Xinyuan backend start was superseded by a newer connection attempt.'))
 
         return
@@ -13191,7 +13191,7 @@ async function runHermesStart() {
       releaseBackendChild(hermesProcess)
 
       if (!backendConnectionState.clearForCurrentProcess(processOwner)) {
-        rememberLog(`Ignoring stale Hermes backend exit (${signal || code})`)
+        rememberLog(`Ignoring stale Xinyuan backend exit (${signal || code})`)
 
         if (!backendReady) {
           rejectBackendStart?.(new Error('Xinyuan backend start was superseded by a newer connection attempt.'))
@@ -13222,7 +13222,7 @@ async function runHermesStart() {
       }
     })
 
-    await advanceBootProgress('backend.port', 'Waiting for Hermes backend to launch', 86)
+    await advanceBootProgress('backend.port', 'Waiting for Xinyuan backend to launch', 86)
     backendConnectionState.assertCurrentAttempt(connectionAttempt)
 
     // Discover the ephemeral port the child bound to
@@ -13234,7 +13234,7 @@ async function runHermesStart() {
     }
 
     const baseUrl = `http://127.0.0.1:${port}`
-    await advanceBootProgress('backend.wait', 'Waiting for Hermes backend to become ready', 90)
+    await advanceBootProgress('backend.wait', 'Waiting for Xinyuan backend to become ready', 90)
     backendConnectionState.assertCurrentAttempt(connectionAttempt)
     await Promise.race([waitForHermes(baseUrl, token), backendStartFailed])
     backendConnectionState.assertCurrentAttempt(connectionAttempt)
@@ -13255,7 +13255,7 @@ async function runHermesStart() {
 
     if (!wsProbe.ok) {
       throw new Error(
-        `Local Hermes backend is HTTP-reachable but the WebSocket (/api/ws) rejected the session token: ${wsProbe.reason}`
+        `Local Xinyuan backend is HTTP-reachable but the WebSocket (/api/ws) rejected the session token: ${wsProbe.reason}`
       )
     }
 
@@ -14165,7 +14165,7 @@ function startHudGameOverlayFeed(win: BrowserWindow) {
 
     if (!reported) {
       reported = true
-      console.warn(`[hermes] HUD cannot enumerate windows: ${windows.reason}`)
+      console.warn(`[xinyuan] HUD cannot enumerate windows: ${windows.reason}`)
     }
 
     return null
@@ -17875,7 +17875,7 @@ async function runDesktopUninstall(mode) {
     return {
       ok: false,
       error: 'agent-missing',
-      message: `Can't run the uninstaller: no Hermes agent venv at ${VENV_ROOT}.`
+      message: `Can't run the uninstaller: no Xinyuan agent venv at ${VENV_ROOT}.`
     }
   }
 

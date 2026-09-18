@@ -99,7 +99,7 @@ function classifyVenvBlocker(
 
 /**
  * Stop only blockers that the fresh scanner identified as Python static-file
- * preview servers. Unknown Python/Hermes processes are deliberately ignored.
+ * preview servers. Unknown Python/Xinyuan processes are deliberately ignored.
  */
 export async function stopSafeVenvBlockers(
   updateRoot: string,

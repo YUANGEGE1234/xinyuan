@@ -9,7 +9,7 @@ import { AGENT_MESSAGE_RE } from './user-message'
 // all match; human prose that merely mentions the phrase does not.
 describe('agent message detection', () => {
   it('matches the Bot Mode delivery prefix with sender and body', () => {
-    const m = AGENT_MESSAGE_RE.exec('Message from 🤖 Hermes: hello there')
+    const m = AGENT_MESSAGE_RE.exec('Message from 🤖 Xinyuan: hello there')
 
     expect(m?.[1]?.trim()).toBe('Xinyuan')
     expect(m?.[4]).toBe('hello there')

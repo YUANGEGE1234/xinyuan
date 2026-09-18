@@ -88,7 +88,7 @@ test('dismissal is remembered for the same report and forgotten for a different 
   const third = pendingNotice(home, userData)
   assert.ok(third)
   assert.equal(third.title, 'Some plugins were turned off')
-  assert.match(third.message, /were turned off: alpha, beta\. Hermes works normally without them\./)
+  assert.match(third.message, /were turned off: alpha, beta\. Xinyuan works normally without them\./)
   assert.doesNotMatch(third.detail, /config\.yaml|hermes plugins compat|allow_deprecated_imports/)
   assert.notEqual(reportKey(disabled as any), reportKey(REPORT as any))
 })

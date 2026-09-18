@@ -568,7 +568,7 @@ async function connectWindowsRemote(deps) {
   const inspection = await helper(ssh, runtime, 'inspect', [runtime.hermesPath])
 
   if (!inspection.supported) {
-    const error: any = new Error('Update Hermes on the remote Windows host before connecting with Desktop SSH.')
+    const error: any = new Error('Update Xinyuan on the remote Windows host before connecting with Desktop SSH.')
     error.kind = 'update-required'
     throw error
   }

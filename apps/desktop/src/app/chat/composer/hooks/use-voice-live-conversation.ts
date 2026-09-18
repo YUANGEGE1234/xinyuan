@@ -313,7 +313,7 @@ export function useVoiceLiveConversation({
         refreshStatus()
         void Promise.resolve(latest.current.onSubmit(prompt, voiceContext)).catch(error => {
           notifyError(error, voiceCopy.liveDelegationFailed)
-          session.speak(delegationId, 'Sorry, I could not reach Hermes for that request.')
+          session.speak(delegationId, 'Sorry, I could not reach Xinyuan for that request.')
           setDelegation(null)
           refreshStatus()
         })

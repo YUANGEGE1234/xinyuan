@@ -312,7 +312,7 @@ const en: BotsMessages = {
     unavailable: 'Unavailable',
     retryNow: 'Retry now',
     rosterUnavailable: reason =>
-      `Roster unavailable: ${reason}. If your gateway predates profiles.list, update Hermes and restart the gateway.`,
+      `Roster unavailable: ${reason}. If your gateway predates profiles.list, update Xinyuan and restart the gateway.`,
     waitingForGateway:
       'Waiting for the gateway connection… (remote gateways can take a few seconds; retries automatically)'
   },
@@ -356,9 +356,9 @@ const en: BotsMessages = {
     advanced: 'Advanced',
     advancedHint: 'Advanced — model, skills, toolsets, SOUL.md',
     advancedFailed: 'Advanced configuration failed',
-    openAnotherChatUnsupported: 'Update Hermes Desktop to open another Bot chat.',
-    remoteConnectionsUnsupported: 'Update Hermes Desktop to chat with bots on other connections.',
-    openNeedsUpdateTitle: 'This bot lives on an older Hermes',
+    openAnotherChatUnsupported: 'Update Xinyuan Desktop to open another Bot chat.',
+    remoteConnectionsUnsupported: 'Update Xinyuan Desktop to chat with bots on other connections.',
+    openNeedsUpdateTitle: 'This bot lives on an older Xinyuan',
     openNeedsUpdateMessage: connectionLabel => `Update ${connectionLabel}, then try again.`,
     openUnreachableTitle: 'Xinyuan couldn’t reach the computer this bot runs on',
     openUnreachableMessage: 'Check it is online and try again.',
@@ -540,7 +540,7 @@ const ja: BotsMessages = {
     unavailable: '利用できません',
     retryNow: '今すぐ再試行',
     rosterUnavailable: reason =>
-      `名簿を取得できません: ${reason}。ゲートウェイが profiles.list より前の場合は、Hermes を更新してゲートウェイを再起動してください。`,
+      `名簿を取得できません: ${reason}。ゲートウェイが profiles.list より前の場合は、Xinyuan を更新してゲートウェイを再起動してください。`,
     waitingForGateway: 'ゲートウェイ接続を待っています…（リモートは数秒かかることがあります。自動で再試行します）'
   },
   sections: {
@@ -583,11 +583,11 @@ const ja: BotsMessages = {
     advanced: '詳細設定',
     advancedHint: '詳細設定 — モデル、スキル、ツールセット、SOUL.md',
     advancedFailed: '詳細設定に失敗しました',
-    openAnotherChatUnsupported: '別のボットチャットを開くには Hermes Desktop を更新してください。',
-    remoteConnectionsUnsupported: '他の接続上のボットとチャットするには Hermes Desktop を更新してください。',
-    openNeedsUpdateTitle: 'このボットは古い Hermes 上で動いています',
+    openAnotherChatUnsupported: '別のボットチャットを開くには Xinyuan Desktop を更新してください。',
+    remoteConnectionsUnsupported: '他の接続上のボットとチャットするには Xinyuan Desktop を更新してください。',
+    openNeedsUpdateTitle: 'このボットは古い Xinyuan 上で動いています',
     openNeedsUpdateMessage: connectionLabel => `${connectionLabel} を更新してから、もう一度お試しください。`,
-    openUnreachableTitle: 'このボットが動いているコンピューターに Hermes が接続できませんでした',
+    openUnreachableTitle: 'このボットが動いているコンピューターに Xinyuan が接続できませんでした',
     openUnreachableMessage: 'オンラインか確認して、もう一度お試しください。',
     openChatFailedTitle: botName => `${botName} のチャットを開けませんでした`,
     openChatFailedMessage: 'もう一度お試しください。',
@@ -766,7 +766,7 @@ const zh: BotsMessages = {
     statusUnknown: '状态未知',
     unavailable: '不可用',
     retryNow: '立即重试',
-    rosterUnavailable: reason => `无法获取名单：${reason}。如果网关早于 profiles.list，请更新 Hermes 并重启网关。`,
+    rosterUnavailable: reason => `无法获取名单：${reason}。如果网关早于 profiles.list，请更新 Xinyuan 并重启网关。`,
     waitingForGateway: '正在等待网关连接…（远程网关可能需要几秒；会自动重试）'
   },
   sections: {
@@ -806,9 +806,9 @@ const zh: BotsMessages = {
     advanced: '高级',
     advancedHint: '高级 — 模型、技能、工具集、SOUL.md',
     advancedFailed: '高级配置失败',
-    openAnotherChatUnsupported: '请更新 Hermes Desktop 以打开另一个机器人聊天。',
-    remoteConnectionsUnsupported: '请更新 Hermes Desktop 以与其他连接上的机器人聊天。',
-    openNeedsUpdateTitle: '这个机器人运行在较旧的 Hermes 上',
+    openAnotherChatUnsupported: '请更新 Xinyuan Desktop 以打开另一个机器人聊天。',
+    remoteConnectionsUnsupported: '请更新 Xinyuan Desktop 以与其他连接上的机器人聊天。',
+    openNeedsUpdateTitle: '这个机器人运行在较旧的 Xinyuan 上',
     openNeedsUpdateMessage: connectionLabel => `请更新 ${connectionLabel}，然后重试。`,
     openUnreachableTitle: 'Xinyuan 无法连接到运行这个机器人的电脑',
     openUnreachableMessage: '请确认它在线后重试。',
@@ -988,7 +988,7 @@ const zhHant: BotsMessages = {
     statusUnknown: '狀態未知',
     unavailable: '不可用',
     retryNow: '立即重試',
-    rosterUnavailable: reason => `無法取得名單：${reason}。如果閘道早於 profiles.list，請更新 Hermes 並重新啟動閘道。`,
+    rosterUnavailable: reason => `無法取得名單：${reason}。如果閘道早於 profiles.list，請更新 Xinyuan 並重新啟動閘道。`,
     waitingForGateway: '正在等待閘道連線…（遠端閘道可能需要幾秒；會自動重試）'
   },
   sections: {
@@ -1028,9 +1028,9 @@ const zhHant: BotsMessages = {
     advanced: '進階',
     advancedHint: '進階 — 模型、技能、工具集、SOUL.md',
     advancedFailed: '進階設定失敗',
-    openAnotherChatUnsupported: '請更新 Hermes Desktop 以開啟另一個機器人聊天。',
-    remoteConnectionsUnsupported: '請更新 Hermes Desktop 以與其他連線上的機器人聊天。',
-    openNeedsUpdateTitle: '這個機器人運行在較舊的 Hermes 上',
+    openAnotherChatUnsupported: '請更新 Xinyuan Desktop 以開啟另一個機器人聊天。',
+    remoteConnectionsUnsupported: '請更新 Xinyuan Desktop 以與其他連線上的機器人聊天。',
+    openNeedsUpdateTitle: '這個機器人運行在較舊的 Xinyuan 上',
     openNeedsUpdateMessage: connectionLabel => `請更新 ${connectionLabel}，然後再試一次。`,
     openUnreachableTitle: 'Xinyuan 無法連線到運行這個機器人的電腦',
     openUnreachableMessage: '請確認它在線上後再試一次。',

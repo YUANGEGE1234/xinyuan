@@ -331,7 +331,7 @@ async function activeProjectsContext(profile = projectProfile()): Promise<Active
   }
 
   if (!gateway || gateway !== activeGateway() || profile !== normalizeProfileKey($activeGatewayProfile.get())) {
-    throw new Error('Active Hermes profile changed while connecting')
+    throw new Error('Active Xinyuan profile changed while connecting')
   }
 
   return { gateway, profile }
