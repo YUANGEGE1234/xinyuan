@@ -9,7 +9,7 @@
 ## 一、下载安装（普通用户看这里）
 
 1. 打开 **[Releases 下载页](https://github.com/YUANGEGE1234/xinyuan/releases/latest)**
-2. 下载 `Xinyuan-Portable-0.17.3.zip`（约 234 MB）
+2. 下载 `Xinyuan-Portable-0.21.7.zip`（约 272 MB）
 3. 解压到任意位置（桌面、D 盘都行，**路径可以带中文和空格**）
 4. 双击文件夹里的 **`Start-Xinyuan.bat`**
 5. 第一次启动会弹出配置窗口，只需要填两样东西：
@@ -19,12 +19,13 @@
    | **API 密钥** | 你自己的 API Key |
    | **模型名称** | 例如 `gpt-4o-mini`、`claude-sonnet-4` 等 |
 
-   接口地址已经固定好了（`https://yuangeluyou.com/v1`，OpenAI 兼容格式），**不用管也不用改**。
+   接口地址已经预填好了（`https://yuangeluyou.com/v1`，OpenAI 兼容格式），**一般不用管**；
+   如果你要接自己的 OpenAI 兼容网关，点地址右边的「**修改**」就能改。
 6. 点「保存并使用」，就能开始对话了。
 
 > 想换密钥或换模型：应用里打开 **设置 → Xinyuan API**，同一个表单改一下即可。
 
-**系统要求**：Windows 10 / 11 64 位。需要能访问 `https://yuangeluyou.com`。
+**系统要求**：Windows 10 / 11 64 位。需要能访问 `https://yuangeluyou.com`（或你自填的地址）。
 
 ---
 
@@ -38,7 +39,7 @@
 | --- | --- |
 | **上游仓库** | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
 | **上游作者** | [Nous Research](https://nousresearch.com) |
-| **上游版本** | 桌面端 `0.17.3` |
+| **上游版本** | 上游 `main` @ 2026-10-12（提交 `3569e846`），紧随上游 release **`v0.21.7`** |
 | **开源协议** | MIT License |
 | **原始版权** | Copyright (c) 2025 Nous Research |
 
@@ -48,18 +49,19 @@
 > 上游的原始说明文档已完整保留在 [`README.upstream.md`](README.upstream.md)，
 > 上游的多语言文档（`README.es.md`、`README.zh-CN.md`、`README.ur-pk.md`）也都在原处。
 
-### 本仓库相对上游做了哪些改动
+### 本版本相对上游做了哪些改动
 
 | # | 改动 | 具体内容 |
 | --- | --- | --- |
-| 1 | **修复界面图标全部变成方块** | 图标字体 `codicon.ttf` 在依赖目录里缺失，Vite 对解析不到的 CSS `url()` 只警告不报错、原样保留，导致运行时字体加载失败、所有图标渲染成豆腐块。修复方式：补回字体文件，并在 `src/styles.css` 中新增一条同字体族、同描述符的 `@font-face` 指向仓库内自带的 `src/fonts/codicon.ttf`（CSS 规范中同族同描述符时后声明者生效，因此可覆盖依赖包里的那条）。 |
-| 2 | **API 配置精简为唯一入口** | 删除了原有的全部供应商目录（OAuth 登录、各家 API Key 列表、本地模型、Fireworks / OpenRouter 等入口），只保留**一个**表单。接口地址固定为 `https://yuangeluyou.com/v1`（只读，用户改不了），用户只需填 API 密钥和模型名称。新增文件：`apps/desktop/src/components/onboarding/xinyuan-form.tsx`、`apps/desktop/src/app/settings/xinyuan-settings.tsx`；复用程序内置的 custom endpoint 能力，不引入新的后端接口。 |
-| 3 | **品牌更名 Hermes → Xinyuan** | 覆盖 6 个语言的界面文案（共 1037 处）、`src/` 与 `electron/` 下的用户可见字符串（101 个文件、212 处）、`package.json` 的品牌字段、Windows 可执行文件的版本元数据、页面标题，以及**后端发给模型的系统提示与首启播种的人格文件**（`agent/prompt_builder.py`、`hermes_cli/default_soul.py`、`SOUL.md`，合计 2,086 处 / 656 个文件）。**代码标识符一律未动**（`HERMES_*` 环境变量、`hermes://` 协议、`window.hermesDesktop`、`hermes` CLI 命令等），保证功能不受影响；`Hermes 3` / `Hermes 4`（上游的大模型名）、Anthropic OAuth 的搜索替换表、等值判断、上游文档 URL 同样刻意保留。详见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 3、9、10、11 节。 |
-| 4 | **移除上游品牌 logo** | 删除了上游的 logo / 插画 / 精灵图等品牌资源，并用程序生成的中性图标（靛蓝→紫罗兰渐变 + 白色 X）替换应用图标（`icon.png`、`icon.ico`、`apple-touch-icon.png`）与启动动画贴图。`BrandMark` 组件保留了原有的对外 API，仅替换内部实现，因此所有调用点的布局不受影响。 |
-| 5 | **修复首次启动必然超时失败** | 后端首次启动要把 328 个内置技能文件逐个复制到数据目录，在较慢的磁盘上这一步需要 85~109 秒，而桌面端等待后端端口的超时是 **90 秒** —— 于是新用户第一次启动必定失败。修复方式：在便携包里**预置好 `data/skills/` 和同步清单 `.bundled_manifest`**。清单里的哈希只由「相对路径 + 文件内容」计算，不含绝对路径，因此换机器、换目录依然判定为「已同步」而跳过复制。实测 **85~109 秒 → 6.5 秒**。 |
-| 6 | **新增便携打包脚本与中文说明** | 启动器、说明文件、目录组装、压缩校验等打包流程脚本化，见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)。 |
-| 7 | **放宽安全审核限制** | 见下方 ⚠️ 警告。 |
-| 8 | **补漏：桌面外壳（Electron）与随包 JS 的品牌文案** | 前三版的改名工具只遍历 `*.py`，而桌面外壳是 JS/TS —— 是**独立的一层**，残留的是用户第一眼就看到的东西（启动进度条 `Resolving Hermes backend`、错误对话框、设置页说明、OAuth 回调页、更新/卸载提示、6 个语言里漏掉的 i18n），外加日志前缀 `[hermes]`。补改**桌面 56 个源文件 / 201 处**，并同步修正 **22 个已过期的测试断言**（首版只改了源码、没改测试，导致桌面测试从首版起就是红的）。同时覆盖随包分发的插件面板与桥接脚本（3 文件 / 15 处）、更新页 `ui.html`（7 处）、WhatsApp 回复前缀。顺带修掉两个真实 bug：`tools/skill_linter.py` 元组被去重导致的误报，以及 `plugins/hermes-bots/data.ts` 的保留标签名单没跟上改名（可被改名劫持内置标签）。指向上游实体与**发给第三方的协议值**刻意保留（官网、Hermes Cloud、上游安装器文件名、`X-Hermes-*` 协议头、`Hermes 3/4` 模型名、Nous Research 归属、Kanban 文档链接、Photon 补丁标记、WhatsApp 设备标识）。详见第 11 节。 |
+| 1 | **合并上游最新代码** | 上游 2026-09-16 → 2026-10-12 之间约 **1,737 个提交**全部并入，包含上游对桌面端构建链路的**重构**：electron-builder 配置从 `package.json` 移出到 `apps/desktop/electron-builder.config.cjs`，品牌身份集中到 `apps/desktop/product-identity.cjs`，Windows 目标改为 MSIX-only，新增 33 个本地化 YAML、350 个社区插件目录 YAML。详见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 0 节。 |
+| 2 | **修复界面图标全部变成方块** | 图标字体 `codicon.ttf` 在依赖目录里缺失，Vite 对解析不到的 CSS `url()` 只警告不报错、原样保留，导致运行时字体加载失败、所有图标渲染成豆腐块。修复方式：补回字体文件，并在 `src/styles.css` 中新增一条同字体族、同描述符的 `@font-face` 指向仓库内自带的 `src/fonts/codicon.ttf`（CSS 规范中同族同描述符时后声明者生效，因此可覆盖依赖包里的那条）。**该修复在本版合并后依然生效**（三方合并未冲突）。 |
+| 3 | **API 配置精简为唯一入口** | 删除了原有的全部供应商目录（OAuth 登录、各家 API Key 列表、本地模型、Fireworks / OpenRouter 等入口），只保留**一个**表单。接口地址**预填** `https://yuangeluyou.com/v1` 并默认只读展示，点「修改」可展开成可编辑输入框（校验必须是 `http(s)://` 开头的完整地址）。新增文件：`apps/desktop/src/components/onboarding/xinyuan-form.tsx`、`apps/desktop/src/app/settings/xinyuan-settings.tsx`；复用程序内置的 custom endpoint 能力，不引入新的后端接口。 |
+| 4 | **品牌更名 Hermes → Xinyuan** | 界面文案（6 个语言）、源码里用户可见的字符串、`package.json` 品牌字段、Windows 可执行文件的版本元数据、页面标题，以及**后端发给模型的系统提示与首启播种的人格文件**。本版额外覆盖上游新增的三层：`locales/*.yaml`（33 文件 / 2,440 处）、`plugin-catalog/*.yaml`（350 文件 / 681 处）、桌面外壳 JS/TS（195 文件 / 2,124 处）。**代码标识符一律未动**（`HERMES_*` 环境变量、`hermes://` 协议、`window.hermesDesktop`、`hermes` CLI 命令等）；`Hermes 3` / `Hermes 4`（上游的大模型名）、Anthropic OAuth 的搜索替换表、等值判断、上游文档 URL 同样刻意保留。详见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)。 |
+| 5 | **替换上游品牌 logo** | 上游的图标是**由 `assets/nous-girl-*.svg` 生成**的（`scripts/generate_icons.py` 一次产出 99 个文件：桌面、安装器、官网、Web 面板）。本版把这两个源 SVG 换成中性的 **X 形标记**，再用上游自己的生成器重新产出全部图标——因此 exe 图标、任务栏图标、应用内 `BrandMark`、安装器图标、官网 favicon 全部一致且不再含上游形象。`BrandMark` 组件保留原有对外 API，仅替换内部实现，所有调用点布局不变。 |
+| 6 | **修复首次启动必然超时失败** | 后端首次启动要把 328 个内置技能文件逐个复制到数据目录，在较慢的磁盘上这一步需要 85~109 秒，而桌面端等待后端端口的超时是 **90 秒** —— 于是新用户第一次启动必定失败。修复方式：在便携包里**预置好 `data/skills/` 和同步清单 `.bundled_manifest`**。清单里的哈希只由「相对路径 + 文件内容」计算，不含绝对路径，因此换机器、换目录依然判定为「已同步」而跳过复制。实测 **85~109 秒 → 6.5 秒**。 |
+| 7 | **修掉合并产生的真实缺陷** | 三方合并（`-X theirs`）在「我方删除某行、上游未改动该行」时采用删除，但在「我方删除某行、上游改过该区域」时保留上游版本，于是出现**悬空引用**。本版逐一修回：`settings/index.tsx` 里 `codiconIcon` / `KeysSettings` 的 import 丢失、`tools/skill_linter.py` 与 `gateway/relay/__init__.py` 的元组被去重成自我比较、`agent/anthropic_adapter.py` 的 `_OAUTH_SYSTEM_REPLACEMENTS` 丢掉两行。详见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 12 节。 |
+| 8 | **放宽安全审核限制** | 见下方 ⚠️ 警告。 |
+| 9 | **新增便携打包脚本与中文说明** | 启动器、说明文件、目录组装、压缩校验等打包流程脚本化，见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)。 |
 
 技术细节、根因分析和验证方法都写在 **[`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)** 里。
 
@@ -72,13 +74,19 @@
 
 | 配置项 | 上游默认 | 本版本 | 影响 |
 | --- | --- | --- | --- |
-| `approvals.mode` | 需要人工审批 | `'off'` | **执行命令不再询问**，AI 可直接运行 shell 命令 |
+| `approvals.mode` | `'smart'`（需要人工审批） | `'off'` | **执行命令不再询问**，AI 可直接运行 shell 命令 |
 | `security.redact_secrets` | `true` | `false` | 日志/回显中**不再自动打码**密钥等敏感串 |
-| `security.tirith_enabled` | `true` | `false` | 关闭内置的提示注入检测 |
 | `security.allow_private_urls` | `false` | `true` | 允许访问内网 / 私有地址 |
+| `security.protected_instruction_files` | `true` | `false` | 允许 AI 直接改写 `AGENTS.md` / `SOUL.md` / `CLAUDE.md` 等「给 AI 看的指令文件」 |
+
+> 最后一项是上游新增的**独立闸门**：即使 `approvals.mode` 是 `off`（甚至开了 yolo），
+> 改写这些指令文件仍然会强制弹窗。要保持「完全无审批」的行为，必须显式关掉它。
+>
+> 上游旧版 `security.tirith_*`（内置命令扫描器）在上游 v50 配置版本中**已退役**，
+> 本版不再写入这些键。
 
 **这意味着 AI 可以在你的电脑上直接执行命令、读写文件，而不会弹窗征求同意。**
-如果你在意这一点，请自行编辑 `data/config.yaml` 把 `approvals.mode` 改回 `'ask'`，
+如果你在意这一点，请自行编辑 `data/config.yaml` 把 `approvals.mode` 改回 `'smart'`，
 或把 `security.*` 那几项恢复成上游默认值。
 
 这是**刻意的取舍**（为了「解压即用」不打扰用户），但请务必知悉风险后再使用。
@@ -90,7 +98,8 @@
 ### 环境要求
 
 - Node.js 22+
-- Python 3.11 ~ 3.13（3.14 暂不支持，部分依赖还没出 wheel）
+- Python **3.14**（上游 `pyproject.toml` 里 45/50 个核心依赖都带
+  `python_version >= '3.14'` 标记，所以 3.14 是唯一可用版本）
 - Windows 10/11 x64
 
 ### 构建步骤
@@ -104,10 +113,14 @@ cd apps/desktop
 npm run build
 
 # 3. 打包成免安装目录
-npm run builder -- --dir -c.directories.output=release-xinyuan
+npm run builder -- --win --dir --publish never -c.directories.output=release-xinyuan
 ```
 
 产物在 `apps/desktop/release-xinyuan/win-unpacked/`。
+
+> 图标不是手工维护的：改 `assets/nous-girl-*.svg` 后跑
+> `node scripts/generate-icons.mjs`（需要 `HERMES_PYTHON` 指向一个装了
+> `Pillow` 和 `resvg-py` 的解释器）即可重新产出全部 99 个图标文件。
 
 ### 打包成「解压即用」的便携包
 
@@ -119,8 +132,8 @@ Xinyuan\
   Start-Xinyuan.bat      启动器（必须纯 ASCII，见下）
   README.txt             中文说明（utf-8-sig）
   app\                   Electron 桌面端（win-unpacked 原样复制）
-  backend\               Python 后端源码 + venv/Lib/site-packages
-  runtime\python\        自带的独立 CPython 3.11
+  backend\               Python 后端源码（不含 venv，依赖不在这里）
+  runtime\python\        自带的独立 CPython 3.14，依赖装在 Lib\site-packages
   data\                  用户数据（config.yaml + 预置的 skills\）
 ```
 
@@ -145,12 +158,16 @@ HERMES_DESKTOP_USER_DATA_DIR   data\desktop
 
 ```
 ├─ apps/desktop/                 桌面客户端（Electron + React）
+│  ├─ product-identity.cjs                          ← 品牌身份的唯一来源（名称 / appId / 更新通道）
+│  ├─ electron-builder.config.cjs                   ← electron-builder 的全部配置
 │  ├─ src/components/onboarding/xinyuan-form.tsx    ← 唯一的 API 配置表单
 │  ├─ src/app/settings/xinyuan-settings.tsx         ← 设置页里的同一个表单
 │  ├─ src/fonts/codicon.ttf                          ← 图标字体（自带的保险副本）
 │  ├─ src/styles.css                                 ← 含图标字体的 @font-face 覆盖
 │  ├─ electron/                                     主进程（后端解析、启动、生命周期）
 │  └─ scripts/set-exe-identity.mjs                  给 exe 打图标与版本信息
+├─ assets/nous-girl-*.svg        图标源（已替换为中性 X 标记）
+├─ scripts/generate_icons.py     从上面的源 SVG 生成全部 99 个图标
 ├─ hermes_cli/                   后端命令行与 Web 服务
 ├─ tui_gateway/                  JSON-RPC / WebSocket 网关
 ├─ tools/                        技能同步、工具实现等

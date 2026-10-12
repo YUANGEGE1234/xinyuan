@@ -1,7 +1,7 @@
 name: health-data
 repo: https://github.com/Infinite-Labs-AI/hermes-health-apollo
 sha: 9f2db670a2669c9f3401fecb3b547ed52bcb2c3b
-description: Local health and daily-context data store for Hermes.
+description: Local health and daily-context data store for Xinyuan.
 maintainer: Infinite-Labs-AI
 tier: community
 category: tools

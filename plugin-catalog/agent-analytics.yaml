@@ -1,7 +1,7 @@
 name: agent-analytics
 repo: https://github.com/Agent-Analytics/agent-analytics-hermes-plugin
 sha: 63f11d3669330e40dad977b7d32f9b69e69a9fb8
-description: Dashboard-only read plugin for Agent Analytics inside Hermes.
+description: Dashboard-only read plugin for Agent Analytics inside Xinyuan.
 maintainer: Agent-Analytics
 tier: community
 category: desktop

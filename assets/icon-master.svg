@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs><clipPath id="icon-silhouette"><rect x="0.0" y="0.0" width="1024.0" height="1024.0" rx="245.0" /></clipPath></defs>
+  <ns0:rect xmlns:ns0="http://www.w3.org/2000/svg" x="0" y="0" width="1024" height="1024" rx="245" fill="#ffffff" />
+  <g clip-path="url(#icon-silhouette)"><svg x="72.149433" y="104.703674" width="872.767801" height="872.767801" viewBox="889.5041103515624 889.5041103515624 3708.0532792968747 3708.0532792968747" preserveAspectRatio="xMidYMax meet" overflow="visible">
+    <path id="mark" style="fill:#000000;fill-rule:nonzero" d="M 4593.5342 1558.2077 L 3928.8538 893.5273 L 893.5273 3928.8538 L 1558.2077 4593.5342 Z M 1558.2077 893.5273 L 893.5273 1558.2077 L 3928.8538 4593.5342 L 4593.5342 3928.8538 Z" />
+  </svg></g>
+</svg>

@@ -59,7 +59,7 @@ const useHistory = (tick: number, sample: () => number, cap = 240) => {
 // ── stream panels ───────────────────────────────────────────────────────────
 
 const TOKEN_WORDS = (
-  `Hermes streams tokens into the promoted cell while the grid reshapes around it. ` +
+  `Xinyuan streams tokens into the promoted cell while the grid reshapes around it. ` +
   `Cells are keyed by id, so promotion never resets a panel — history, cursors and ` +
   `tickers all survive the relayout. Row and column tracks re-solve to integer ` +
   `terminal cells on every change, spans bridge the gaps they cross, and dense ` +

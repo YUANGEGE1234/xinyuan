@@ -2,7 +2,7 @@ name: metamask-wallet
 repo: https://github.com/akugone/hermes-metamask-wallet
 sha: b56d6bbf575391d172280016abf778d31c5ca8bd
 subdir: ""
-description: MetaMask Agent Wallet for Hermes — chat-only setup, reads, and approval-gated transfers/swaps/signatures, a gated Guard Mode policy editor, and a background 2FA watcher. Keys stay in MetaMask.
+description: MetaMask Agent Wallet for Xinyuan — chat-only setup, reads, and approval-gated transfers/swaps/signatures, a gated Guard Mode policy editor, and a background 2FA watcher. Keys stay in MetaMask.
 maintainer: akugone
 tier: community
 category: tools

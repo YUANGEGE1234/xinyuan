@@ -1,5 +1,5 @@
 name: "🔧 Setup / Installation Help"
-description: Having trouble installing or configuring Hermes? Ask here.
+description: Having trouble installing or configuring Xinyuan? Ask here.
 title: "[Setup]: "
 labels: ["setup"]
 body:
@@ -70,7 +70,7 @@ body:
   - type: input
     id: hermes-version
     attributes:
-      label: Hermes Version
+      label: Xinyuan Version
       description: Output of `hermes version` (if install got that far)
       placeholder: "2.1.0"
 

@@ -9,18 +9,40 @@ import { notify, notifyError } from '@/store/notifications'
 import { completeDesktopOnboarding, type OnboardingContext } from '@/store/onboarding'
 
 /**
- * The single inference endpoint this build talks to.
+ * The default inference endpoint this build ships with.
  *
  * This fork deliberately ships ONE way to configure a model: paste the API key,
- * type the model name, done. The address is a constant rather than a field, so
- * there is nothing else to get wrong — every other provider surface (OAuth
- * accounts, the API-key catalog, local models, gateways) has been removed from
- * the UI. Keep this in sync with `XINYUAN_BASE_URL` in the backend config if the
- * endpoint ever moves.
+ * type the model name, done — every other provider surface (OAuth accounts, the
+ * API-key catalog, local models, gateways) has been removed from the UI. The
+ * address is pre-filled with this value and is normally left alone; an
+ * "修改" disclosure exposes it for the minority who point the app at their own
+ * OpenAI-compatible gateway. Keep this in sync with the `providers.xinyuan`
+ * block in the shipped `data/config.yaml`.
  */
 export const XINYUAN_BASE_URL = 'https://yuangeluyou.com/v1'
 export const XINYUAN_ENDPOINT_ID = 'xinyuan'
 const XINYUAN_ENDPOINT_NAME = 'Xinyuan'
+
+/**
+ * Trim, drop trailing slashes and reject anything that is not an http(s) URL.
+ * Returns null so the caller can keep the Save button disabled — an invalid
+ * address must never reach `saveCustomEndpoint`.
+ */
+function normaliseBaseUrl(raw: string): null | string {
+  const value = raw.trim().replace(/\/+$/, '')
+
+  if (!value) {
+    return null
+  }
+
+  try {
+    const url = new URL(value)
+
+    return url.protocol === 'http:' || url.protocol === 'https:' ? value : null
+  } catch {
+    return null
+  }
+}
 
 interface XinyuanApiFormProps {
   /** Present in the first-run overlay, absent on the Settings surface. */
@@ -30,8 +52,9 @@ interface XinyuanApiFormProps {
 }
 
 /**
- * Two fields, one button. Saves a `custom_providers` entry pointing at
- * XINYUAN_BASE_URL and activates it as the main model.
+ * Three fields (one of them hidden by default), one button. Saves a
+ * `custom_providers` entry pointing at the endpoint and activates it as the
+ * main model.
  *
  * "Fetch models" is a convenience only: it probes /v1/models so the model name
  * can be picked from a list instead of typed, but the user is free to type any
@@ -40,6 +63,8 @@ interface XinyuanApiFormProps {
 export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
   const [apiKey, setApiKey] = useState('')
   const [model, setModel] = useState('')
+  const [baseUrl, setBaseUrl] = useState(XINYUAN_BASE_URL)
+  const [showAdvanced, setShowAdvanced] = useState(false)
   const [discovered, setDiscovered] = useState<string[]>([])
   const [probing, setProbing] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -48,10 +73,11 @@ export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
 
   const key = apiKey.trim()
   const modelName = model.trim()
-  const canSave = key.length > 0 && modelName.length > 0 && !saving
+  const endpoint = normaliseBaseUrl(baseUrl)
+  const canSave = key.length > 0 && modelName.length > 0 && endpoint !== null && !saving
 
   async function fetchModels() {
-    if (!key || probing) {
+    if (!key || !endpoint || probing) {
       return
     }
 
@@ -59,7 +85,7 @@ export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
     setError(null)
 
     try {
-      const probe = await validateProviderCredential('OPENAI_BASE_URL', XINYUAN_BASE_URL, key)
+      const probe = await validateProviderCredential('OPENAI_BASE_URL', endpoint, key)
       const models = probe.models ?? []
 
       if (models.length > 0) {
@@ -83,7 +109,7 @@ export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
   }
 
   async function connect() {
-    if (!canSave) {
+    if (!canSave || !endpoint) {
       return
     }
 
@@ -94,7 +120,7 @@ export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
       const saved = await saveCustomEndpoint({
         id: XINYUAN_ENDPOINT_ID,
         name: XINYUAN_ENDPOINT_NAME,
-        base_url: XINYUAN_BASE_URL,
+        base_url: endpoint,
         model: modelName,
         api_key: key,
         discover_models: false,
@@ -130,10 +156,38 @@ export function XinyuanApiForm({ ctx, onDone }: XinyuanApiFormProps) {
       </div>
 
       <label className="grid gap-1.5 text-xs text-muted-foreground">
-        接口地址
-        <div className="flex h-9 items-center rounded-md border border-border/50 bg-muted/40 px-3 font-mono text-xs text-foreground">
-          {XINYUAN_BASE_URL}
-        </div>
+        <span className="flex items-center justify-between gap-2">
+          接口地址
+          <button
+            className="text-[0.6875rem] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+            onClick={() => {
+              setShowAdvanced(value => !value)
+              setError(null)
+            }}
+            type="button"
+          >
+            {showAdvanced ? '收起' : '修改'}
+          </button>
+        </span>
+        {showAdvanced ? (
+          <Input
+            autoComplete="off"
+            className="font-mono"
+            onChange={event => {
+              setBaseUrl(event.target.value)
+              setError(null)
+            }}
+            placeholder={XINYUAN_BASE_URL}
+            value={baseUrl}
+          />
+        ) : (
+          <div className="flex h-9 items-center rounded-md border border-border/50 bg-muted/40 px-3 font-mono text-xs text-foreground">
+            {baseUrl.trim() || XINYUAN_BASE_URL}
+          </div>
+        )}
+        {showAdvanced && !endpoint ? (
+          <span className="text-destructive">请输入以 http:// 或 https:// 开头的完整地址。</span>
+        ) : null}
       </label>
 
       <label className="grid gap-1.5 text-xs text-muted-foreground">

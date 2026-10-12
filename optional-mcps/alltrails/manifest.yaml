@@ -6,7 +6,7 @@ name: alltrails
 description: 'AllTrails: find hikes and trails with reviews and ratings.'
 source: https://www.alltrails.com/mcp
 
-# Official vendor-hosted remote MCP (URL-only — Hermes never spawns a local
+# Official vendor-hosted remote MCP (URL-only — Xinyuan never spawns a local
 # process for this entry). No authentication required (verified live:
 # initialize succeeds anonymously).
 

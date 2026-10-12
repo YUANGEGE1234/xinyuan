@@ -34,6 +34,7 @@ import type {
   WhatsAppOnboardingStartResponse,
 } from "@/lib/api";
 import { useModalBehavior } from "@/hooks/useModalBehavior";
+import { AllowlistInput } from "@/components/AllowlistInput";
 import { usePageHeader } from "@/contexts/usePageHeader";
 import { cn, themedBody } from "@/lib/utils";
 import { errorMessage } from "@/lib/api-error";
@@ -177,7 +178,8 @@ export default function ChannelsPage() {
   const openConfig = (platform: MessagingPlatform) => {
     const initial: Record<string, string> = {};
     platform.env_vars.forEach((v) => {
-      initial[v.key] = "";
+      // Allowlists open with their saved entries (they are IDs, not secrets).
+      initial[v.key] = v.is_list ? v.value || "" : "";
     });
     setDraftEnv(initial);
     setFieldErrors({});
@@ -189,10 +191,19 @@ export default function ChannelsPage() {
     // Only send fields the user actually filled in — leaving a field blank
     // preserves the existing value rather than clobbering it.
     const env: Record<string, string> = {};
-    Object.entries(draftEnv).forEach(([k, v]) => {
-      if (v.trim()) env[k] = v.trim();
+    const clearEnv: string[] = [];
+    editing.env_vars.forEach((field) => {
+      const v = (draftEnv[field.key] || "").trim();
+      if (field.is_list) {
+        // Allowlists are prefilled, so an unchanged one is not an edit and an emptied one is a clear.
+        if (v === (field.value || "")) return;
+        if (v) env[field.key] = v;
+        else if (field.is_set) clearEnv.push(field.key);
+      } else if (v) {
+        env[field.key] = v;
+      }
     });
-    if (Object.keys(env).length === 0) {
+    if (Object.keys(env).length === 0 && clearEnv.length === 0) {
       showToast("Nothing to save — fill in at least one field.", "error");
       return;
     }
@@ -215,7 +226,11 @@ export default function ChannelsPage() {
     }
     setSaving(true);
     try {
-      const body: MessagingPlatformUpdate = { env, enabled: true };
+      const body: MessagingPlatformUpdate = {
+        env,
+        enabled: true,
+        ...(clearEnv.length ? { clear_env: clearEnv } : {}),
+      };
       const result = await api.updateMessagingPlatform(editing.id, body);
       showToast(
         result.hot_served
@@ -479,6 +494,23 @@ export default function ChannelsPage() {
                       {field.description}
                     </span>
                   )}
+                  {field.is_list ? (
+                    <AllowlistInput
+                      id={`field-${field.key}`}
+                      label={field.prompt || field.key}
+                      value={draftEnv[field.key] ?? ""}
+                      invalid={Boolean(fieldErrors[field.key])}
+                      onChange={(nextValue) => {
+                        setDraftEnv((prev) => ({ ...prev, [field.key]: nextValue }));
+                        setFieldErrors((prev) => {
+                          if (!prev[field.key]) return prev;
+                          const next = { ...prev };
+                          delete next[field.key];
+                          return next;
+                        });
+                      }}
+                    />
+                  ) : (
                   <Input
                     id={`field-${field.key}`}
                     type={field.is_password ? "password" : "text"}
@@ -501,6 +533,7 @@ export default function ChannelsPage() {
                       });
                     }}
                   />
+                  )}
                   {fieldErrors[field.key] && (
                     <span className="text-xs text-destructive">
                       {fieldErrors[field.key]}
@@ -861,7 +894,7 @@ function WhatsAppOnboardingPanel({
         : "waiting";
   const setupHelp =
     phase === "connected" || phase === "applying"
-      ? "WhatsApp is linked but Hermes is not listening yet. Save and restart the gateway to finish setup."
+      ? "WhatsApp is linked but Xinyuan is not listening yet. Save and restart the gateway to finish setup."
       : setup?.status === "installing"
         ? "Preparing the WhatsApp bridge. The QR code will appear here when it is ready."
         : setup?.status === "starting"
@@ -872,24 +905,24 @@ function WhatsAppOnboardingPanel({
     : setup?.account_name || setup?.account_id || "";
   const linkedAccountDetail =
     setup?.account_phone || setup?.account_id
-      ? "This is the WhatsApp account Hermes is now logged into."
-      : "Hermes is logged into the WhatsApp account that scanned the QR code.";
+      ? "This is the WhatsApp account Xinyuan is now logged into."
+      : "Xinyuan is logged into the WhatsApp account that scanned the QR code.";
   const linkedAccountChatUrl = setup?.account_phone
     ? `https://wa.me/${setup.account_phone}`
     : "";
   const messageInstruction =
     mode === "self-chat"
-      ? "After the restart, open Message Yourself on the linked account and send Hermes a message."
-      : "After the restart, start a chat from another WhatsApp account with the linked account and send Hermes a message.";
+      ? "After the restart, open Message Yourself on the linked account and send Xinyuan a message."
+      : "After the restart, start a chat from another WhatsApp account with the linked account and send Xinyuan a message.";
   const hasSavedAllowedUsers = Boolean(platform.whatsapp_setup?.allowed_users_set);
   const pairingInstruction =
     mode === "self-chat" && !allowedUsers.trim()
       ? hasSavedAllowedUsers
-        ? "Hermes will keep the saved WhatsApp allowlist."
+        ? "Xinyuan will keep the saved WhatsApp allowlist."
         : "Self-chat mode will allow the linked account automatically when you save."
       : !allowedUsers.trim() && hasSavedAllowedUsers
-        ? "Hermes will keep the saved WhatsApp allowlist."
-        : "If no allowed numbers were entered, Hermes replies with a pairing code. Approve it from the dashboard Pairing page.";
+        ? "Xinyuan will keep the saved WhatsApp allowlist."
+        : "If no allowed numbers were entered, Xinyuan replies with a pairing code. Approve it from the dashboard Pairing page.";
 
   return (
     <div className="rounded-sm border border-border bg-background/35 p-4">
@@ -1162,7 +1195,7 @@ function TelegramOnboardingPanel({
     setDetectedOwnerId(null);
     setNewAllowedId("");
     try {
-      const res = await api.startTelegramOnboarding({ bot_name: "Hermes Agent" });
+      const res = await api.startTelegramOnboarding({ bot_name: "Xinyuan Agent" });
       const dataUrl = await QRCode.toDataURL(res.qr_payload, {
         errorCorrectionLevel: "M",
         margin: 1,

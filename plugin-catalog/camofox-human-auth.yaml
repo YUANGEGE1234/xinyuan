@@ -3,7 +3,7 @@ repo: https://github.com/tim-toothed/hermes-camofox-human-auth
 sha: 19946d2e664063ffc5259f85703d14e11b477512
 description: Universal human-controlled authentication for Camofox Browser, powered by the Camoufox engine.
   Supports login, registration, SSO, MFA, OTP, CAPTCHA, and device confirmation. Requires the Camofox
-  backend; never changes an existing Hermes browser provider automatically.
+  backend; never changes an existing Xinyuan browser provider automatically.
 maintainer: tim-toothed
 tier: community
 category: web

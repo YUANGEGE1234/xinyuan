@@ -3,7 +3,7 @@ label: iMessage via Photon
 kind: platform
 version: 0.3.0
 description: >
-  Photon Spectrum gateway adapter for Hermes Agent.
+  Photon Spectrum gateway adapter for Xinyuan Agent.
   Connects to iMessage (and other Spectrum interfaces) through Photon's
   managed Spectrum platform. Both directions run over the `spectrum-ts`
   SDK's long-lived gRPC stream via a small supervised Node sidecar —
@@ -34,12 +34,16 @@ optional_env:
     description: "Loopback port for the Node sidecar control + inbound channel (default 8789)"
     prompt: "Sidecar control port"
     password: false
+  - name: PHOTON_SIDECAR_TOKEN
+    description: "Shared secret for the loopback sidecar channel (default: random per start)"
+    prompt: "Sidecar token"
+    password: true
   - name: PHOTON_SIDECAR_AUTOSTART
     description: "Spawn the Node sidecar on connect (true/false, default true)"
     prompt: "Auto-start the sidecar?"
     password: false
   - name: PHOTON_NODE_BIN
-    description: "Path to the node binary (default: shutil.which('node'))"
+    description: "Path to the node binary (default: PM's pinned node, then PATH)"
     prompt: "Node executable path"
     password: false
   - name: PHOTON_DASHBOARD_HOST
@@ -59,7 +63,7 @@ optional_env:
     prompt: "Allow all users? (true/false)"
     password: false
   - name: PHOTON_READ_RECEIPTS
-    description: "Mark inbound iMessages read after forwarding to Hermes (true/false, default true)"
+    description: "Mark inbound iMessages read after forwarding to Xinyuan (true/false, default true)"
     prompt: "Send read receipts? (true/false)"
     password: false
   - name: PHOTON_REQUIRE_MENTION
@@ -67,7 +71,7 @@ optional_env:
     prompt: "Require a mention in group chats?"
     password: false
   - name: PHOTON_MENTION_PATTERNS
-    description: "Mention wake-word regexes for group chats (JSON list or comma/newline-separated; defaults to Hermes wake words)"
+    description: "Mention wake-word regexes for group chats (JSON list or comma/newline-separated; defaults to Xinyuan wake words)"
     prompt: "Group mention patterns"
     password: false
   - name: PHOTON_HOME_CHANNEL

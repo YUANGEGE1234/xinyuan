@@ -1,7 +1,7 @@
 name: metronix
 repo: https://github.com/mtrnix/hermes-memory-metronix
 sha: 55634c149378f6241a9147a47e67133f6c8a02e6
-description: Metronix memory provider for Hermes with prefetch recall and built-in memory write-through.
+description: Metronix memory provider for Xinyuan with prefetch recall and built-in memory write-through.
 maintainer: mtrnix
 tier: community
 category: memory

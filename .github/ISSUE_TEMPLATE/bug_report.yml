@@ -56,7 +56,7 @@ body:
     id: component
     attributes:
       label: Affected Component
-      description: Which part of Hermes is affected?
+      description: Which part of Xinyuan is affected?
       multiple: true
       options:
         - CLI (interactive chat)
@@ -121,7 +121,7 @@ body:
   - type: input
     id: hermes-version
     attributes:
-      label: Hermes Version
+      label: Xinyuan Version
       description: Output of `hermes version`
       placeholder: "2.1.0"
 

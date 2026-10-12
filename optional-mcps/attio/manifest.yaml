@@ -3,13 +3,14 @@
 manifest_version: 1
 
 name: attio
+connector_slug: attio
 description: CRM records, lists, and notes in Attio.
 source: https://attio.com/help/apps/other-apps/using-the-attio-mcp-server
 
-# Official vendor-hosted remote MCP (URL-only — Hermes never spawns a local
+# Official vendor-hosted remote MCP (URL-only — Xinyuan never spawns a local
 # process for this entry). Native OAuth 2.1 + Dynamic Client Registration
 # (verified live: RFC 9728 protected-resource metadata -> AS metadata with
-# registration_endpoint); Hermes's MCP client + mcp_oauth_manager handle
+# registration_endpoint); Xinyuan's MCP client + mcp_oauth_manager handle
 # discovery, PKCE, token exchange, and refresh.
 
 transport:
@@ -35,6 +36,6 @@ suggest:
     - attio.com
 
 post_install: |
-  On first connection Hermes opens a browser to authorize with
+  On first connection Xinyuan opens a browser to authorize with
   Attio (or run `hermes mcp login attio`). Approve access,
   then restart the session so tools load.

@@ -1,7 +1,7 @@
 name: hermes-plugin-guard
 repo: https://github.com/mauricemohr88-debug/hermes-plugin-guard
 sha: 857d881be77249c192c5fefa8254db186a7abbca
-description: Static review of candidate Hermes plugins; target code is never executed.
+description: Static review of candidate Xinyuan plugins; target code is never executed.
 maintainer: mauricemohr88-debug
 tier: community
 category: tools

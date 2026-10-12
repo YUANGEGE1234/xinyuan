@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   version="1.1"
+   viewBox="0 0 5487.0615 5487.0615"
+   width="5487.0615"
+   height="5487.0615"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <!-- Xinyuan brand mark: a bold X in positive space. Replaces the
+       upstream nous-girl artwork; see CHANGES.zh-CN.md. -->
+  <path
+     id="mark"
+     style="fill:#ffffff;fill-rule:nonzero"
+     d="M 4593.5342 1558.2077 L 3928.8538 893.5273 L 893.5273 3928.8538 L 1558.2077 4593.5342 Z M 1558.2077 893.5273 L 893.5273 1558.2077 L 3928.8538 4593.5342 L 4593.5342 3928.8538 Z" />
+</svg>

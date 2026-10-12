@@ -3,11 +3,11 @@ label: Buzz
 kind: platform
 version: 1.0.0
 description: >
-  Buzz gateway adapter for Hermes Agent.
+  Buzz gateway adapter for Xinyuan Agent.
   Connects to a Buzz community relay (Block's open-source human+agent
   collaboration platform built on Nostr) and relays messages between
-  channels/DMs and the Hermes agent. Relay operations shell out to the
-  buzz CLI binary (JSON in/out); verified inbound media uses Hermes' bundled
+  channels/DMs and the Xinyuan agent. Relay operations shell out to the
+  buzz CLI binary (JSON in/out); verified inbound media uses Xinyuan' bundled
   HTTP client.
 author: Nous Research
 # ``requires_env`` entries are surfaced in ``hermes config`` UI via the

@@ -12,6 +12,10 @@ import { useModalBehavior } from "@/hooks/useModalBehavior";
 import { useProfileScope } from "@/contexts/useProfileScope";
 import { api } from "@/lib/api";
 import { maybeReloadForLoopbackWsAuthFailure } from "@/lib/dashboard-auth-reload";
+import {
+  refitWhenTerminalFontLoads,
+  TERMINAL_FONT_FAMILY,
+} from "@/lib/terminal-font-refit";
 import { cn, themedBody } from "@/lib/utils";
 import { useTheme } from "@/themes";
 import { errorMessage } from "@/lib/api-error";
@@ -351,8 +355,7 @@ export function HermesConsoleModal({ open, onClose }: HermesConsoleModalProps) {
     const term = new XtermTerminal({
       allowProposedApi: true,
       cursorBlink: true,
-      fontFamily:
-        "'JetBrains Mono', 'Cascadia Mono', 'Fira Code', 'MesloLGS NF', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace",
+      fontFamily: TERMINAL_FONT_FAMILY,
       fontSize: 13,
       lineHeight: 1.25,
       letterSpacing: 0,
@@ -394,12 +397,13 @@ export function HermesConsoleModal({ open, onClose }: HermesConsoleModalProps) {
     const ro = new ResizeObserver(scheduleFit);
     ro.observe(host);
     scheduleFit();
+    const stopFontRefit = refitWhenTerminalFontLoads(term, fitTerminal);
 
     const dataDisposable = term.onData(handleInputData);
     setConnectionState("connecting");
     setConsoleProfile(profile || "current");
     hasReadyFrameRef.current = false;
-    writeLine(term, "\x1b[2mConnecting to Hermes Console...\x1b[0m");
+    writeLine(term, "\x1b[2mConnecting to Xinyuan Console...\x1b[0m");
 
     void (async () => {
       try {
@@ -462,6 +466,7 @@ export function HermesConsoleModal({ open, onClose }: HermesConsoleModalProps) {
       dataDisposable.dispose();
       ro.disconnect();
       if (resizeFrame) cancelAnimationFrame(resizeFrame);
+      stopFontRefit();
       wsRef.current?.close();
       wsRef.current = null;
       term.dispose();

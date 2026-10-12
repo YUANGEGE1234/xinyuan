@@ -3,8 +3,14 @@
 本文记录 **Xinyuan** 相对上游 [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) 的全部改动，
 包含每一项的**现象、根因、修法、验证方式**。按改动发生的顺序排列。
 
-- 上游基线：桌面端 `0.17.3`
+- 上游基线（v0.17.3，本文第 1~12 节）：桌面端 `0.17.3`，上游提交 `2d15a72b5120`（2026-09-16）
+- 上游基线（v0.21.7，本文第 13 节）：上游 `main` 提交 `3569e846`（2026-10-12），窗口内约 1,737 个提交
 - 上游协议：MIT，Copyright (c) 2025 Nous Research（`LICENSE` 未做任何修改）
+
+> **版本号是怎么定的**：上一版取的是上游桌面端 `apps/desktop/package.json` 里的版本号（当时为
+> `0.17.3`）。上游在本次重构中已把该字段重置为 `0.0.0`，改为构建时从 release tag 注入，
+> 所以这个来源不再存在。本版起改为对齐**上游的 release 版本号** —— 合并点的上游 `main`
+> 紧跟在 `v0.21.7` 之后发布，故本版号为 `0.21.7`。
 
 ---
 
@@ -255,16 +261,51 @@ Ignoring stale Hermes backend exit (1)
 
 | 配置项 | 上游默认 | 本版本 |
 | --- | --- | --- |
-| `approvals.mode` | 需人工审批 | `'off'` |
+| `approvals.mode` | `'smart'`（需人工审批） | `'off'` |
 | `security.redact_secrets` | `true` | `false` |
-| `security.tirith_enabled` | `true` | `false` |
 | `security.allow_private_urls` | `false` | `true` |
+| `security.protected_instruction_files` | `true` | `false` |
 
 这是为了让「解压即用」不打扰用户而做的**刻意取舍**，风险已在 README 中明确标注。
 
+### v0.21.7 的两处修正
+
+1. **`security.tirith_*` 已退役，不再写入。**
+   上游 v50 配置版本把内置的 tirith 命令扫描器从产品中移除
+   （`hermes_cli/config_migrations.py::_RETIRED_TIRITH_KEYS`，迁移步骤 49 → 50）。
+   旧版写进 `config.yaml` 的 `tirith_enabled` / `tirith_path` / `tirith_timeout` /
+   `tirith_fail_open` 四个键**现在没有任何代码读取**，留着只会在首次启动时被迁移删掉，
+   所以本版直接不写。
+
+2. **新增 `security.protected_instruction_files: false` —— 不设它，「无审批」就是假的。**
+   这是上游新增的一道**独立闸门**：改写 `AGENTS.md` / `CLAUDE.md` / `SOUL.md` /
+   `.cursorrules` / 项目级 `.hermes` 配置时，**即使 `approvals.mode` 为 `off`、即使开了
+   yolo，也仍然强制弹窗审批**。上游的设计注释写得很直白：
+
+   > `# Writes to agent-instruction files (AGENTS.md/CLAUDE.md/SOUL.md/.cursorrules, project-local`
+   > `# .hermes config) always need human approval, even under yolo.`
+
+   实现位置：`tools/file_tools_write_guards.py`，读 `security.protected_instruction_files`
+   （默认 `True`）。`approvals.mode: off` 的短路发生在 `tools/approval.py::_gate_human_approval`
+   里，**早于**这条闸门的调用点，所以关不掉它。
+
+   要保持与上游旧版一致的「完全不弹窗」，必须显式设为 `false`。
+
+### 刻意**保留**的安全底线
+
+以下拦截**不随 `approvals.mode: off` 放开**，本版同样保留（与上一版一致）：
+
+- **hardline 灾难性命令**（`rm -rf /`、覆写块设备、fork bomb 等）
+  —— `tools/approval_detection.py::detect_hardline_command`，在 `approval_floors.py` 里
+  于 yolo / mode=off **之前**执行；
+- **`sudo -S` 明文喂密码** —— 同上，属于前置闸门；
+- **`approvals.deny` 用户自定义黑名单** —— 默认空列表，用户自己加。
+
+这三条是「不把用户的机器搞坏」的底线，不是「审核 AI 的动作」，因此不在放宽范围内。
+
 ---
 
-## 8. 交付物验证记录
+## 8. 交付物验证记录（v0.17.3 首发）
 
 对最终发布的 `Xinyuan-Portable-0.17.3.zip`：
 
@@ -607,5 +648,130 @@ npm run builder -- --dir # → apps/desktop/release-xinyuan/win-unpacked/
 
 - 仅提供 **Windows x64** 便携包。macOS / Linux 需自行从源码构建。
 - 需要能访问 `https://yuangeluyou.com`；离线环境无法使用。
-- 便携包体积约 234 MB（含自带 Python 运行时与全部依赖），首次启动约 13 秒（之后更快）。
-- 上游 3.14 支持尚未跟进（部分依赖未发布 wheel），请使用 Python 3.11 ~ 3.13。
+- 便携包体积约 272 MB（含自带 Python 运行时与全部依赖），首次启动约 20~40 秒（之后更快）。
+- 本版内置 **CPython 3.14.8**。上游 `pyproject.toml` 里 45/50 个核心依赖都带
+  `python_version >= '3.14'` 标记，所以 **3.14 是本版唯一受支持的版本**，旧版的 3.11 已不再适用。
+
+---
+
+## 13. 合并上游 v0.21.7（本版重点）
+
+### 合并范围
+
+| | |
+| --- | --- |
+| 上游基线 | `2d15a72b5120`（2026-09-16） |
+| 上游目标 | `main` @ `3569e846`（2026-10-12，紧跟在 release `v0.21.7` 之后） |
+| 窗口内提交 | 约 1,737 个 |
+| 文件级差异 | 8,732 修改 / 654 删除 / 5,374 新增（相对上一版 fork） |
+
+三方合并用 `git merge-tree --write-tree -X theirs` 在无工作区条件下完成，冲突一律取上游。
+
+### 用户报的 bug：已在上游修好，本次合并自动带回
+
+有用户反馈应用偶发崩溃。定位到的崩溃栈是：
+
+```
+[renderer console:main] Uncaught TypeError: Cannot read properties of undefined
+  (reading 'startsWith') (file:///.../app.asar.unpacked/dist/assets/combo-D4qFe7_0.js:41)
+```
+
+根因在 `apps/desktop/src/lib/keybinds/combo.ts` 的 `baseKeyFromCode()`：它假定
+`KeyboardEvent.code` 一定是字符串，但 **Radix / IME 合成键盘事件会给出 `undefined`**，
+于是 `code.startsWith(...)` 抛错。
+
+上游已在 #91611 修复，本次合并把这个修复带了回来，**我们无需再打补丁**：
+
+```ts
+// event.code is typed string, but synthetic/IME keydowns can arrive without
+// one (packaged-renderer TypeError reproductions in #91611); treat a
+// non-string or empty code as "no physical key" instead of throwing.
+if (typeof code !== 'string' || !code) {
+  return null
+}
+```
+
+### 🔴 后端启动方式变了（旧包做法在新版直接失效）
+
+这是本次合并里最容易踩空的一处。上一版靠桌面端把 `backend/venv/Lib/site-packages`
+挂到 `PYTHONPATH` 上；上游这次重构了整条链路：
+
+| | 旧版 0.17.3 | 新版 0.21.7 |
+| --- | --- | --- |
+| 启动入口 | `main.ts::createPythonBackend` | `electron/source-backend.ts::createSourcePythonBackend` |
+| `PYTHONPATH` | `backend` **+** `backend/venv/Lib/site-packages` | **只有 `backend`** |
+| 依赖来源 | 随包的 `venv/Lib/site-packages`（cp311 wheel） | **解释器自带 site-packages**（或 PM install state） |
+| Python 版本 | 3.11 | **3.14** |
+
+`source-backend.ts` 的注释点明了原因 —— 继承来的 `PYTHONPATH` 可能指向另一个检出目录，
+所以上游干脆先清空再只留 `root`：
+
+```ts
+// (The scrubbed inherited value could point at another checkout.)
+env: { ...buildDesktopBackendEnv({...}), PYTHONPATH: root }
+```
+
+**本版做法**：把全部依赖装进 `runtime/python/Lib/site-packages`（解释器自带目录），
+`PYTHONPATH` 只留 `backend`。这样能成立的关键在 `pm/environments.py::activate_dependencies()`：
+
+```python
+state = install_state_dir(project_root)
+if state.is_dir():          # 便携包不带 PM install state → False，走 else
+    ...
+# else 分支：payload_venv 为 None → _require_own_dependencies()
+def _require_own_dependencies(project_root):
+    if sys.prefix != sys.base_prefix:      # 便携包不是 venv → 条件不成立
+        return
+    if Path(sys.base_prefix).resolve().is_relative_to(store_root(project_root).resolve()):
+        raise RuntimeError("no dependency environment is committed for this install")
+    # → 直接返回，什么都不做，保留解释器自带的包
+```
+
+即 **便携包的布局恰好命中「什么都不做」那条分支**，`pydantic_core` 等 C 扩展从自身
+site-packages 正常导入。
+
+另外 `backend/` 下**不能有 `.git`**：`hermes_cli/venv_sync.py::prepare_launch()` 的第一个
+early-out 就是 `or not (root / ".git").exists()` —— 没有 `.git` 就直接返回，永远不会触发联网同步。
+
+### 依赖与 Python 版本
+
+- `pyproject.toml` 里 **45/50** 个核心依赖带 `python_version >= '3.14'` 标记，
+  所以在 3.11 上解析出来的依赖集是**空的** —— 3.14 是唯一可用版本。
+- 依赖清单由 `uv export --format requirements-txt --no-hashes --no-emit-project`
+  从上游 `uv.lock` 导出（204 行，全部精确 pin），再用 `uv pip install` 装进解释器
+  site-packages，共 **77 个 `*.dist-info`**。
+- **YAML 库换了**：上游把 PyYAML 换成 `ruamel.yaml==0.18.16`，全树已无 `import yaml`
+  （`hermes_yaml.py` 用的是 `from ruamel.yaml import YAML`）。旧包里的
+  `site-packages/yaml/` 在新版是**多余的**。
+- `tirith` 命令扫描器已从产品中移除（`hermes_cli/config_migrations.py::_RETIRED_TIRITH_KEYS`），
+  所以 `security.tirith_*` 四个键不再写入 `config.yaml`。
+
+### 合并正确性验证（推送前的三层闸门）
+
+| 检查 | 结果 |
+| --- | --- |
+| 654 个删除是否都是上游删的 | 654/654 都是上游删除；**fork 自有文件被误删 0 个；上游仍保留却被我们删掉的 0 个** |
+| 上游 `main` 有、我们没有的文件 | 36 个，**全部在上一版 fork 里本就不存在**（即我们从未删过它们） |
+| 我们独有的文件 | 6 个：`CHANGES.zh-CN.md`、`README.upstream.md`、`intro-mark.png`、`xinyuan-settings.tsx`、`xinyuan-form.tsx`、`codicon.ttf` |
+| 相对上游的改动逐行分类 | **8,521 处纯品牌替换**；其余全部落在「被移除文件的整份内容」「中文 README / CHANGES 重写」「品牌资源（SVG / 字体 / i18n）」三类里，逐条核对后**无夹带的意外改动** |
+
+### 交付物验证记录（v0.21.7）
+
+| 检查项 | 结果 |
+| --- | --- |
+| 全量 CRC 校验（`ZipFile.testzip()`） | 零损坏 |
+| 与构建目录清单比对 | 15,493 文件 / **0 缺失 / 0 多余 / 0 大小不符** |
+| **真实解压后启动**（解压到 `Por table 中文目录\Xinyuan`，路径同时含空格与中文） | 解压 17,429 条目零尺寸差异；三个存在性守卫通过；`import hermes_bootstrap; import hermes_yaml; import dotenv; import hermes_cli.config` 全部成功；后端启动并输出 `HERMES_BACKEND_READY` |
+| 启动器编码 | 2030 字节 / 非 ASCII 0 / CRLF 59 |
+| `README.txt` | UTF-8 BOM = True |
+| 数据目录内容 | 仅 `config.yaml` + `skills/`，无机器状态残留 |
+| 最长条目路径 | 130 字符（Windows 资源管理器 260 限制有充足余量） |
+| 绝对路径 / `..` 条目 | 无 |
+| TypeScript 类型检查 | 6 个 workspace 全部 0 错误 |
+| 桌面端测试 | `tests/desktop` 24/24 通过 |
+
+### 一处**已知的**本地化差异（非缺陷）
+
+`package-lock.json` 里的 `resolved` URL 指向 `registry.npmmirror.com`（国内镜像）而不是
+`registry.npmjs.org`。这是上一版打包时本机 npm 镜像配置留下的，**上一版就已如此**，
+本版沿用未做改动 —— 不影响功能，只是 `npm ci` 会走镜像源。

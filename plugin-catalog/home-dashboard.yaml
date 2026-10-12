@@ -1,7 +1,7 @@
 name: home-dashboard
 repo: https://github.com/albertocvrrbs/hermes-home-dashboard
 sha: a8a018225d8ecd21b281788131775adeade4c577
-description: Personalizable rice-style Home page with draggable, resizable glass widgets for Hermes Web
+description: Personalizable rice-style Home page with draggable, resizable glass widgets for Xinyuan Web
   and Desktop.
 maintainer: albertocvrrbs
 tier: community

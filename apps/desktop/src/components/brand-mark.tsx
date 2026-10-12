@@ -8,6 +8,9 @@ import { cn } from '@/lib/utils'
 // the same `size-*`-driven API — so the five call sites keep their layout, and
 // the mark itself is drawn as a percentage-sized SVG that scales with whatever
 // className the caller passes.
+//
+// The glyph is the same X as the generated app icon (assets/nous-girl-*.svg →
+// scripts/generate_icons.py), so the in-app mark and the taskbar icon agree.
 export function BrandMark({ className, ...props }: React.ComponentProps<'span'>) {
   return (
     <span

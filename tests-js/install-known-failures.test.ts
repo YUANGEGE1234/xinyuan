@@ -11,8 +11,7 @@ const classifier = path.resolve(import.meta.dirname, '../tests/install/e2e-asset
 
 const lockedLog = [
   'error: failed to remove file `C:/install/venv/Lib/site-packages/../../Scripts/hermes.exe`: Access is denied. (os error 5)',
-  'File "C:/install/venv/Scripts/hermes.exe/__main__.py", line 10, in <module>',
-  "subprocess.CalledProcessError: Command '['uv', 'pip', 'install', '-e', '.', '--quiet']' returned non-zero exit status 2.",
+  "⚠ Git update failed: Command '['uv', 'pip', 'install', '-e', '.', '--quiet']' returned non-zero exit status 2.",
 ].join('\n')
 
 const base = {
@@ -42,7 +41,7 @@ describe('known install failures', () => {
       ...base, commit: '7c1a029553d87c43ecff8a3821336bc95872213b',
       updateMethod: 'hermes-desktop-app-update',
       error: 'E2E ASSERTION FAILED: app driven via captured hermes desktop spec; update completed',
-      logs: { desktop: '[hermes] [updates] no staged updater; surfacing manual `hermes update` for CLI install at C:/install\n[hermes] [updates] manual: hermes update\n' },
+      logs: { desktop: '[xinyuan] [updates] no staged updater; surfacing manual `hermes update` for CLI install at C:/install\n[xinyuan] [updates] manual: hermes update\n' },
     }
 
     expect(matchKnownFailure(sample)?.id).toBe('windows-july-manual-app-update')

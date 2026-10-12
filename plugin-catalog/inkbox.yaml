@@ -1,7 +1,7 @@
 name: inkbox
 repo: https://github.com/inkbox-ai/hermes-agent-plugin
 sha: 0948a16679f09fcfc78ed3d9171604b2c853402c
-description: Inkbox email, SMS/MMS, iMessage, voice, and A2A platform plugin for Hermes Agent.
+description: Inkbox email, SMS/MMS, iMessage, voice, and A2A platform plugin for Xinyuan Agent.
 maintainer: inkbox-ai
 tier: community
 category: platform
