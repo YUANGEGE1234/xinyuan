@@ -233,13 +233,13 @@ export function DesktopOnboardingOverlay({
     const reduce = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
     if (reduce) {
-      confirmOnboardingModel(ctx)
+      void confirmOnboardingModel(ctx)
 
       return
     }
 
     setLeaving(true)
-    window.setTimeout(() => confirmOnboardingModel(ctx), ONBOARDING_EXIT_MS)
+    window.setTimeout(() => void confirmOnboardingModel(ctx), ONBOARDING_EXIT_MS)
   }
 
   // The free-tier intro's three doors share one exit: consume the notice, play
@@ -575,11 +575,32 @@ function Header() {
 
 export const FEATURED_ID = 'nous'
 
-// This fork ships exactly ONE way to configure a model: the Xinyuan endpoint.
-// The provider catalog (OAuth accounts, the API-key catalog, local models,
-// Fireworks/OpenRouter rows) is gone on purpose — see xinyuan-form.tsx. The
-// old `Picker` also carried a show-all toggle and an "I'll choose later" link;
-// both only made sense against a catalog, so they went with it.
+const SHOW_ALL_KEY = 'hermes-onboarding-show-all-v1'
+
+const readShowAll = () => {
+  try {
+    return window.localStorage.getItem(SHOW_ALL_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+const persistShowAll = (value: boolean) => {
+  try {
+    window.localStorage.setItem(SHOW_ALL_KEY, value ? '1' : '0')
+  } catch {
+    // localStorage unavailable — degrade silently.
+  }
+
+  return value
+}
+
+// This fork has exactly ONE way to configure a model: the Xinyuan API form.
+// The upstream provider catalogue (OAuth rows, local models, Fireworks /
+// OpenRouter) was removed from the UI, but an earlier build left the old
+// Picker body behind without its imports. A fresh install therefore threw a
+// ReferenceError as soon as the first-run overlay rendered. Render the form
+// directly instead.
 export function Picker({ ctx }: { ctx: OnboardingContext }) {
   return <XinyuanApiForm ctx={ctx} />
 }

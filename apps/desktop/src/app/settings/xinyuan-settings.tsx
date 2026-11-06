@@ -7,8 +7,10 @@ import { SectionHeading, SettingsContent } from './primitives'
  * The entire API configuration surface of this build.
  *
  * Replaces the former Providers page (OAuth accounts + API-key catalog +
- * custom endpoints + local models) and the separate API Keys page. There is
- * exactly one endpoint and exactly one form — see xinyuan-form.tsx.
+ * custom endpoints + local models) and the separate API Keys page. One form
+ * manages any number of API keys, each with its own model list — the form in
+ * xinyuan-form.tsx lists the saved configurations and switches the active
+ * model on click.
  */
 export function XinyuanSettings({ onConfigSaved }: { onConfigSaved?: () => void }) {
   return (

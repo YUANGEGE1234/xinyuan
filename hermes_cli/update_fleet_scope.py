@@ -164,5 +164,22 @@ def launchd_label_foreign_home(label: str, scope: set[Path] | None = None) -> st
 def describe_skipped_runtime(kind: str, name: str, home: str | None) -> str:
     """One notice line for a runtime the update leaves alone (foreign home or unreadable ownership)."""
     if home is None:
-        return f"  ↷ {name}: {kind} whose Xinyuan home could not be read — left alone (not restarted)"
-    return f"  ↷ {name}: {kind} of another Xinyuan home ({home}) — left alone (not restarted)"
+        return f"  ↷ {name}: {kind} whose Hermes home could not be read — left alone (not restarted)"
+    return f"  ↷ {name}: {kind} of another Hermes home ({home}) — left alone (not restarted)"
+
+
+def announce_skipped_runtime(kind: str, name: str, home: str | None) -> None:
+    """Print :func:`describe_skipped_runtime` once per update run, and name the runtime on its receipt.
+
+    The pre-swap pause and the post-swap restart phase each scope the same host-wide gateway list,
+    and the restart phase runs in a fresh completion process, so only the run's receipt (handed to
+    that process) knows what the pause already announced. No open receipt: every call prints.
+    """
+    from hermes_cli import update_receipt
+    entry = [kind, name, home]
+    current = update_receipt._current.get()
+    announced = list((current.data if current is not None else {}).get("runtimes_left_alone") or [])
+    if entry in announced:
+        return
+    print(describe_skipped_runtime(kind, name, home))
+    update_receipt.record_fact("runtimes_left_alone", [*announced, entry])

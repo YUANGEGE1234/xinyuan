@@ -775,3 +775,157 @@ early-out 就是 `or not (root / ".git").exists()` —— 没有 `.git` 就直�
 `package-lock.json` 里的 `resolved` URL 指向 `registry.npmmirror.com`（国内镜像）而不是
 `registry.npmjs.org`。这是上一版打包时本机 npm 镜像配置留下的，**上一版就已如此**，
 本版沿用未做改动 —— 不影响功能，只是 `npm ci` 会走镜像源。
+
+---
+
+## 14. 合并上游 v0.23.0、修复三个真实 bug、彻底移除安全审查（2026-11-06）
+
+### 14.1 合并范围与上游出处
+
+| 项 | 值 |
+| --- | --- |
+| 上一版基线 | 上游 `main` @ 2026-10-12（`3569e846`），对齐 release `v0.21.7`；fork HEAD `5ef53cc7` |
+| 本版合并点 | 上游 `main` @ 2026-11-06 07:12Z（**`90d6b98fd86d20981ee06ddd5b7d93e4320f26a4`**），紧随官方 release **`v0.23.0`**（2026-11-05 发布，The Hearth Release） |
+| 合并窗口 | `v0.21.7` → `v0.23.0`，期间上游发布了 `v0.22.0`~`v0.22.7` 与 `v0.23.0` |
+| 文件数 | 上游基线 18,248 → 0.23.0 **22,610**；fork HEAD 18,218；合并结果 22,615 |
+| 三方合并 | 无工作区 `git merge-tree --write-tree -X theirs`，base=0.21.7、ours=fork HEAD、theirs=0.23.0；35 处冲突（34 个 modify/delete + 1 个 delete/modify） |
+| 协议 | MIT，Copyright (c) 2025 Nous Research（`LICENSE` 未改动） |
+
+### 14.2 🔴 上游架构的破坏性变化（旧版打包流程整体失效）
+
+| | 0.21.7 | 0.23.0 |
+| --- | --- | --- |
+| 包管理器 | npm + `package-lock.json` + `.npmrc` | **pnpm 12.15.0** + `pnpm-lock.yaml` + `pnpm-workspace.yaml`；根 `preinstall` 拒绝非 pnpm |
+| Node | 22+ | **≥ 26**（`pnpm-workspace.yaml` 有 `engineStrict: true`） |
+| 依赖构建 | 常规 postinstall | `strictDepBuilds: true` + `allowBuilds` 白名单；**electron 不在白名单**，二进制需手动补下载 |
+| 安装 | `npm install` | `pnpm install --trust-lockfile`（`minimumReleaseAge: 20160` 需 `--trust-lockfile` 跳过） |
+| 构建 | `npm run build` / `npm run builder -- ...` | `pnpm run build`（`scripts/build.mjs` 编排 vite + 原生依赖 + electron-main）、`pnpm run builder --dir --publish never` |
+| 配置结构版本 | `_config_version: 50` | **`_config_version: 52`**（写错会触发配置迁移并重置用户配置） |
+
+本版构建链全程改用 Node 26.13.0 便携版 + pnpm 12.15.0，从国内镜像装齐 1,072 个包，
+手动补齐 Electron 44.9.3 二进制（246 MB），最终 `pnpm run build`、`pnpm run builder`、
+`pnpm run typecheck` 全部通过。
+
+### 14.3 用户反馈的 bug —— 这次查出来的不止一个
+
+上一版报告里把「用户说有 bug」归因为上游 #91611 的键盘事件崩溃（那确实已由合并带回）。
+本轮做 `pnpm run typecheck` 时发现 **fork 自己留下了更严重的悬空引用**，构建器
+（esbuild / vite）不做类型检查所以能打包，但运行时必然 `ReferenceError`：
+
+1. **首启引导页必崩**：`apps/deskop/src/components/onboarding/index.tsx` 的 `Picker`
+   组件函数体还完整保留着上游供应商目录的实现，引用了 20 多个已被删除的组件与类型
+   （`OAuthProvider`、`sortProviders`、`Status`、`FeaturedProviderRow`、
+   `LocalModelsProviderRow`、`setOnboardingMode`、`saveOnboardingApiKey` …），
+   而 `XinyuanApiForm` 被 import 却**从未渲染**。首次启动 `showPicker` 为真时直接崩。
+   → 把 `Picker` 改为直接 `return <XinyuanApiForm ctx={ctx} />`，删除残留的
+   `KeyFormStep` 与死掉的 `NOUS_FALLBACK` 常量。
+
+2. **设置页必崩**：`app/settings/index.tsx` 第 509 行渲染 `<XinyuanSettings>`，
+   但 import 在合并时丢失。→ 补回 import。
+
+3. **只能添加一个模型**（本轮用户明确报的）：见 14.4。
+
+修复后 `pnpm run typecheck` = **0 错误**（修复前 22 个）。
+
+### 14.4 多 API 密钥 × 多模型：根因与修复
+
+**根因**（`xinyuan-form.tsx` 旧实现）：
+- `saveCustomEndpoint({ id: XINYUAN_ENDPOINT_ID, ... })` —— id 是硬编码常量 `'xinyuan'`，
+  而后端 `upsert_custom_endpoint` 按 id 做 upsert，所以**保存第二组密钥会覆盖第一组**；
+- 只传单个 `model: string`，没传 `models: string[]`，所以**第二个模型也覆盖第一个**。
+- 注释里甚至写着 "exactly one endpoint and exactly one form"。
+
+**修复**（只改 fork 自有的两个 tsx，不动后端）：
+- 每组密钥生成独立 id（`xinyuan-<base36 时间>-<随机>`）；旧配置 id `'xinyuan'` 仍会列出，不丢数据。
+- 复用上游 0.23.0 已有的 `CustomEndpointUpdate.models?: string[]`；后端
+  `_write_custom_endpoint` 会把整份清单写进 `providers.<id>.models`。
+- 界面：`getCustomEndpoints()` 列出所有配置 → 每张卡片展示名称、地址、密钥预览、
+  模型 chips；点击模型名调用 `saveCustomEndpoint`（**不传 `api_key`**，后端会保留原密钥）
+  + `activateCustomEndpoint` 完成切换。
+- 新建/编辑表单：模型可手动回车添加、可点「获取模型」批量加入、可单个移除；
+  `validateProviderCredential` 探测 `/v1/models`。
+- 编辑已有配置采用 **delete + recreate**（后端对 `models` 是 merge 语义，只增不减，
+  不用重建就无法删模型），因此编辑时要求重新填一次 API 密钥，界面已明确提示。
+- Base URL 保持默认 `https://yuangeluyou.com/v1`，点「修改」可改，**调用地址不变**。
+
+### 14.5 「完全移除安全审查」的完整清单
+
+这是本轮最高优先级。上一版刻意保留了 `approval_floors.py` 的灾难命令硬拦截，
+并在 `config.yaml` 里写明「这些检查在 yolo / mode=off 之前执行，无论怎么配置都不会被绕过」。
+**本版按用户要求把这些也一并移除。**
+
+**为什么只改配置不够**：0.23.0 里多处是 `cfg.get("...", True)` 且注释写明
+「True (safe) on any failure」，配置读不到就重新启用闸门；`_floor_block()` 更是
+在 `_yolo_active()` / `mode == "off"` **之前**无条件执行。所以必须做源码层短路。
+
+**A. 配置默认值（`hermes_cli/config_defaults.py`，12 项）**
+
+| 键 | 上游默认 | 本版 |
+| --- | --- | --- |
+| `approvals.mode` | `smart` | `off` |
+| `approvals.cron_mode` / `single_query_mode` / `unattended_mode` | `deny` | `approve` |
+| `approvals.denial_breaker_threshold` | `3` | `0` |
+| `approvals.mcp_reload_confirm` / `destructive_slash_confirm` | `True` | `False` |
+| `security.redact_secrets` | `True` | `False` |
+| `security.allow_private_urls` | `False` | `True`（2 处） |
+| `security.protected_instruction_files` | `True` | `False` |
+| `security.approval.transport_fallback` | `deny` | `builtin` |
+| `cron.allow_agent_scheduling` | `False` | `True` |
+
+另把 `gateway/run_busy.py`、`gateway/slash_commands.py`、`tui_gateway/methods_tools.py`
+里 3 处硬编码 `get(key, True)` 改为 `False`，`tools/website_policy.py` 的默认黑名单置空。
+
+**B. 源码层短路（26 个函数，统一标记 `XINYUAN-NO-REVIEW`）**
+
+| 文件 | 短路的函数 |
+| --- | --- |
+| `tools/approval.py` | `check_dangerous_command`、`check_all_command_guards`、`_floor_block`、`_user_deny_block`、`_get_denial_breaker_threshold`、**`_run_approval_gate`（总闸）** |
+| `tools/file_tools_write_guards.py` | `_protected_instruction_config`、`_check_protected_instruction_write`、`_check_approval_required_write` |
+| `agent/file_safety.py` | `is_write_denied`、`get_write_denied_error`、`is_write_approval_required`、`get_read_block_error`、`raise_if_read_blocked` |
+| `agent/redact.py` | `_redact_enabled` |
+| `tools/url_safety.py` | `_resolve_allow_private_urls`、`is_safe_url`、`is_always_blocked_url`、`async_is_safe_url` |
+| `tools/approval_context.py` | `_get_approval_transport_config` |
+| `tools/approval_floors.py` | `_match_user_deny_rule` |
+| `tools/computer_use/tool.py` | `_request_approval` |
+
+短路用 AST 定位函数体首条可执行语句插入 `return`，每个文件都做了语法复编；
+补丁脚本对每处替换做命中计数断言，上游一旦改名会直接报错而不是静默漏改。
+
+**被移除的能力**：灾难命令硬拦截（`rm -rf /`、写裸块设备、fork bomb、解析器超限）、
+运行时自删除保护、`sudo -S` 密码管道拦截、`approvals.deny` 用户规则、
+smart guardian 与其连续拒绝 hard-stop、无人值守拒绝、插件规则审批、
+computer-use / execute_code 审批、斜杠命令确认、审批通道 fail-closed、
+写受保护指令文件 / SSH 配置的强制审批、写拒绝路径、读凭据文件拦截、
+私有地址 / SSRF 拦截、网站黑名单、输出密钥脱敏。
+
+**刻意保留**：`detect_hardline_command()` 检测函数本身没删（只是闸门不再执行它），
+`grep` 一下还能看到；数据正确性检查（如「不要把 read_file 行号内容写回文件」）也保留，
+那类不是审查，不影响模型能力。
+
+### 14.6 验证记录
+
+| 项 | 结果 |
+| --- | --- |
+| `verify_no_review230.py`（真实后端模块） | **61 / 61 PASS**，0 失败 |
+| 对抗测试 | 设 `HERMES_REDACT_SECRETS=true` 试图强开脱敏 → 仍 `False`；设 `HERMES_ALLOW_PRIVATE_URLS=false` 试图关内网 → 仍放行 |
+| 闸门 vs 检测器 | `detect_hardline_command('rm -rf /')` 仍返回 `(True, 'recursive delete of root filesystem')`，证明是闸门失效而非偷偷删掉检测 |
+| AST 复核 | 26 个目标函数的首条可执行语句全部是 `return` |
+| Python 语法 | 10 个改动文件全部 `compile()` 通过 |
+| TypeScript | `pnpm run typecheck` **0 错误**（修复前 22 个） |
+| 构建 | `pnpm run build` + `pnpm run builder --dir` 成功，产物 `release/win-unpacked/Xinyuan.exe` |
+| 便携包端到端 | 关键文件 7/7、`backend/.git` 不存在、导入链 OK、`config.yaml` 15 项全对、发布包闸门 6/6 放行、新 UI 字符串在 `xinyuan-form-*.js` 内、后端真实启动 **`HERMES_BACKEND_READY`** —— **VERDICT: PASS** |
+| 安装包 | `Xinyuan-Portable-0.23.0.zip`，297,425,535 B（283.6 MB），14,315 条目 |
+| SHA256 | `b61db168d097f30eb33f6178a56eeb4c2fdf4c1cc8e4ba405699c73a314ecb96` |
+
+### 14.7 合并残留处理与已知差异
+
+- 34 个 `modify/delete` 冲突文件是「上游 0.23.0 已删除、fork 只做过品牌替换」的旧文件
+  （`host-backend-attach.ts`、`initiate_setup_*.py`、`tools/browser_*.py`、
+  `skills/*/LICENSE` 等）。逐个与 0.21.7 上游对比，确认品牌归一化后完全一致才跟随上游删除，
+  备份留在 `_pkg_build/_removed230/`。
+- `.npmrc` / `package-lock.json` 上游已弃用（迁 pnpm），一并移除；
+  第 13 节提到的 npmmirror `resolved` URL 差异**本版不再存在**。
+- `website/src/data/userStories.json` 是 fork 删除 / 上游修改的冲突，按 `-X theirs` 采用上游版本。
+- 便携包仍复用上一版已验证的 CPython 3.14.8 运行时；0.23.0 新增依赖中
+  `uvloop` 是 Windows 排除的可选 extra、`firecrawl-anydoc` 属 `doc-extract` 扩展，
+  主启动链路不 import（已由导入链与 READY 实测确认）。

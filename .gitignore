@@ -94,6 +94,8 @@ hermes_cli/web_dist/
 .web_ui_build.lock
 apps/desktop/build/
 apps/desktop/dist/
+apps/desktop/dist-webapp/
+.dist-webapp-build-*
 
 # tsc-emitted artifacts (a stray `tsc -b` compiles into src/, and vite then
 # resolves the stale .js OVER the .tsx — never track these)
@@ -125,27 +127,8 @@ apps/desktop/release/
 apps/desktop/.staging-*/
 *.tsbuildinfo
 
-# Xinyuan fork: the desktop build output directories used by this fork's
-# packaging step (see scripts/set-exe-identity.mjs). The upstream
-# apps/desktop/release/ rule above does not match them. electron-builder
-# cannot always clear a half-written output dir (EBUSY on the locked
-# default_app.asar), so each rebuild gets a fresh release-x<N>/ name -- hence
-# the wildcard rather than one rule per build.
-apps/desktop/release-x*/
-
-# The build renames the previous renderer output aside instead of deleting it
-# (`.dist-previous-<rand>`), but upstream only ignores `.dist-build*`. Without
-# this rule a single `npm run build` in a checkout leaves ~1,058 files untracked
-# and one careless `git add -A` commits the whole stale bundle.
-apps/desktop/.dist-previous*
-
-# Safety net for the same class of accident: a build output that was renamed
-# out of the way (e.g. `release.bak.018`) is no longer matched by
-# `apps/desktop/release/`, so it would otherwise be staged in full.
-apps/desktop/release.bak*/
-
 # Web UI assets — synced from @nous-research/ui at build time via
-# `npm run sync-assets` (see web/package.json).
+# `pnpm run sync-assets` (see web/package.json).
 web/public/fonts/
 web/public/ds-assets/
 
@@ -260,6 +243,10 @@ docs/superpowers/*
 /google_token.json
 /google_oauth_pending.json
 /webhook_subscriptions.json
+/bws_cache.json
+/bws_cache.enc.json
+/op_cache.json
+/photon-sidecar.json
 /channel_directory.json
 /channel_aliases.json
 /feishu_comment_pairing.json
@@ -267,6 +254,7 @@ docs/superpowers/*
 /profiles/
 /credentials/
 /mcp-tokens/
+/webapp/
 /pairing/
 /platforms/
 /backups/
@@ -321,7 +309,7 @@ apps/desktop/demo/
 # Spelling variants are listed because a single `infographic/` pattern was
 # sidestepped by an `infograficos/` directory (#70552). .gitignore is only
 # the first line of defence and cannot stop `git add -f` at all — the
-# infographic-check CI job is what actually enforces this.
+# infographic step of the repo-guards CI job is what actually enforces this.
 infographic/
 infographics/
 infograficos/
@@ -344,3 +332,12 @@ native/fts5_cjk/*.so
 /pm/.lock.json.lock
 
 apps/desktop/.dist-build*
+
+# --- Xinyuan build safety net -------------------------------------------------
+# Upstream ignores only the exact names `apps/desktop/release/` and
+# `.dist-build*`. A build output that was renamed aside instead of deleted
+# (`.dist-previous-*`, `release.bak.*`, `release-x*`) no longer matches those
+# rules and a single `git add -A` would commit the whole stale bundle.
+apps/desktop/.dist-previous*
+apps/desktop/release.bak*/
+apps/desktop/release-x*/

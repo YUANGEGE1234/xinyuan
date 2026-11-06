@@ -31,6 +31,15 @@ export const enConnectorCard: Translations['connectors'] = {
   setupCancel: 'Cancel',
   authorizedToolsUnavailable: 'Authorized. Tools unavailable.',
   required: 'Required',
-  namedAccount: (app: string, alias: string) => `Xinyuan named this ${app} account ${alias}.`,
-  renameAccount: 'Rename'
+  namedAccount: (app: string, alias: string) => `Hermes named this ${app} account ${alias}.`,
+  renameAccount: 'Rename',
+  directory: {
+    suggested: 'Suggested',
+    allApps: 'All apps',
+    receiptConnected: apps => `Connected: ${apps}`,
+    receiptNone: 'No new apps connected',
+    receiptTimedOut: 'Closed after 10 minutes',
+    finishInBrowser: 'Finish in your browser',
+    signInFailed: "Couldn't connect. Click to retry"
+  }
 }

@@ -31,6 +31,15 @@ export const frConnectorCard: TranslationOverrides['connectors'] = {
   setupCancel: 'Annuler',
   authorizedToolsUnavailable: 'Autorisé. Outils indisponibles.',
   required: 'Obligatoire',
-  namedAccount: (app: string, alias: string) => `Xinyuan a nommé ce compte ${app} ${alias}.`,
-  renameAccount: 'Renommer'
+  namedAccount: (app: string, alias: string) => `Hermes a nommé ce compte ${app} ${alias}.`,
+  renameAccount: 'Renommer',
+  directory: {
+    suggested: 'Suggérées',
+    allApps: 'Toutes les apps',
+    receiptConnected: apps => `Connectées : ${apps}`,
+    receiptNone: 'Aucune nouvelle app connectée',
+    receiptTimedOut: 'Fermé après 10 minutes',
+    finishInBrowser: 'Terminez dans votre navigateur',
+    signInFailed: 'Échec de la connexion. Cliquez pour réessayer'
+  }
 }

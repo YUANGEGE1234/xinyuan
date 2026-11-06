@@ -354,23 +354,22 @@ _BLOCKED_TOP = frozenset(
     "oneshot proxy serve setup uninstall update whatsapp whatsapp-cloud".split())
 
 _BLOCKED_PAIRS = {
-    ("config", "edit"): "`config edit` opens an editor and is not available in Xinyuan Console.",
-    ("mcp", "serve"): "`mcp serve` starts a server and is not available in Xinyuan Console.",
-    ("profile", "alias"): "`profile alias` creates shell wrappers and is not available in Xinyuan Console.",
-    ("skills", "config"): "`skills config` is interactive and is not available in Xinyuan Console.",
-    ("skills", "publish"): "`skills publish` is not available in Xinyuan Console.",
-    ("portal", "login"): "`portal login` is interactive and is not available in Xinyuan Console.",
-    ("portal", "open"): "`portal open` opens a browser and is not available in Xinyuan Console.",
-    ("kanban", "tail"): "`kanban tail` streams output and is not available in Xinyuan Console.",
-    ("kanban", "watch"): "`kanban watch` streams output and is not available in Xinyuan Console.",
-    ("kanban", "daemon"): "`kanban daemon` starts a service and is not available in Xinyuan Console.",
-    ("kanban", "dispatcher"): "`kanban dispatcher` starts a worker and is not available in Xinyuan Console.",
-    ("kanban", "swarm"): "`kanban swarm` starts agent work and is not available in Xinyuan Console.",
-    ("kanban", "decompose"): "`kanban decompose` starts agent work and is not available in Xinyuan Console.",
-    ("kanban", "specify"): "`kanban specify` starts agent work and is not available in Xinyuan Console.",
-    ("kanban", "gc"): "`kanban gc` is not available in Xinyuan Console.",
-    ("sessions", "delete"): "`sessions delete` and `sessions prune` are not available in Xinyuan Console.",
-    ("sessions", "prune"): "`sessions delete` and `sessions prune` are not available in Xinyuan Console.",
+    ("config", "edit"): "`config edit` opens an editor and is not available in Hermes Console.",
+    ("profile", "alias"): "`profile alias` creates shell wrappers and is not available in Hermes Console.",
+    ("skills", "config"): "`skills config` is interactive and is not available in Hermes Console.",
+    ("skills", "publish"): "`skills publish` is not available in Hermes Console.",
+    ("portal", "login"): "`portal login` is interactive and is not available in Hermes Console.",
+    ("portal", "open"): "`portal open` opens a browser and is not available in Hermes Console.",
+    ("kanban", "tail"): "`kanban tail` streams output and is not available in Hermes Console.",
+    ("kanban", "watch"): "`kanban watch` streams output and is not available in Hermes Console.",
+    ("kanban", "daemon"): "`kanban daemon` starts a service and is not available in Hermes Console.",
+    ("kanban", "dispatcher"): "`kanban dispatcher` starts a worker and is not available in Hermes Console.",
+    ("kanban", "swarm"): "`kanban swarm` starts agent work and is not available in Hermes Console.",
+    ("kanban", "decompose"): "`kanban decompose` starts agent work and is not available in Hermes Console.",
+    ("kanban", "specify"): "`kanban specify` starts agent work and is not available in Hermes Console.",
+    ("kanban", "gc"): "`kanban gc` is not available in Hermes Console.",
+    ("sessions", "delete"): "`sessions delete` and `sessions prune` are not available in Hermes Console.",
+    ("sessions", "prune"): "`sessions delete` and `sessions prune` are not available in Hermes Console.",
 }
 
 
@@ -561,7 +560,7 @@ def _status(_engine: HermesConsoleEngine, args: list[str]) -> str:
 
 _doctor = _simple_command(
     "doctor", "hermes_cli.doctor", "run_doctor", lambda: (SimpleNamespace(fix=False, ack=None),))
-_config_show = _simple_command("config show", "hermes_cli.config", "show_config")
+_config_show = _simple_command("config show", "hermes_cli.config_show", "show_config")
 _cron_status = _simple_command("cron status", "hermes_cli.cron", "cron_status")
 
 
