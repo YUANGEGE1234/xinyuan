@@ -79,7 +79,7 @@ for the separate MSIX/App Installer package and its update ownership.
 | 9 | **新增便携打包脚本与中文说明** | 启动器、说明文件、目录组装、压缩校验等打包流程脚本化，见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)。 |
 | 10 | **修复「只能添加一个模型」** | 旧版把配置写死成一个端点 id + 一个 `model` 字符串，保存第二组密钥或第二个模型时直接覆盖第一组。本版改为每个密钥一个独立 id，并用上游 0.23.0 已有的 `models: string[]` 保存整份模型清单；界面支持多配置列表、模型批量添加/移除、一键切换当前模型。详见 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 14 节。 |
 | 11 | **修复首次启动 / 设置页必然崩溃** | 类型检查发现上一版删供应商目录时留下了悬空引用：`onboarding/index.tsx` 的 `Picker` 函数体还在引用 20 多个已删除的组件与类型，而 `XinyuanApiForm` 被 import 却从未渲染；`settings/index.tsx` 也丢了 `XinyuanSettings` 的 import。构建器不做类型检查所以能打包，但运行时会 `ReferenceError`。本版把 `Picker` 改为直接渲染配置表单，补回 import，并清理死代码。`pnpm run typecheck` 现为 **0 错误**。 |
-| 12 | **完全移除上游安全审查** | 不只是改 `config.yaml`，还在源码层短路了 38 处「配置关不掉」的硬拦截与 fail-safe 兜底（灾难命令硬拦截、sudo 密码管道、用户 deny 规则、审批总闸、写/读文件保护、SSRF、脱敏等）。经 **61 项运行时实测 + 便携包端到端复验**全部放行。详见下方第三节与 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 14 节。 |
+| 12 | **完全移除上游安全审查** | 不只是改 `config.yaml`，还在源码层短路了 22 个「配置关不掉」的拦截函数（连同配置默认值共 38 处改动）（灾难命令硬拦截、sudo 密码管道、用户 deny 规则、审批总闸、写/读文件保护、SSRF、脱敏等）。经 **61 项运行时实测 + 便携包端到端复验**全部放行。详见下方第三节与 [`CHANGES.zh-CN.md`](CHANGES.zh-CN.md) 第 14 节。 |
 
 技术细节、根因分析和验证方法都写在 **[`CHANGES.zh-CN.md`](CHANGES.zh-CN.md)** 里。
 

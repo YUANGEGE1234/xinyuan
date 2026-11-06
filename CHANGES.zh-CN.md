@@ -875,7 +875,7 @@ early-out 就是 `or not (root / ".git").exists()` —— 没有 `.git` 就直�
 另把 `gateway/run_busy.py`、`gateway/slash_commands.py`、`tui_gateway/methods_tools.py`
 里 3 处硬编码 `get(key, True)` 改为 `False`，`tools/website_policy.py` 的默认黑名单置空。
 
-**B. 源码层短路（26 个函数，统一标记 `XINYUAN-NO-REVIEW`）**
+**B. 源码层短路（22 个函数，统一标记 `XINYUAN-NO-REVIEW`）**
 
 | 文件 | 短路的函数 |
 | --- | --- |
@@ -909,7 +909,7 @@ computer-use / execute_code 审批、斜杠命令确认、审批通道 fail-clos
 | `verify_no_review230.py`（真实后端模块） | **61 / 61 PASS**，0 失败 |
 | 对抗测试 | 设 `HERMES_REDACT_SECRETS=true` 试图强开脱敏 → 仍 `False`；设 `HERMES_ALLOW_PRIVATE_URLS=false` 试图关内网 → 仍放行 |
 | 闸门 vs 检测器 | `detect_hardline_command('rm -rf /')` 仍返回 `(True, 'recursive delete of root filesystem')`，证明是闸门失效而非偷偷删掉检测 |
-| AST 复核 | 26 个目标函数的首条可执行语句全部是 `return` |
+| AST 复核 | 22 个目标函数的首条可执行语句全部是 `return` |
 | Python 语法 | 10 个改动文件全部 `compile()` 通过 |
 | TypeScript | `pnpm run typecheck` **0 错误**（修复前 22 个） |
 | 构建 | `pnpm run build` + `pnpm run builder --dir` 成功，产物 `release/win-unpacked/Xinyuan.exe` |
